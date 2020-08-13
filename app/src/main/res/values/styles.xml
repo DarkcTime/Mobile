@@ -1,0 +1,109 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">@color/darkBlue</item>
+        <item name="colorAccent">@color/blue</item>
+
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="ToolBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:background">@color/design_default_color_primary</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
+
+    <style name="ButtonStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="StyleListView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <style name="StyleSpace">
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_width">30dp</item>
+    </style>
+    <style name="StyleSpaceHeight" parent="@style/StyleSpace">
+
+        <item name="android:layout_width">0dp</item>
+
+    </style>
+    <style name="StyleSpaceWidth" parent="@style/StyleSpace">
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">35dp</item>
+
+    </style>
+    <style name="StyleButtonIconSmall">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+    </style>
+    <style name="StyleButtonIconBig">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+    <style name="StyleButtonIconBig2">
+        <item name="android:layout_width">78dp</item>
+        <item name="android:layout_height">78dp</item>
+    </style>
+    <style name="StyleButtonIconHigh">
+        <item name="android:layout_width">126dp</item>
+        <item name="android:layout_height">126dp</item>
+    </style>
+    <style name="StyleButtonHelpLong">
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:background">@color/blue</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="StyleButtonHelpShort">
+        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:background">@color/blue</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="StyleTextViewSmall">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="StyleTextViewMiddle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="StyleTextViewHeader">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="ToolBarSettings">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
+    </style>
+
+
+</resources>

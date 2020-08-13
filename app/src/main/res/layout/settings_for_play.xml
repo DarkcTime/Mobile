@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rewindTime"
+                    style="@style/StyleTextViewMiddle"
+                    android:layout_marginBottom="70dp"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="70dp">
+                        <Button
+                            style="@style/StyleButtonIconBig"
+                            android:background="@drawable/minus"
+                            android:layout_centerVertical="true"
+                            android:onClick="onClickMinusRewind"/>
+                        <TextView
+                            android:id="@+id/textViewRewindSec"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            style="@style/StyleTextViewHeader"
+                            android:textSize="30dp"
+                            android:text="5 sec"/>
+                        <Button
+                            style="@style/StyleButtonIconBig"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/plus"
+                            android:layout_centerVertical="true"
+                            android:onClick="onClickPlusRewind"/>
+                    </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pauseTime"
+                    style="@style/StyleTextViewMiddle"
+                    android:layout_marginBottom="70dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp">
+                    <Button
+                        style="@style/StyleButtonIconBig"
+                        android:background="@drawable/minus"
+                        android:layout_centerVertical="true"
+                        android:onClick="onClickMinusPause"/>
+                    <TextView
+                        android:id="@+id/textViewPauseSec"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        style="@style/StyleTextViewHeader"
+                        android:textSize="30dp"
+                        android:text="5 sec"/>
+                    <Button
+                        style="@style/StyleButtonIconBig"
+                        android:layout_alignParentRight="true"
+                        android:onClick="onClickPlusPause"
+                        android:background="@drawable/plus"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginBottom="@dimen/size_help"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            >
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <Button
+                    style="@style/StyleButtonIconBig2"
+                    android:background="@drawable/save"
+                    android:onClick="onClickButtonSaveSettingsForPlay"
+                    android:layout_centerHorizontal="true"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <Button
+                    style="@style/StyleButtonIconBig2"
+                    android:background="@drawable/cancel"
+                    android:onClick="onClickCancelSaveSettingsForPlay"
+                    android:layout_centerHorizontal="true"/>
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

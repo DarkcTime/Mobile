@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                style="@style/StyleButtonIconBig"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/ser"
+                android:onClick="onClickButtonSettingsPlay" />
+
+            <Button
+                android:id="@+id/buttonExit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="48dp"
+                android:background="@color/red"
+                android:onClick="onClickButtonStopGame"
+                android:text="@string/stopGame" />
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewSelectedRecPlay"
+                style="@style/StyleTextViewMiddle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+
+            <com.example.Calls.ProgressTextView
+                android:id="@+id/progressTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background"
+                android:gravity="center">
+
+            </com.example.Calls.ProgressTextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/textViewStartPositionPlay"
+                    style="@style/StyleTextViewMiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp" />
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <SeekBar
+                        android:id="@+id/seekBarPositionPlay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:clickable="false"
+                        android:progressBackgroundTint="@color/blue"
+                        android:progressBackgroundTintMode="multiply"
+                        android:progressTint="@color/green"></SeekBar>
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCountMinuteMake"
+                    style="@style/StyleTextViewMiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewLevelUser"
+                style="@style/StyleTextViewMiddle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonBackRewind"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/blue"
+                android:onClick="onClickButtonBackSecond"
+                android:textSize="45dp"></Button>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonMyPlay"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/I"
+                android:textSize="45dp" />
+
+            <Button
+                android:id="@+id/buttonCompanion"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/companion"
+                android:textSize="25dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonFordRewind"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/blue"
+                android:onClick="onClickButtonForwardSecond"
+                android:textSize="45dp"></Button>
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonStartPlay"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/green"
+            android:onClick="onClickStartPlay"
+            android:text="Начать"
+            android:textSize="45dp"></Button>
+
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
