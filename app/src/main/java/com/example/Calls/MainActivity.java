@@ -2,12 +2,14 @@ package com.example.Calls;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -27,14 +29,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.example.Calls.BackEnd.Api.AnalyzeCall;
-import com.example.Calls.BackEnd.Api.ApiSpeech;
-import com.example.Calls.BackEnd.Api.FileSpeech;
-import com.example.Calls.BackEnd.Api.SelectMethodSaveText;
 import com.example.Calls.BackEnd.Contacts;
+import com.example.Calls.BackEnd.FilesWork;
 import com.example.Calls.BackEnd.Permissions;
 import com.example.Calls.BackEnd.Records;
 import com.example.Calls.BackEnd.SavedSettings;
+import com.example.Calls.BackEnd.SharedVariables;
 import com.example.Calls.R;
 
 import java.io.BufferedWriter;
@@ -109,51 +109,24 @@ public class MainActivity extends AppCompatActivity {
 
         mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
 
-        Permissions permissions = new Permissions();
         savedSettings = new SavedSettings(mSettings);
 
+        //если приложение запускается впервые выполняет данное условие
         if(!savedSettings.isNull(SavedSettings.APP_PREFERENCES_ISEXPERT)){
+            //открывает окно со справкой пользователя
             Intent help = new Intent(MainActivity.this, Help.class);
             startActivity(help);
             return;
         }
 
+        //если выбран уровень начинающий
+        //запускает диалоговое окно со справкой для пользователя
         if(!SavedSettings.isExpert()){
             startAlertDialog(0);
         }
 
 
 
-        //запрос прав у пользователя
-        permissions.EnablePermissions(this);
-
-        //установка пути в настройках
-        Records.pathForFindRecords = mSettings.getString("path", Records.currentPathForRecordsXiomi);
-
-        //если текущего пути нету, выводит диалоговое окно !!stopped work application
-        if(!Records.checkPath(Records.pathForFindRecords)){
-            Toast.makeText(this, Records.pathForFindRecords, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        //add list from selected path
-        listFiles.addAll(Records.getFiles(Records.pathForFindRecords));
-
-        //вывод список контактов в list
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,  android.R.layout.simple_list_item_1, this.getListContacts(listFiles));
-
-        listViewContactsMA.setAdapter(adapter);
-
-        //определяет выбранный контакт и переходит на следующую activity
-        listViewContactsMA.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView text = (TextView) view;
-                Contacts.informationAboutUser = text.getText().toString();
-                Intent aboutContact = new Intent(MainActivity.this, AboutContact.class);
-                startActivity(aboutContact);
-            }
-        });
 
 
         /*
@@ -223,6 +196,62 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
+    public void loadMain(){
+        //создаёт директорию для работы приложения с файлами
+        FilesWork.createDirApplication();
+
+        //установка пути в настройках
+        Records.pathForFindRecords = mSettings.getString("path", Records.currentPathForRecordsXiomi);
+
+        //TODO если текущего пути нету, выводит диалоговое окно !!stopped work application
+        if(!Records.checkPath(Records.pathForFindRecords)){
+            Toast.makeText(this, Records.pathForFindRecords, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //add list from selected path
+        listFiles.addAll(Records.getFiles(Records.pathForFindRecords));
+
+        //вывод список контактов в list
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,  android.R.layout.simple_list_item_1, this.getListContacts(listFiles));
+
+        listViewContactsMA.setAdapter(adapter);
+    }
+
+
+    //TODO реализовать действия приложения в случае отказа от разрешений
+    public void askPermission(int numButton){
+        switch (numButton){
+            case 0:
+                Permissions permissions = new Permissions();
+                permissions.EnablePermissions(this);
+                break;
+            case 1:
+                break;
+        }
+    }
+
+    //TODO придумать действия в случае не получения разрешений от пользователя
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission granted
+                    loadMain();
+                } else {
+                    // permission denied
+
+                }
+                return;
+        }
+
+    }
+
+
     //region ButtonsClick
 
     //открывает диалоговое окно с контекстной справкой для данной страницы
@@ -245,7 +274,8 @@ public class MainActivity extends AppCompatActivity {
     private void startAlertDialog(int numButton){
         FragmentManager manager = getSupportFragmentManager();
         MyDialogHelp.getButton = numButton;
-        MyDialogHelp myDialogHelp = new MyDialogHelp();
+        //MyDialogHelp.setContextMain(this);
+        MyDialogHelp myDialogHelp = new MyDialogHelp(this);
         myDialogHelp.show(manager, "myDialog");
     }
 
@@ -311,11 +341,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //endregion
-
-
-
-
-
 
     /*
 

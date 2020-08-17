@@ -41,7 +41,7 @@ public class Cut {
 
     //полный путь с именем записи
     //контакт
-    public void Cutter(String nameRec) throws IOException {
+    public void Cutter(String nameRec) throws Exception {
         int i = 0;
         //create folder for records
 
@@ -58,30 +58,41 @@ public class Cut {
     }
 
 
-    private void FileCutter(String nameRec, double start, double end, String stage) throws IOException {
+    private void FileCutter(String nameRec, float start, float end, String stage) throws Exception {
         //получение mp записи
         String pathFull = Records.pathForFindRecords + nameRec;
+        Log.d("pathFull", pathFull);
 
-        //TODO??? class for create mp3 file
-        CheapSoundFile soundFile = CheapSoundFile.create(pathFull);
+        SoundFileCutter soundFile;
+        soundFile = SoundFileCutter.create(pathFull);
+
+        Log.d("soundfile", "yes");
 
         //create a File object for mp3 file
-        File fileName = new File(getPathCut(nameRec)+stage+".mp3");
+        File fileName = new File("/storage/emulated/0/Android/data/mp4test/".concat("2.mp3"));
 
+        File papka = new File("/storage/emulated/0/Android/data/mp4test");
 
-        int mSampleRate = soundFile.getSampleRate();
-        int mSamplesPerFrame = soundFile.getSamplesPerFrame();
-        int startFrame = Utilities.secondsToFrames(start,mSampleRate, mSamplesPerFrame);
-        int endFrame = Utilities.secondsToFrames(end, mSampleRate,mSamplesPerFrame);
+        boolean exitsDir = papka.mkdir();
+
+        Log.d("papka", String.valueOf(exitsDir));
+
+        int startFrame = soundFile.getFrameFromSeconds(start);
+        int endFrame = soundFile.getFrameFromSeconds(end);
 
         Log.d("startFrame", String.valueOf(startFrame));
         Log.d("endFrame", String.valueOf(endFrame));
         Log.d("path", fileName.getAbsolutePath());
-        soundFile.WriteFile(fileName.getAbsoluteFile(), startFrame, endFrame-startFrame);
 
-        File file = new File(SharedVariables.getPathApplicationFileSystem() + "17.mp3");
-        boolean exist = file.exists();
-        Log.d("existfile", String.valueOf(exist));
+
+        //File file = new File(pathFull);
+        //boolean exist = file.exists();
+
+        Log.d("write file", "yes");
+
+        soundFile.WriteFile(fileName.getAbsoluteFile(), (int)startFrame, (int) endFrame - startFrame);
+
+        //Log.d("existfile", String.valueOf(exist));
     }
 
     //path for create dir

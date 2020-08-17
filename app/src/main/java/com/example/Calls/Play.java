@@ -291,8 +291,8 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     public void onClickButtonForwardSecond(View view){
 
         Cut cut = new Cut();
-        cut.AddInterval(0);
-        cut.StopInterval(2);
+        cut.AddInterval(6);
+        cut.StopInterval(12);
 
         List<FriendInterval> friendIntervalList = new ArrayList<>();
         friendIntervalList = cut.getIntervalList();
@@ -303,6 +303,8 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         catch (Exception ex){
             Log.d("cutter", ex.toString());
         }
+
+
 
         /*
         List<File> listFiles = new ArrayList<File>();

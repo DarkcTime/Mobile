@@ -14,9 +14,21 @@ public class FilesWork {
 
     private String pathSelectedRecord;
 
+
+
     public FilesWork(){
 
     }
+
+    //создание директории приложения
+    //будет использоваться при открытии приложения, если ранее не был создан
+    public static boolean createDirApplication(){
+        File file = new File(SharedVariables.getPathApplicationFileSystem());
+        return  file.mkdir();
+    }
+
+
+
 
     public void writeFile(String content, String number, SelectMethodSaveText selMet,String nameRecord) throws Exception{
         //генерация пути

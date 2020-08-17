@@ -1,6 +1,8 @@
 package com.example.Calls;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,9 +12,32 @@ import android.widget.Toast;
 
 import android.support.v7.app.AppCompatDialogFragment;
 
+import com.example.Calls.BackEnd.SharedVariables;
+
 public class MyDialogHelp extends AppCompatDialogFragment{
 
+    private static String ClickResultMain = "";
+
+    private static void setClickResultMain(String _clickResult){
+        ClickResultMain = _clickResult;
+    }
+
+    public static String getClickResultMain(){
+        return ClickResultMain;
+    }
+
     public static int getButton;
+
+    private MainActivity context;
+
+    @SuppressLint("ValidFragment")
+    public MyDialogHelp(MainActivity _context){
+        context = _context;
+    }
+
+    public MyDialogHelp(){
+
+    }
 
     @NonNull
     @Override
@@ -33,10 +58,22 @@ public class MyDialogHelp extends AppCompatDialogFragment{
                                 + "8) Повторите шаги 4 - 7 со всеми записями или нажмите кнопку общего перевода\n"
                                 + "9) Соберите 1000 слов и зайдите в общее окно для пользователя\n"
                                 + "10) Получив 1000 слов откроется доступ к кнопке `Получить психологический портрет`")
-                        .setPositiveButton("Ок, понял", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Понял, дать разрешения", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // Закрываем окно
+                                context.askPermission(0);
                                 dialog.cancel();
+
+
+                            }
+                        })
+                        .setNegativeButton("Сомневаюсь", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                setClickResultMain(SharedVariables.getClickNegativeButton());
+                                dialog.cancel();
+
                             }
                         });
                 break;
@@ -68,6 +105,21 @@ public class MyDialogHelp extends AppCompatDialogFragment{
                         .setPositiveButton("ОК, понял", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // Закрываем окно
+                                dialog.cancel();
+                            }
+                        });
+            case 3:
+                builder.setTitle("Дать приложению разрешения")
+                        .setMessage("Здесь должен быть текст который получиться после перевода записи")
+                        .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // Закрываем окно
+                                dialog.cancel();
+                            }
+                        })
+                        .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
                             }
                         });

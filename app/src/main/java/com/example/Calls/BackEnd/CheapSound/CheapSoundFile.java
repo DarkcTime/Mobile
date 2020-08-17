@@ -252,7 +252,13 @@ public class CheapSoundFile {
         return bytesToHex(hash);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    public void WriteFile(File outputFile, int startFrame, int numFrames, String test)
+            throws java.io.IOException {
+        float startTime = (float)startFrame * getSamplesPerFrame() / mSampleRate;
+        float endTime = (float)(startFrame + numFrames) * getSamplesPerFrame() / mSampleRate;
+        WriteFile(outputFile, startTime, endTime);
+    }
+
     public void WriteFile(File outputFile, float startTime, float endTime)
             throws java.io.IOException {
         int startOffset = (int)(startTime * mSampleRate) * 2 * mChannels;
@@ -373,17 +379,12 @@ public class CheapSoundFile {
         codec.release();
         codec = null;
 
-        File outfile = new File(SharedVariables.getPathApplicationFileSystem() + "17.mp3");
-
-        boolean createfile = outfile.createNewFile();
-
-        Log.d("createFile", String.valueOf(createfile));
         // Write the encoded stream to the file, 4kB at a time.
         buffer = new byte[4096];
         try {
             FileOutputStream outputStream = new FileOutputStream(outputFile);
-            outputStream.write(MP4Header.getMP4Header(mSampleRate, numChannels, frame_sizes, bitrate));
-
+            outputStream.write(
+                    MP4Header.getMP4Header(mSampleRate, numChannels, frame_sizes, bitrate));
             while (encoded_size - encodedBytes.position() > buffer.length) {
                 encodedBytes.get(buffer);
                 outputStream.write(buffer);
@@ -395,10 +396,9 @@ public class CheapSoundFile {
             }
             outputStream.close();
         } catch (IOException e) {
-            Log.d("write file", e.toString());
+            Log.e("Ringdroid", "Failed to create the .m4a file.");
         }
-
-
     }
+
 
 }
