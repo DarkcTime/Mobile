@@ -58,24 +58,14 @@ public class MyDialogHelp extends AppCompatDialogFragment{
                                 + "8) Повторите шаги 4 - 7 со всеми записями или нажмите кнопку общего перевода\n"
                                 + "9) Соберите 1000 слов и зайдите в общее окно для пользователя\n"
                                 + "10) Получив 1000 слов откроется доступ к кнопке `Получить психологический портрет`")
-                        .setPositiveButton("Понял, дать разрешения", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Ок, понял", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // Закрываем окно
-                                context.askPermission(0);
+                                context.askPermission();
                                 dialog.cancel();
-
-
-                            }
-                        })
-                        .setNegativeButton("Сомневаюсь", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                setClickResultMain(SharedVariables.getClickNegativeButton());
-                                dialog.cancel();
-
                             }
                         });
+
                 break;
             case 1:
                 builder.setTitle("Голосовые потоки")
@@ -110,17 +100,20 @@ public class MyDialogHelp extends AppCompatDialogFragment{
                         });
             case 3:
                 builder.setTitle("Дать приложению разрешения")
-                        .setMessage("Здесь должен быть текст который получиться после перевода записи")
+                        .setMessage("Если вы не дадите разрешения, то прижение не сможет использовать задуманный функционал( \n" +
+                                "Приложение использует защищенный протокол обработки данных. Также все записи и результаты переводов храняться на вашем телефоне без использования сторонних серверов")
                         .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // Закрываем окно
                                 dialog.cancel();
+                                context.askPermission();
                             }
                         })
-                        .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
+                                context.finish();
                             }
                         });
 

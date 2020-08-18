@@ -2,6 +2,7 @@ package com.example.Calls.BackEnd;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.Calls.Settings;
@@ -23,13 +24,18 @@ public class SavedSettings {
     //уровень выбранный пользователем
     public static final String APP_PREFERENCES_ISEXPERT = "is_expert";
 
+    public static  final String APP_PREFERENCES_HASVISITED = "has_visited";
+
     public SavedSettings(SharedPreferences set){
         mSettings = set;
     }
 
     public boolean isNull(String type){
         try{
+
+            Log.d("isExpert", String.valueOf(mSettings.contains(APP_PREFERENCES_ISEXPERT)));
             return mSettings.contains(type);
+
         }
         catch (NullPointerException ex) {
             return false;

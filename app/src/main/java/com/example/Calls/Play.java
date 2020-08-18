@@ -28,6 +28,7 @@ import com.example.Calls.BackEnd.CheapSound.CheapMP3;
 import com.example.Calls.BackEnd.CheapSound.Cut;
 import com.example.Calls.BackEnd.CheapSound.FriendInterval;
 import com.example.Calls.BackEnd.Contacts;
+import com.example.Calls.BackEnd.FilesWork;
 import com.example.Calls.BackEnd.Records;
 import com.example.Calls.BackEnd.SavedSettings;
 
@@ -39,7 +40,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
-
+    //region varibls
+    //имя записи
     public static String nameRecordStatic;
 
     //text get from Api
@@ -87,6 +89,8 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     ProgressTextView progressTextView;
 
+    //endregion
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -117,7 +121,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
         pathRecord = Records.pathForFindRecords + nameRecord;
 
-        //endregion
+
 
         linerMedia = "";
 
@@ -150,6 +154,8 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         if(!SavedSettings.isExpert()){
             startAlertDialog(1);
         }
+
+        //endregion
 
         //region create MediaPlayer
         mp = new MediaPlayer();
@@ -207,24 +213,12 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
         //region button I and Other
 
-        //TODO test api spaeech
+
         //логика при нажатии кнопки Я
         buttonMyPlay.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    try{
-                        api.SpeechToText(pathRecord, contacts);
-                    }
-                    catch (Exception ex){
-                        Log.d("StartSpeechToText", ex.toString());
-                    }
-                }
-
-                //region
-                //TODO refactor code
-                /*
                 if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
                 {
                     updateGame();
@@ -239,29 +233,13 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 }
                 return false;
 
-                 */
-                //endregion
-                return false;
-
             }
         });
-        //TODO test api spaeech
+
         //логика при нажатии кнопки Собеседник
         buttonCompanion.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    try{
-                        textApi = FileSpeech.ReadFileSpeech(contacts,SelectMethodSaveText.oneMessage);
-                    }
-                    catch (Exception ex){
-                        Log.d("StartSpeechToText", ex.toString());
-                    }
-                }
-                //region
-                //TODO refactor code
-                /*
                 if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
                 {
                     updateGame();
@@ -275,9 +253,6 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 }
                 return false;
 
-                 */
-                //endregion
-                return false;
             }
         });
 
@@ -285,11 +260,45 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     }
 
+    //region workWithApi
+    private void startAllRecordsForTranslated() throws Exception{
+        ApiSpeech api = new ApiSpeech();
+        //получаем все файлы по выбранному пути
+        List<File> listFiles = new ArrayList<File>(Records.getFiles(FilesWork.getPathForListRecord(nameRecord)));
+
+        for(File file : listFiles){
+            api.SpeechToText(file.getAbsolutePath(), contacts);
+        }
+
+    }
+
+    private void readAllRecords(){
+        try{
+            String translatedText = FileSpeech.ReadFileSpeech(contacts, SelectMethodSaveText.allText);
+            Toast.makeText(this, translatedText, Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception ex){
+            Toast.makeText(this, ex.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    //endregion
+
     //region buttons Click
 
     //TODO test
     public void onClickButtonForwardSecond(View view){
 
+        try{
+            startAllRecordsForTranslated();
+        }
+        catch (Exception ex){
+            Log.d("api", ex.toString());
+        }
+
+
+        /*
         Cut cut = new Cut();
         cut.AddInterval(6);
         cut.StopInterval(12);
@@ -306,24 +315,15 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
 
 
-        /*
-        List<File> listFiles = new ArrayList<File>();
-        listFiles.addAll(Records.getFiles(cut.getPathCut(nameRecord)));
-        Log.d("count file", String.valueOf(listFiles.size()));
-
-         */
-
-
-        /*
         mp.seekTo(mp.getCurrentPosition() + secRewind*1000);
         textViewStartPositionPlay.setText(setDurationStr());
         updateGame();
 
          */
+
     }
 
     public void onClickButtonSettingsPlay(View view){
-        /*
         try{
             PopupMenu popup = new PopupMenu(this, view);
             popup.setOnMenuItemClickListener(this);
@@ -333,20 +333,16 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         catch (Exception ex){
             Toast.makeText(this, "Ошибка при открытии меню" + ex.toString(), Toast.LENGTH_SHORT).show();
         }
-
-         */
     }
 
     public void onClickButtonStopGame(View view){
+
         try{
-            //cutMedia.Cutter(nameRecord, contacts);
-            //тестовый перевод
-            String pathRec = ApiSpeech.pathForNewFile + nameRecord.replace(".mp3", "") + "1.mp3";
-            Toast.makeText(this, pathRec, Toast.LENGTH_SHORT).show();
-            api.SpeechToText(pathRec, contacts);
+            cutMedia.Cutter(nameRecord);
+
         }
         catch (Exception ex){
-            Toast.makeText(this, "Ошибка при обрезке записи" + ex.toString(), Toast.LENGTH_SHORT).show();
+            Log.d("cutter", ex.toString());
         }
 
         /*
@@ -382,10 +378,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     public void onClickButtonBackSecond(View view){
 
-        List<FriendInterval> friendInterval = new ArrayList<FriendInterval>();
-        friendInterval = cutMedia.getIntervalList();
-        int start = friendInterval.get(0).getStart();
-        Toast.makeText(this, start, Toast.LENGTH_SHORT).show();
+        readAllRecords();
         /*
         mp.seekTo(mp.getCurrentPosition() - secRewind*1000);
         textViewStartPositionPlay.setText(setDurationStr());
@@ -393,14 +386,6 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
          */
     }
-
-    private void startAlertDialog(int numButton){
-        FragmentManager manager = getSupportFragmentManager();
-        MyDialogHelp.getButton = numButton;
-        MyDialogHelp myDialogHelp = new MyDialogHelp();
-        myDialogHelp.show(manager, "myDialog");
-    }
-
 
     public void onClickStartPlay(View view){
         try{
@@ -421,12 +406,22 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     //endregion
 
+
+
+
     //region helperMethods
     private String setDurationStr(){
         return AnalyzeCall.createTimeLabel(mp.getCurrentPosition()).concat(" - ").concat(AnalyzeCall.createTimeLabel(mp.getDuration()));
     }
 
 
+
+    private void startAlertDialog(int numButton){
+        FragmentManager manager = getSupportFragmentManager();
+        MyDialogHelp.getButton = numButton;
+        MyDialogHelp myDialogHelp = new MyDialogHelp();
+        myDialogHelp.show(manager, "myDialog");
+    }
 
     private void setLinerMedia(int time){
         linerMedia += spaces + "|";

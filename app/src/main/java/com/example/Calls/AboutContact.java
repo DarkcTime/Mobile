@@ -66,12 +66,6 @@ public class AboutContact extends AppCompatActivity {
 
         //endregion
 
-
-
-
-
-
-
     }
 
     private void startFilesDialog(List<File> listFiles){

@@ -22,8 +22,9 @@ public class Permissions {
 
     ArrayList<String> permissions;
 
+    public static boolean checkPermission = false;
 
-    public void EnablePermissions(MainActivity activity) {
+    public boolean EnablePermissions(MainActivity activity) {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             int accessStorage = ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -58,13 +59,17 @@ public class Permissions {
                 permissions.add(Manifest.permission.ACCESS_NETWORK_STATE);
             }
 
-            if(permissions.size() > 0) {
+            if(permissions.size() > 1) {
                 ActivityCompat.requestPermissions(activity, permissions.toArray(new String[permissions.size()]), 1);
-            }else{
-                Toast.makeText(activity,"permissions granted",Toast.LENGTH_LONG).show();
+                return true;
+            }
+            else{
+                return false;
             }
 
         }
+
+        return false;
 
     }
 

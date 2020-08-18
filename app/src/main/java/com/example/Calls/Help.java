@@ -24,18 +24,12 @@ public class Help extends AppCompatActivity {
 
     private SharedPreferences mSettings;
 
-    private SavedSettings savedSettings;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.help);
 
         mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
-
-        savedSettings = new SavedSettings(mSettings);
-
-
 
     }
 
@@ -50,7 +44,7 @@ public class Help extends AppCompatActivity {
     //утанавлиеает пользователю уровень начинающего
     public void onClickButtonSetBegin(View view){
         try{
-            savedSettings.setTypeUser(false);
+            SavedSettings.setTypeUser(false);
             startMainActivity();
         }
         catch (Exception ex){
@@ -62,7 +56,7 @@ public class Help extends AppCompatActivity {
     //устанавливает пользователю уровень эксперта
     public void onClickButtonSetExpert(View view){
         try{
-            savedSettings.setTypeUser(true);
+            SavedSettings.setTypeUser(true);
             startMainActivity();
         }
         catch (Exception ex){

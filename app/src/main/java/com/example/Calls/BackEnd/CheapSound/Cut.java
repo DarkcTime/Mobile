@@ -3,6 +3,7 @@ package com.example.Calls.BackEnd.CheapSound;
 import android.util.Log;
 
 import com.example.Calls.BackEnd.Contacts;
+import com.example.Calls.BackEnd.FilesWork;
 import com.example.Calls.BackEnd.Records;
 import com.example.Calls.BackEnd.SharedVariables;
 
@@ -43,56 +44,36 @@ public class Cut {
     //контакт
     public void Cutter(String nameRec) throws Exception {
         int i = 0;
-        //create folder for records
+        //получение записи для чтения
+        SoundFileCutter soundFile = SoundFileCutter.create(Records.pathForFindRecords + nameRec);
 
-        //creating a File object
-        File file = new File(getPathCut(nameRec));
-        //creating a Folder for files
-        boolean folder = file.mkdir();
-        Log.d("folder", String.valueOf(folder));
+        //создание файловой директории для записи
+        new File(FilesWork.getPathForOnlyRecord(nameRec)).mkdir();
+
+        Log.d("filerecord", "директория не создалась");
+
+        //создание файловой директории для сохранения отдельных записей
+        new File(FilesWork.getPathForListRecord(nameRec)).mkdir();
+
+        Log.d("filerecord", "директория не создалась");
 
         for (FriendInterval interval : intervalList) {
-            FileCutter(nameRec,interval.getStart(),interval.getEnd(),String.valueOf(i));
+            FileCutter(nameRec,soundFile,interval.getStart(),interval.getEnd(),String.valueOf(i));
             i++;
         }
     }
 
 
-    private void FileCutter(String nameRec, float start, float end, String stage) throws Exception {
-        //получение mp записи
-        String pathFull = Records.pathForFindRecords + nameRec;
-        Log.d("pathFull", pathFull);
+    private void FileCutter(String nameRec, SoundFileCutter soundFile, float start, float end, String stage) throws Exception {
 
-        SoundFileCutter soundFile;
-        soundFile = SoundFileCutter.create(pathFull);
+        //имя папки помещаемое в файл
+        File fileName = new File(FilesWork.getPathForListRecord(nameRec).concat("/").concat(stage + ".mp3"));
 
-        Log.d("soundfile", "yes");
-
-        //create a File object for mp3 file
-        File fileName = new File("/storage/emulated/0/Android/data/mp4test/".concat("2.mp3"));
-
-        File papka = new File("/storage/emulated/0/Android/data/mp4test");
-
-        boolean exitsDir = papka.mkdir();
-
-        Log.d("papka", String.valueOf(exitsDir));
-
+        assert soundFile != null;
         int startFrame = soundFile.getFrameFromSeconds(start);
         int endFrame = soundFile.getFrameFromSeconds(end);
 
-        Log.d("startFrame", String.valueOf(startFrame));
-        Log.d("endFrame", String.valueOf(endFrame));
-        Log.d("path", fileName.getAbsolutePath());
-
-
-        //File file = new File(pathFull);
-        //boolean exist = file.exists();
-
-        Log.d("write file", "yes");
-
         soundFile.WriteFile(fileName.getAbsoluteFile(), (int)startFrame, (int) endFrame - startFrame);
-
-        //Log.d("existfile", String.valueOf(exist));
     }
 
     //path for create dir
