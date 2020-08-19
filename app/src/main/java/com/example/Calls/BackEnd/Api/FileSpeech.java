@@ -4,6 +4,7 @@ import android.media.MediaMetadataRetriever;
 import android.util.Log;
 
 import com.example.Calls.BackEnd.Contacts;
+import com.example.Calls.BackEnd.FilesWork;
 import com.example.Calls.BackEnd.SharedVariables;
 
 import java.io.*;
@@ -61,23 +62,19 @@ public class FileSpeech {
      * @param contact контакт к токорому закреплен этот ответ
      * @param content Сущесвующие данные
      * @throws IOException
-     * file //path + phoneNumber + one + .txt
      */
-    public static void WriteFileOnSpeech(Contacts contact, String content,
-                                         SelectMethodSaveText selectMethodSaveText) throws IOException {
+    public static void WriteFileOnSpeech(Contacts contact, String content) throws IOException {
         //путь с файлами
-        String path = SharedVariables.getPathApplicationFileSystem();
-        //переменная с контенотом
+        String path = FilesWork.getPathForSelectedUser() + "/result.txt";
         String fullContent = content;
-        //если one == "" добавляет one к имени файла
-        String one = SelectMethodSaveText.oneMessage == selectMethodSaveText ? "one" : "";
 
-        File inputStream = new File(path + contact.getPhoneNumberCurrentContact()+one+".txt");
+        File inputStream = new File(path);
 
-        if (inputStream.exists()) fullContent = ReadFileSpeech(contact, selectMethodSaveText) + " " + content;
+        if (inputStream.exists()) fullContent = ReadFileSpeech(contact) + "\n" + content;
 
+        Log.d("content", content);
         //записывает контент в общий файл
-        WriteFile(path + contact.getPhoneNumberCurrentContact()+one+".txt",fullContent.getBytes());
+        WriteFile(path,fullContent.getBytes());
     }
 
 
@@ -101,18 +98,12 @@ public class FileSpeech {
      * @throws IOException
      * file = path + phoneNumber + one + .txt
      */
-    public static String ReadFileSpeech(Contacts contact, SelectMethodSaveText selectMethodSaveText) throws IOException {
-        String path = SharedVariables.getPathApplicationFileSystem();
-        String one = SelectMethodSaveText.oneMessage == selectMethodSaveText ? "one" : "";
-        File file = new File(path + contact.getPhoneNumberCurrentContact()+one+".txt");
+    public static String ReadFileSpeech(Contacts contact) throws IOException {
+        String path = FilesWork.getPathForSelectedUser() + "/result.txt";
+        File file = new File(path);
         if(!file.exists())
-            WriteFileOnSpeech(contact,"",SelectMethodSaveText.allText);
-        
-        String  readFile = ReadFile(file);
-        if(one.equals("one"))
-            file.delete();
-
-        return readFile;
+            WriteFileOnSpeech(contact,"");
+        return ReadFile(file);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.example.Calls;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.Calls.BackEnd.Records;
 import com.example.Calls.BackEnd.SavedSettings;
+import com.example.Calls.Dialog.SelectFileDialog;
 
 import java.io.File;
 import java.util.Set;
@@ -30,16 +33,11 @@ public class Settings extends AppCompatActivity {
 
     private SharedPreferences mSettings;
 
-    final private static String pathSettings = "/data/data/com.example.Calls/cache/settings.txt";
-
-    final private static String pathRecords = "/data/data/com.example.Calls/cache/path.txt";
-
-    public static String selectedPathRecords = "";
-
     private EditText editTextPath;
 
     private Button buttonChangeRole;
 
+    private boolean typeUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +52,8 @@ public class Settings extends AppCompatActivity {
         mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
 
         editTextPath.setText(mSettings.getString("path", Records.currentPathForRecordsXiomi));
+
+        typeUser = SavedSettings.isExpert();
 
         if(SavedSettings.isExpert()){
             buttonChangeRole.setBackgroundResource(R.drawable.expert);
@@ -71,6 +71,7 @@ public class Settings extends AppCompatActivity {
             SharedPreferences.Editor editor = mSettings.edit();
             editor.putString(SavedSettings.APP_PREFERENCES_PATH , editTextPath.getText().toString());
             editor.apply();
+            SavedSettings.setTypeUser(typeUser);
             Intent main = new Intent(Settings.this, MainActivity.class);
             startActivity(main);
         }
@@ -79,6 +80,7 @@ public class Settings extends AppCompatActivity {
         }
     }
 
+    //don't save settings
     public void onClickCancelSaveSettings(View view){
         Intent main = new Intent( Settings.this, MainActivity.class);
         startActivity(main);
@@ -86,7 +88,7 @@ public class Settings extends AppCompatActivity {
 
     //автоматическая генерация пути по марке телефона
     public void onClickButtonAuto(View view){
-        editTextPath.setText(AutoGeneratePathForRecords());
+        setTextPath(AutoGeneratePathForRecords());
     }
 
     private String AutoGeneratePathForRecords(){
@@ -99,21 +101,31 @@ public class Settings extends AppCompatActivity {
         return "";
     }
 
+    //open dialog window for select path
     public void onClickButtonHand(View view){
-        Toast.makeText(this, "Здесь будет диалоговое окно", Toast.LENGTH_SHORT).show();
+        try{
+            com.example.Calls.Dialog.SelectFileDialog selectFileDialog = new SelectFileDialog(this);
+            selectFileDialog.show();
+        }
+        catch (Exception ex){
+            Log.d("Exception,opFiDi", ex.getMessage());
+        }
     }
 
     public void onClickButtonChangeRoleSetting(View view){
         if(SavedSettings.isExpert()){
-            SavedSettings.setTypeUser(false);
+            typeUser = false;
             buttonChangeRole.setBackgroundResource(R.drawable.begin);
         }
         else{
-            SavedSettings.setTypeUser(true);
+            typeUser = true;
             buttonChangeRole.setBackgroundResource(R.drawable.expert);
         }
     }
 
+    public void setTextPath(String path){
+        editTextPath.setText(path);
+    }
 
     //region menu
     //create menu
@@ -122,14 +134,6 @@ public class Settings extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_settings, menu);
         return true;
-    }
-
-    //change menu item
-    //button back
-    @Override
-    public void onBackPressed() {
-        // super.onBackPressed();
-
     }
 
     //endregion

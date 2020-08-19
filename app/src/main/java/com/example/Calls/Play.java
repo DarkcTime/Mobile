@@ -265,8 +265,10 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         ApiSpeech api = new ApiSpeech();
         //получаем все файлы по выбранному пути
         List<File> listFiles = new ArrayList<File>(Records.getFiles(FilesWork.getPathForListRecord(nameRecord)));
+        Log.d("countListFiles", String.valueOf(listFiles.size()));
 
         for(File file : listFiles){
+            Log.d("getAbsolutFile", file.getAbsolutePath());
             api.SpeechToText(file.getAbsolutePath(), contacts);
         }
 
@@ -274,7 +276,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     private void readAllRecords(){
         try{
-            String translatedText = FileSpeech.ReadFileSpeech(contacts, SelectMethodSaveText.allText);
+            String translatedText = FileSpeech.ReadFileSpeech(contacts);
             Toast.makeText(this, translatedText, Toast.LENGTH_SHORT).show();
         }
         catch (Exception ex){
@@ -287,7 +289,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     //region buttons Click
 
-    //TODO test
+    //TODO test start api
     public void onClickButtonForwardSecond(View view){
 
         try{
@@ -335,11 +337,11 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         }
     }
 
+    //запускает перевод записи в текст
     public void onClickButtonStopGame(View view){
 
         try{
             cutMedia.Cutter(nameRecord);
-
         }
         catch (Exception ex){
             Log.d("cutter", ex.toString());
@@ -376,6 +378,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         return false;
     }
 
+
     public void onClickButtonBackSecond(View view){
 
         readAllRecords();
@@ -405,9 +408,6 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     }
 
     //endregion
-
-
-
 
     //region helperMethods
     private String setDurationStr(){

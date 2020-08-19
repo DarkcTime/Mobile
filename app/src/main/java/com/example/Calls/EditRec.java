@@ -365,7 +365,7 @@ public class EditRec extends AppCompatActivity {
             super.onPostExecute(aVoid);
             try {
                 setModeWait(false);
-                translatedText = FileSpeech.ReadFileSpeech(contacts, SelectMethodSaveText.oneMessage);
+                translatedText = FileSpeech.ReadFileSpeech(contacts);
                 editTextEditRec.setText(translatedText);
 
                 if(!Records.isRecordExist(nameRecord))

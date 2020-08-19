@@ -30,7 +30,6 @@ public class FilesWork {
 
     }
 
-
     public void writeFile(String content, String number, SelectMethodSaveText selMet,String nameRecord) throws Exception{
         //генерация пути
         boolean append = true;

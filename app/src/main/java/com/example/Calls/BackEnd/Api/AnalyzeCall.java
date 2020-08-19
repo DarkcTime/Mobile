@@ -136,7 +136,7 @@ public class AnalyzeCall{
      * @throws IOException
      */
     public static int WordsNow(Contacts contact) throws IOException {
-        String[] words = ReadFileSpeech(contact, SelectMethodSaveText.allText).split(" ");
+        String[] words = ReadFileSpeech(contact).split(" ");
         return words.length;
     }
 

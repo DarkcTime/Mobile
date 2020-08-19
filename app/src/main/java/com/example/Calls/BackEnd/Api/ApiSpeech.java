@@ -148,7 +148,7 @@ public class ApiSpeech {
                             String str = jsonReader.nextString();
                             Log.d("ApiSpeech", "WriteFile");
                             Log.d("ApiSpeech", str);
-                            FileSpeech.WriteFileOnSpeech(contact,str, SelectMethodSaveText.allText);
+                            FileSpeech.WriteFileOnSpeech(contact,str);
                             log.info(str);
 //                            WITDoSomething();
                             break;
