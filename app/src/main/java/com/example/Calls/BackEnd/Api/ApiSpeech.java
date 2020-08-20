@@ -25,17 +25,26 @@ import static com.example.Calls.BackEnd.Api.FileSpeech.ReadFile;
 import static com.example.Calls.BackEnd.Api.FileSpeech.WriteFile;
 import static com.example.Calls.BackEnd.CheapSound.Utilities.FileCutter;
 
+//
+//
 public class ApiSpeech {
 
-    public static String pathForNewFile = "/data/data/com.example.Calls/cache/";
+
+
+    public final static String pathForSaveKeyApi = SharedVariables.getBufferPathForApplicationFileSystem().concat("key.txt");
+
+    /**
+     * ключ к api
+     */
+    private String key;
 
     private static Logger log = Logger.getLogger(ApiSpeech.class.getName());
 
+    private final String Token = "V6BBXKPFPAARQCOMTOIGKGQRUBLCGV4R";
+
     public ApiSpeech() throws IOException {
-        Log.d("ApiSpeech", "setKey");
-        setKey("XXKDHCSNACJ4FDAZX2MZBJTRC3WZWGHT");
-        Log.d("ApiSpeech", "endKey");
-        //setKey("6VZAY3JEGF2CEY3VL3HGB6KAIBRV77GS");
+
+        setKey(Token);
     }
 
     List<AListener> WITListeners;
@@ -43,11 +52,6 @@ public class ApiSpeech {
     List<AListener> KeyListeners;
 
     int count;
-
-    /**
-     * ключ к api
-     */
-    private String key;
 
     /**
      * Получение ключа
@@ -144,6 +148,7 @@ public class ApiSpeech {
                         Log.d("ApiSpeech", "key");
                         String key = jsonReader.nextName();
                         Log.d("ApiSpeech", "key.equals");
+
                         if (key.equals("text")) {
                             String str = jsonReader.nextString();
                             Log.d("ApiSpeech", "WriteFile");
@@ -153,7 +158,7 @@ public class ApiSpeech {
 //                            WITDoSomething();
                             break;
                         } else {
-                            Log.d("ApiSpeech", "key.equals");
+                            Log.d("ApiSpeech", "key.noequals");
                             jsonReader.skipValue();
                         }
                     }

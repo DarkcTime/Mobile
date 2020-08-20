@@ -293,7 +293,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     public void onClickButtonForwardSecond(View view){
 
         try{
-            startAllRecordsForTranslated();
+            api.SpeechToText(pathRecord, contacts);
         }
         catch (Exception ex){
             Log.d("api", ex.toString());
