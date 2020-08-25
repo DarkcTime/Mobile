@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Calls-master.iml" filepath="$PROJECT_DIR$/.idea/modules/Calls-master.iml" group="Calls-master" />
+      <module fileurl="file://$PROJECT_DIR$/Calls-master.iml" filepath="$PROJECT_DIR$/Calls-master.iml" group="Calls-master" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Calls-master/app" />
     </modules>
   </component>

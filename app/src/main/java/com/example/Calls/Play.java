@@ -23,10 +23,7 @@ import android.widget.Toast;
 import com.example.Calls.BackEnd.Api.AnalyzeCall;
 import com.example.Calls.BackEnd.Api.ApiSpeech;
 import com.example.Calls.BackEnd.Api.FileSpeech;
-import com.example.Calls.BackEnd.Api.SelectMethodSaveText;
-import com.example.Calls.BackEnd.CheapSound.CheapMP3;
 import com.example.Calls.BackEnd.CheapSound.Cut;
-import com.example.Calls.BackEnd.CheapSound.FriendInterval;
 import com.example.Calls.BackEnd.Contacts;
 import com.example.Calls.BackEnd.FilesWork;
 import com.example.Calls.BackEnd.Records;
@@ -36,7 +33,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
@@ -270,6 +266,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         for(File file : listFiles){
             Log.d("getAbsolutFile", file.getAbsolutePath());
             api.SpeechToText(file.getAbsolutePath(), contacts);
+            break;
         }
 
     }
@@ -293,7 +290,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     public void onClickButtonForwardSecond(View view){
 
         try{
-            api.SpeechToText(pathRecord, contacts);
+            startAllRecordsForTranslated();
         }
         catch (Exception ex){
             Log.d("api", ex.toString());

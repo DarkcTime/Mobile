@@ -49,8 +49,7 @@ public class FileSpeech {
             } finally {
                 in.close();
             }
-            String contents = new String(bytes);
-            return contents;
+            return new String(bytes);
         }
         else {
             return null;
@@ -106,25 +105,5 @@ public class FileSpeech {
         return ReadFile(file);
     }
 
-    /**
-     * !ОПАСНО! Производит сброс данных приложения
-     */
-    public static void ClearAllDataApp(){
-        File file = new File(SharedVariables.getPathApplicationFileSystem());
-        file.delete();
-        file.mkdir();
-    }
-
-    //зачем?
-    /**
-     * Отчистка временного файла текста
-     * @param contact контакт временный файл котрого нужно отчиситить
-     * @throws IOException
-     */
-    public static void OneFileClear(Contacts contact) throws IOException {
-        String path = "/data/data/com.example.Calls/cache/";
-        WriteFile(path + contact.getPhoneNumberCurrentContact()+"one"+".txt","".getBytes());
-
-    }
 }
 

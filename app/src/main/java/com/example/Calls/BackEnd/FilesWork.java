@@ -1,7 +1,5 @@
 package com.example.Calls.BackEnd;
 
-import com.example.Calls.BackEnd.Api.SelectMethodSaveText;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -30,7 +28,8 @@ public class FilesWork {
 
     }
 
-    public void writeFile(String content, String number, SelectMethodSaveText selMet,String nameRecord) throws Exception{
+    /*
+    public void writeFile(String content, String number,String nameRecord) throws Exception{
         //генерация пути
         boolean append = true;
         String path = pathFile + number;
@@ -52,6 +51,8 @@ public class FilesWork {
         pw.close();
 
     }
+
+     */
     public void writeFile(String content, String number) throws Exception{
         //генерация пути
         String path = pathFile + number + ".txt";
@@ -64,6 +65,7 @@ public class FilesWork {
 
     }
 
+    /*
     public String readFile(String number, SelectMethodSaveText selMet, String nameRecord) throws Exception{
         String result = "";
         String path = pathFile + number;
@@ -85,5 +87,5 @@ public class FilesWork {
         return result;
     }
 
-
+     */
 }

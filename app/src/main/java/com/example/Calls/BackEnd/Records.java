@@ -1,25 +1,16 @@
 package com.example.Calls.BackEnd;
 
-import android.app.Service;
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import com.example.Calls.BackEnd.Api.AnalyzeCall;
-import com.example.Calls.BackEnd.Api.SelectMethodSaveText;
-import com.example.Calls.Settings;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,8 +18,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
-import java.util.function.Predicate;
 
 //работа с записями звонков
 public class Records {
@@ -99,13 +88,6 @@ public class Records {
         pw.close();
     }
 
-    public static String getDateFile(Contacts contacts, String nameRecord) throws Exception{
-        return filesWork.readFile(contacts.getPhoneNumberCurrentContact(), SelectMethodSaveText.oneMessage, nameRecord);
-    }
-    public static String getDateFile(Contacts contacts) throws Exception{
-        return filesWork.readFile(contacts.getPhoneNumberCurrentContact(), SelectMethodSaveText.allText, "");
-    }
-
     //TODO Влад: разобраться с фильтрацией записей
     public static void getFilterRecords(List<File> list, String filter){
         Iterator<File> iterator = list.iterator();
@@ -154,15 +136,6 @@ public class Records {
         File file = new File(path);
         return file.exists();
     }
-
-    public static void saveTranslatedRecord(String finalText, Contacts contacts, String nameRecord) throws Exception{
-        FilesWork filesWork = new FilesWork();
-        filesWork.writeFile(finalText, contacts.getPhoneNumberCurrentContact(), SelectMethodSaveText.oneMessage, nameRecord);
-        filesWork.writeFile(finalText, contacts.getPhoneNumberCurrentContact(), SelectMethodSaveText.allText, "");
-    }
-
-
-
 
     public static boolean isRecordExist(String nameRecord) throws Exception{
         List<String> listRecords = new ArrayList<String>();

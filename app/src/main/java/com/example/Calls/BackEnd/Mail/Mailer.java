@@ -1,4 +1,6 @@
-package com.example.Calls.BackEnd;
+package com.example.Calls.BackEnd.Mail;
+
+import com.example.Calls.BackEnd.Contacts;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

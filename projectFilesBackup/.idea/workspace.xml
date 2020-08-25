@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="Back" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="75190d91-7318-40f5-bd59-14a5c7b20de0" name="Default Changelist" comment="Merge branch 'master' of https://github.com/Ivanl020221/Calls-master&#10;&#10; Conflicts:&#10;&#9;.idea/caches/build_file_checksums.ser">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle____local_aars___D__work_Mobile_Development_Calls_master_app_src_activation_jar_unspecified_jar2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle____local_aars___D__work_Mobile_Development_Calls_master_app_src_mail_jar_unspecified_jar2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/AboutContact.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/AboutContact.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/Api/AnalyzeCall.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/Api/AnalyzeCall.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/Api/ApiSpeech.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/Api/ApiSpeech.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/Api/FileSpeech.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/Api/FileSpeech.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/Api/SelectMethodSaveText.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/CheapSound/CheapSoundFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/CheapSound/CheapSoundFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/CheapSound/Cut.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/CheapSound/Cut.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/CheapSound/SoundFileCutter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/CheapSound/SoundFileCutter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/FilesWork.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/FilesWork.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/Listener/AListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/Mailer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/Mail/Mailer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/Records.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/BackEnd/Records.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/EditRec.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/Play.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/Calls/Play.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/edit_rec.xml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="95cfca23" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$/app">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Calls-master" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="Calls-master">
+      <favorite_root url="file://$PROJECT_DIR$/app/src/main/java/com/example/Calls/SettingsForPlay.java" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+      <favorite_root url="file://$PROJECT_DIR$/app/src/main/res/layout/play.xml" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+    </favorites_list>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="valueResourceFile" />
+        <option value="layoutResourceFile" />
+        <option value="resourceFile" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="KEEP" />
+  </component>
+  <component name="ProjectId" id="1ZfmgbzWE0aaMczjaqSrI22KW5J" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DEBUGGABLE_DEVICE" value="xiaomi-redmi_note_7-95cfca23" />
+    <property name="DEBUGGABLE_PROCESS" value="com.example.Calls" />
+    <property name="DEBUGGER_ID" value="Auto" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="95cfca23" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-08-19T08:02:48.510Z" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHOW_ALL_PROCESSES" value="false" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../AndroidSongMetaDataUpdate-develop" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.17" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+  </component>
+  <component name="PsdUISettings">
+    <option name="MODULE_TAB" value="Default Config" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\vlad_\StudioProjects\Calls-master\app\src\main\res\drawable" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\vlad_\StudioProjects\Calls-master\app\src\main\res\drawable-v24" />
+      <recent name="C:\Users\vlad_\StudioProjects\Calls-master\app\src\main\res\drawable" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <myKeys>
+      <visibility group="Gradle tasks" flag="false" />
+      <visibility group="Recent projects" flag="false" />
+      <visibility group="Run configurations" flag="false" />
+    </myKeys>
+    <option name="myCommands">
+      <command value="Write" />
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android App">
+      <module name="app" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="DEBUGGER_TYPE" value="Java" />
+      <Java />
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+      <module name="app" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="DEBUGGER_TYPE" value="Java" />
+      <Java />
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="com.example.Calls.Help" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="75190d91-7318-40f5-bd59-14a5c7b20de0" name="Default Changelist" comment="" />
+      <created>1585238636434</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1585238636434</updated>
+    </task>
+    <task id="LOCAL-00001" summary="The connection frontend and backend">
+      <created>1585902796377</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1585902796377</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added pathRecord in Records">
+      <created>1585904074031</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1585904074031</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added translated records in text, correctly">
+      <created>1587708537616</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1587708537616</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Added activities setting and help">
+      <created>1587797961374</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1587797961374</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Add filter for records and fix bag with settings">
+      <created>1588153691343</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1588153691344</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Add new settings and help for buttons">
+      <created>1588330472107</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1588330472107</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Version 2.2">
+      <created>1588871089710</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1588871089711</updated>
+    </task>
+    <task id="LOCAL-00008" summary="For together development">
+      <created>1592306972292</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1592306972292</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Версия с основным функционалом, но наличием багов">
+      <created>1592417704610</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1592417704610</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Новый дизайн приложения">
+      <created>1593074634180</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1593074634180</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Добавлен дизайн приложения">
+      <created>1593165196520</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1593165196520</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Новый дизайн">
+      <created>1593519812179</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1593519812179</updated>
+    </task>
+    <task id="LOCAL-00013" summary="doing game">
+      <created>1595228740139</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1595228740139</updated>
+    </task>
+    <task id="LOCAL-00014" summary="merge two version">
+      <created>1596455797535</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1596455797535</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Merge branch 'master' of https://github.com/Ivanl020221/Calls-master&#10;&#10; Conflicts:&#10;&#9;.idea/caches/build_file_checksums.ser">
+      <created>1597235603375</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1597235603375</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/.." />
+    </ignored-roots>
+    <MESSAGE value="The connection frontend and backend" />
+    <MESSAGE value="Added pathRecord in Records" />
+    <MESSAGE value="Added translated records in text, correctly" />
+    <MESSAGE value="Added activities setting and help" />
+    <MESSAGE value="Add filter for records and fix bag with settings" />
+    <MESSAGE value="Add new settings and help for buttons" />
+    <MESSAGE value="Version 2.2" />
+    <MESSAGE value="For together development" />
+    <MESSAGE value="Версия с основным функционалом, но наличием багов" />
+    <MESSAGE value="Новый дизайн приложения" />
+    <MESSAGE value="Добавлен дизайн приложения" />
+    <MESSAGE value="Новый дизайн" />
+    <MESSAGE value="doing game" />
+    <MESSAGE value="merge two version" />
+    <MESSAGE value="Merge branch 'master' of https://github.com/Ivanl020221/Calls-master&#10;&#10; Conflicts:&#10;&#9;.idea/caches/build_file_checksums.ser" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'master' of https://github.com/Ivanl020221/Calls-master&#10;&#10; Conflicts:&#10;&#9;.idea/caches/build_file_checksums.ser" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="549" y="187" key="FileChooserDialogImpl" timestamp="1598011485487">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="549" y="187" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1598011485487" />
+    <state x="279" y="78" key="SettingsEditor" timestamp="1597994025455">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="279" y="78" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1597994025455" />
+    <state x="209" y="157" key="new project wizard" timestamp="1598011506961">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="209" y="157" key="new project wizard/0.0.1536.864@0.0.1536.864" timestamp="1598011506961" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="app">
+        <watch expression="translatedText" language="JAVA" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>

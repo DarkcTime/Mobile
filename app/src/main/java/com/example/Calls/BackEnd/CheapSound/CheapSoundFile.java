@@ -267,7 +267,8 @@ public class CheapSoundFile {
         int numChannels = (mChannels == 1) ? 2 : mChannels;
 
         String mimeType = "audio/mp4a-latm";
-        int bitrate = 64000 * numChannels;  // rule of thumb for a good quality: 64kbps per channel.
+        int bitrate = 16000 * numChannels;  // rule of thumb for a good quality: 64kbps per channel.
+        Log.d("bitrate", String.valueOf(bitrate));
         MediaCodec codec = MediaCodec.createEncoderByType(mimeType);
         MediaFormat format = MediaFormat.createAudioFormat(mimeType, mSampleRate, numChannels);
         format.setInteger(MediaFormat.KEY_BIT_RATE, bitrate);

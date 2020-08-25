@@ -1,13 +1,9 @@
 package com.example.Calls.BackEnd.Api;
 
-
-
 import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
 import com.example.Calls.BackEnd.Contacts;
-import com.example.Calls.BackEnd.Listener.AListener;
-import com.example.Calls.BackEnd.Records;
 import com.example.Calls.BackEnd.SharedVariables;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -25,17 +21,11 @@ import static com.example.Calls.BackEnd.Api.FileSpeech.ReadFile;
 import static com.example.Calls.BackEnd.Api.FileSpeech.WriteFile;
 import static com.example.Calls.BackEnd.CheapSound.Utilities.FileCutter;
 
-//
-//
-public class ApiSpeech {
+//class work with Api
+public class ApiSpeech extends FileSpeech{
 
+    private final String pathForSaveKeyApi = SharedVariables.getBufferPathForApplicationFileSystem().concat("key.txt");
 
-
-    public final static String pathForSaveKeyApi = SharedVariables.getBufferPathForApplicationFileSystem().concat("key.txt");
-
-    /**
-     * ключ к api
-     */
     private String key;
 
     private static Logger log = Logger.getLogger(ApiSpeech.class.getName());
@@ -43,38 +33,33 @@ public class ApiSpeech {
     private final String Token = "V6BBXKPFPAARQCOMTOIGKGQRUBLCGV4R";
 
     public ApiSpeech() throws IOException {
-
         setKey(Token);
     }
 
-    List<AListener> WITListeners;
-
-    List<AListener> KeyListeners;
-
-    int count;
-
     /**
-     * Получение ключа
-     * @return ключ
+     * check key Api
+     * @return key
      */
-    public boolean keyExists() throws IOException {
-        String path = "/data/data/com.example.Calls/cache/key.txt";
-        File file = new File(path);
+    private boolean keyExists() throws IOException {
+        File file = new File(pathForSaveKeyApi);
         if (file.exists()) {
-            if (ReadFile(file) != "") {
-                return true;
+            try{
+                return ReadFile(file) != null;
             }
+            catch (NullPointerException ex){
+                Log.d("NullPointerException", ex.toString());
+            }
+
         }
         return  false;
     }
 
     /**
-     * Получить ключ api
-     * @return ключ api
+     * get key api
+     * @return key
      */
-    public String getKey() throws IOException {
-        String path = "/data/data/com.example.Calls/cache/key.txt";
-        File file = new File(path);
+    private String getKey() throws IOException {
+        File file = new File(pathForSaveKeyApi);
         if (keyExists()) {
             key = ReadFile(file);
             return key;
@@ -84,70 +69,30 @@ public class ApiSpeech {
     }
 
     /**
-     * Задать ключ
-     * @param key ключ
+     * set key
+     * @param key key
      */
-    public void setKey(String key) throws IOException {
-        String path = "/data/data/com.example.Calls/cache/key.txt";
-        WriteFile(path,key.getBytes());
+    private void setKey(String key) throws IOException {
+        WriteFile(pathForSaveKeyApi,key.getBytes());
         this.key = key;
     }
 
     /**
-     * Добавить слушателя
-     * @param listener слушатель
-     */
-    public void addListener(AListener listener) {
-       WITListeners.add(listener);
-    }
-
-    /**
-     * Добавить нового слушателя ключа
-     * @param keyListener
-     */
-    public void addKeyListener(AListener keyListener){KeyListeners.add(keyListener); }
-
-    /**
-     * Вызвать всех слушателей ключа api
-     */
-    public void keyDoSomething(){
-        for (AListener listener:
-                KeyListeners) {
-            listener.doEvent();
-        }
-    }
-
-    /**
-     * Активация всех слушателей.
-     */
-    public void WITDoSomething(){
-        for (AListener listener:
-                WITListeners) {
-            listener.doEvent();
-        }
-    }
-
-    /**
-     * парсинг josn ответа
+     * parsing json answer
      * @param path путь к файлу для сохранения
      * @param contact контакт к которому прикрепляется ответ
      */
-    public void ReturnText(final String path, final Contacts contact){
-
+    private void ReturnText(final String path, final Contacts contact){
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 URL githubEndpoint = null;
                 try {
-                    Log.d("ApiSpeech", "httpURL");
                     HttpsURLConnection myConnection = getWITConnection();
                     SetOutput(myConnection, path);
                     JsonReader jsonReader = getJsonInput(myConnection);
-                    Log.d("ApiSpeech", "while");
                     while (jsonReader.hasNext()){
-                        Log.d("ApiSpeech", "key");
                         String key = jsonReader.nextName();
-                        Log.d("ApiSpeech", "key.equals");
 
                         if (key.equals("text")) {
                             String str = jsonReader.nextString();
@@ -155,7 +100,6 @@ public class ApiSpeech {
                             Log.d("ApiSpeech", str);
                             FileSpeech.WriteFileOnSpeech(contact,str);
                             log.info(str);
-//                            WITDoSomething();
                             break;
                         } else {
                             Log.d("ApiSpeech", "key.noequals");
@@ -234,7 +178,6 @@ public class ApiSpeech {
         try {
             myConnection.setRequestProperty ("Authorization","Bearer " + getKey());
         } catch (IOException e) {
-            keyDoSomething();
             e.printStackTrace();
         }
         myConnection.setRequestProperty("Content-Type", "audio/mpeg3");
@@ -250,6 +193,7 @@ public class ApiSpeech {
      */
     public void SpeechToText(String pathSelectRecord, Contacts contact) throws IOException {
         int Length = FileSpeech.getLengthAudio(pathSelectRecord)/1000;
+        int count;
         //String pathCut = "/data/data/com.example.Calls/BackEnd/CheapSound";
         String pathCut = SharedVariables.getPathApplicationFileSystem();
         log.info(pathSelectRecord);
@@ -265,12 +209,12 @@ public class ApiSpeech {
 
             int finalStart = count * 19;
 
-            //cutter?
+
             if (finalStart != Length){
                 FileCutter(pathSelectRecord, finalStart,Length,String.valueOf(finalStart));
                 ReturnText(pathCut+ finalStart +".mp3",contact);
             }
-          //  WITDoSomething();
+
         }
         else {
             log.info("api sheech");

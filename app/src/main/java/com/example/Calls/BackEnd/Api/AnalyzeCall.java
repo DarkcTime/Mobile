@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import static com.example.Calls.BackEnd.Api.FileSpeech.*;
 
+//TODO refactor class
 public class AnalyzeCall{
     private int MinutesLeft;
     private int WordsLeft;

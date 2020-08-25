@@ -77,7 +77,7 @@ public class Cut {
     }
 
     //path for create dir
-    private String getPathCut(String nameRec){
+        private String getPathCut(String nameRec){
         return SharedVariables.getPathApplicationFileSystem() + nameRec.replace(".mp3", "");
     }
 
