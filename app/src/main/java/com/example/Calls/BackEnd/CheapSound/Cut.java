@@ -2,15 +2,12 @@ package com.example.Calls.BackEnd.CheapSound;
 
 import android.util.Log;
 
-import com.example.Calls.BackEnd.Contacts;
+import com.example.Calls.BackEnd.CutterFiles.CutterInterval;
 import com.example.Calls.BackEnd.FilesWork;
 import com.example.Calls.BackEnd.Records;
 import com.example.Calls.BackEnd.SharedVariables;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -18,12 +15,12 @@ import java.util.logging.Logger;
 public class Cut {
     private static Logger log = Logger.getLogger(Utilities.class.getName());
 
-    private List<FriendInterval> intervalList;
+    private List<CutterInterval> intervalList;
 
-    private FriendInterval interval;
+    private CutterInterval interval;
 
     public void AddInterval(int start){
-        interval = new FriendInterval(start);
+        interval = new CutterInterval(start);
     }
 
     public void StopInterval(int end) {
@@ -31,12 +28,12 @@ public class Cut {
         intervalList.add(interval);
     }
 
-    public List<FriendInterval> getIntervalList(){
+    public List<CutterInterval> getIntervalList(){
         return intervalList;
     }
 
     public Cut(){
-        intervalList = new ArrayList<FriendInterval>();
+        intervalList = new ArrayList<CutterInterval>();
 
     }
 
@@ -57,7 +54,7 @@ public class Cut {
 
         Log.d("filerecord", "директория не создалась");
 
-        for (FriendInterval interval : intervalList) {
+        for (CutterInterval interval : intervalList) {
             FileCutter(nameRec,soundFile,interval.getStart(),interval.getEnd(),String.valueOf(i));
             i++;
         }

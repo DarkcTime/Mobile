@@ -25,6 +25,7 @@ import com.example.Calls.BackEnd.Api.ApiSpeech;
 import com.example.Calls.BackEnd.Api.FileSpeech;
 import com.example.Calls.BackEnd.CheapSound.Cut;
 import com.example.Calls.BackEnd.Contacts;
+import com.example.Calls.BackEnd.CutterFiles.Cutter;
 import com.example.Calls.BackEnd.FilesWork;
 import com.example.Calls.BackEnd.Records;
 import com.example.Calls.BackEnd.SavedSettings;
@@ -85,6 +86,15 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     ProgressTextView progressTextView;
 
+
+    private static Cutter cutter;
+
+    public static Cutter getCutter(){
+        return cutter;
+    }
+
+
+
     //endregion
 
     @SuppressLint("ClickableViewAccessibility")
@@ -135,7 +145,6 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
         contacts = new Contacts();
 
-        cutMedia = new Cut();
 
         //create class ApiSpeech
         try{
@@ -223,7 +232,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
                     //add interval media
                     if(!hearing){
-                        cutMedia.AddInterval(AnalyzeCall.getCurrentPositionSec(mp));
+                        cutter.AddInterval(AnalyzeCall.getCurrentPositionSec(mp));
                         hearing = true;
                     }
                 }
@@ -243,7 +252,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                     progressTextView.setValue(levelGame);
                     //stop interval media
                     if(hearing){
-                        cutMedia.StopInterval(AnalyzeCall.getCurrentPositionSec(mp));
+                        cutter.StopInterval(AnalyzeCall.getCurrentPositionSec(mp));
                         hearing = false;
                     }
                 }
@@ -336,9 +345,12 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     //запускает перевод записи в текст
     public void onClickButtonStopGame(View view){
-
         try{
-            cutMedia.Cutter(nameRecord);
+
+            Intent WaitEndPlay = new Intent(Play.this, WaitInEndPlay.class);
+            WaitEndPlay.putExtra("nameRecord", nameRecord);
+            startActivity(WaitEndPlay);
+
         }
         catch (Exception ex){
             Log.d("cutter", ex.toString());
@@ -396,6 +408,8 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
             playCycle();
 
             buttonStartPlay.setVisibility(View.GONE);
+
+            cutter = new Cutter(nameRecord);
 
         }
         catch (Exception ex){

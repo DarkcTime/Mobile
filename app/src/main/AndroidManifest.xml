@@ -46,9 +46,13 @@
         <activity android:name=".SelectContact" android:label="@string/select_contact">
 
         </activity>
+        <activity android:name=".WaitInEndPlay" android:label="@string/select_contact">
+
+        </activity>
         <activity android:name=".Help" android:label="@string/help" android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+
 
     </application>
 

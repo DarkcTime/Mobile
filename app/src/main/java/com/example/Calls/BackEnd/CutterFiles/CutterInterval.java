@@ -1,10 +1,10 @@
-package com.example.Calls.BackEnd.CheapSound;
+package com.example.Calls.BackEnd.CutterFiles;
 
-public class FriendInterval {
+public class CutterInterval {
     private int start;
     private int end;
 
-    public FriendInterval(int start) {
+    public CutterInterval(int start) {
         this.setStart(start);
     }
 
