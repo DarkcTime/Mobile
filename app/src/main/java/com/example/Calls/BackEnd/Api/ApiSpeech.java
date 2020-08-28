@@ -82,7 +82,7 @@ public class ApiSpeech extends FileSpeech{
      * @param path путь к файлу для сохранения
      * @param contact контакт к которому прикрепляется ответ
      */
-    private void ReturnText(final String path, final Contacts contact){
+    private void ReturnText(final String path, final Contacts contact, final int stage, final String pathDir){
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -98,7 +98,7 @@ public class ApiSpeech extends FileSpeech{
                             String str = jsonReader.nextString();
                             Log.d("ApiSpeech", "WriteFile");
                             Log.d("ApiSpeech", str);
-                            FileSpeech.WriteFileOnSpeech(contact,str);
+                            FileSpeech.WriteFileOnSpeech(contact,str,stage,path,pathDir);
                             log.info(str);
                             break;
                         } else {
@@ -191,7 +191,7 @@ public class ApiSpeech extends FileSpeech{
      * @param contact контакт запись которого необходимо сохранить
      * @throws IOException
      */
-    public void SpeechToText(String pathSelectRecord, Contacts contact) throws IOException {
+    public void SpeechToText(String pathSelectRecord, Contacts contact, int stage, String pathDir) throws IOException {
         int Length = FileSpeech.getLengthAudio(pathSelectRecord)/1000;
         int count;
         //String pathCut = "/data/data/com.example.Calls/BackEnd/CheapSound";
@@ -204,7 +204,7 @@ public class ApiSpeech extends FileSpeech{
                 log.info("file cutter");
                 FileCutter(pathSelectRecord,i, StartValue,String.valueOf(i));
                 log.info("return cutter");
-                ReturnText(pathCut+ i + ".mp3",contact);
+                ReturnText(pathCut+ i + ".mp3",contact,stage, pathDir);
             }
 
             int finalStart = count * 19;
@@ -212,13 +212,13 @@ public class ApiSpeech extends FileSpeech{
 
             if (finalStart != Length){
                 FileCutter(pathSelectRecord, finalStart,Length,String.valueOf(finalStart));
-                ReturnText(pathCut+ finalStart +".mp3",contact);
+                ReturnText(pathCut+ finalStart +".mp3",contact,stage, pathDir);
             }
 
         }
         else {
             log.info("api sheech");
-            new ApiSpeech().ReturnText(pathSelectRecord,contact);
+            new ApiSpeech().ReturnText(pathSelectRecord,contact,stage, pathDir);
         }
     }
 

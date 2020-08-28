@@ -1,6 +1,8 @@
 package com.example.Calls.BackEnd.CutterFiles;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.example.Calls.BackEnd.CheapSound.SoundFileCutter;
@@ -36,6 +38,7 @@ public class Cutter {
 
     //полный путь с именем записи
     //контакт
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void startCutFileIntervals(Context _context) throws Exception {
 
         //создание файловой директории для записи
@@ -44,9 +47,12 @@ public class Cutter {
         //создание файловой директории для сохранения отдельных записей
         getDirForRecords().mkdir();
 
+        //create dir for work with api
+        Copy.createDirForWorkWithApi(nameRecord);
+
         FFmpegCutter fFmpegCutter = new FFmpegCutter(_context);
 
-        fFmpegCutter.executeCommandForCutFileAfterPlay(getFilesForCutter());
+        fFmpegCutter.executeCommandForCutFileAfterPlay(getFilesForCutter(), FilesWork.getPathForWorkWithApi(nameRecord));
 
     }
 

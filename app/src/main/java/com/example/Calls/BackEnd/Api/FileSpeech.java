@@ -1,18 +1,26 @@
 package com.example.Calls.BackEnd.Api;
 
 import android.media.MediaMetadataRetriever;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.example.Calls.BackEnd.Contacts;
 import com.example.Calls.BackEnd.FilesWork;
+import com.example.Calls.BackEnd.Records;
 import com.example.Calls.BackEnd.SharedVariables;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Класс файловой системы перевода аудио в текст
  */
 public class FileSpeech {
+
 
     /**
      * Метод для записи в файл
@@ -56,24 +64,45 @@ public class FileSpeech {
         }
     }
 
-    /**
-     * Запись в файл с полным ответом
-     * @param contact контакт к токорому закреплен этот ответ
-     * @param content Сущесвующие данные
-     * @throws IOException
-     */
-    public static void WriteFileOnSpeech(Contacts contact, String content) throws IOException {
+
+    //выдает список файлов для xiaomi
+    //TODO переписать метод для получения .mp и .txt
+    public static List<File> getFiles(String currentPath){
+        File directory = new File(currentPath);
+        String ext = ".mp3";
+        List<File> fileList = Arrays.asList(directory.listFiles(new Records.MyFileNameFilter(ext)));
+        Collections.sort(fileList, new Comparator<File>() {
+            @Override
+            public int compare(File file, File file2) {
+                if (file.isDirectory() && file2.isFile())
+                    return -1;
+                else if (file.isFile() && file2.isDirectory())
+                    return 1;
+                else
+                    return file.getPath().compareTo(file2.getPath());
+            }
+        });
+        return fileList;
+
+    }
+
+    //write result files in .txt files
+    public static void WriteFileOnSpeech(Contacts contact, String content, int stage, String pathRecord, String pathDir) throws IOException {
         //путь с файлами
-        String path = FilesWork.getPathForSelectedUser() + "/result.txt";
-        String fullContent = content;
+        String file = String.valueOf(stage).concat(".mp3.txt");
+        String path = pathDir.concat(file);
+
+        Log.d("pathWriteAfterApi", path);
+
+       // String fullContent = content;
 
         File inputStream = new File(path);
 
-        if (inputStream.exists()) fullContent = ReadFileSpeech(contact) + "\n" + content;
+        //if (inputStream.exists()) fullContent = ReadFileSpeech(contact) + "\n" + content;
 
         Log.d("content", content);
-        //записывает контент в общий файл
-        WriteFile(path,fullContent.getBytes());
+
+        WriteFile(path,content.getBytes());
     }
 
 
@@ -97,6 +126,7 @@ public class FileSpeech {
      * @throws IOException
      * file = path + phoneNumber + one + .txt
      */
+    /*
     public static String ReadFileSpeech(Contacts contact) throws IOException {
         String path = FilesWork.getPathForSelectedUser() + "/result.txt";
         File file = new File(path);
@@ -104,6 +134,8 @@ public class FileSpeech {
             WriteFileOnSpeech(contact,"");
         return ReadFile(file);
     }
+
+     */
 
 }
 

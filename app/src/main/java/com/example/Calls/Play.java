@@ -265,6 +265,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     }
 
+    /*
     //region workWithApi
     private void startAllRecordsForTranslated() throws Exception{
         ApiSpeech api = new ApiSpeech();
@@ -291,6 +292,8 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     }
 
+
+     */
     //endregion
 
     //region buttons Click
@@ -299,7 +302,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     public void onClickButtonForwardSecond(View view){
 
         try{
-            startAllRecordsForTranslated();
+
         }
         catch (Exception ex){
             Log.d("api", ex.toString());
@@ -390,7 +393,6 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     public void onClickButtonBackSecond(View view){
 
-        readAllRecords();
         /*
         mp.seekTo(mp.getCurrentPosition() - secRewind*1000);
         textViewStartPositionPlay.setText(setDurationStr());

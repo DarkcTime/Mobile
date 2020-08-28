@@ -120,50 +120,6 @@ public class AnalyzeCall{
 
 
 
-    /**
-     * Метод для определения оставшегося кол-ва слов.
-     * @param contact контакт у которого мы хотим узнать кол-во слов
-     * @return кол-во слов
-     * @throws IOException
-     */
-    public static int WordsLeft(Contacts contact) throws IOException {
-        return 1000 - WordsNow(contact);
-    }
-
-    /**
-     * Сколько слов есть на данный момент
-     * @param contact Контакт у которого необходимо узнать кол-во слов
-     * @return кол-во слов сейчас
-     * @throws IOException
-     */
-    public static int WordsNow(Contacts contact) throws IOException {
-        String[] words = ReadFileSpeech(contact).split(" ");
-        return words.length;
-    }
-
-    /**
-     * Сколько минут разговора
-     * @param contact Контакт у корого мы хотим узнать сколько осталось минут
-     * @return кол-во оставшихся минут
-     */
-    public static int WordInMinutes(Contacts contact){
-        try {
-            return WordsLeft(contact)/WordsInOneMinutes(contact)*60;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
-    /**
-     * Кол-во слов за одну минуту
-     * @param contact контакт у которого мы хотим узнать кол-во слов
-     * @return Кол-ло слов
-     * @throws IOException
-     */
-    public static int WordsInOneMinutes(Contacts contact) throws IOException {
-        return WordsNow(contact)/GetAllLengthCalls(contact);
-    }
 
     /**
      * Запись сумарного времени разговора

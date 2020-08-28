@@ -1,9 +1,14 @@
 package com.example.Calls.BackEnd;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.Scanner;
 
 public class FilesWork {
@@ -16,6 +21,10 @@ public class FilesWork {
         return SharedVariables.getPathApplicationFileSystem().concat(new Contacts().getNameCurrentContact());
     }
 
+    public static String getPathForWorkWithApi(String nameRecord){
+        return getPathForOnlyRecord(nameRecord).concat("/api/");
+    }
+
     public static String getPathForOnlyRecord(String nameRecord){
         return getPathForSelectedUser().concat("/").concat(nameRecord.replace(".mp3", ""));
     }
@@ -24,9 +33,8 @@ public class FilesWork {
         return getPathForOnlyRecord(nameRecord).concat("/records");
     }
 
-    public FilesWork(){
 
-    }
+
 
     /*
     public void writeFile(String content, String number,String nameRecord) throws Exception{

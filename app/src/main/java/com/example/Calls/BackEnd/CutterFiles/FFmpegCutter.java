@@ -7,9 +7,12 @@ package com.example.Calls.BackEnd.CutterFiles;
 //documentation https://writingminds.github.io/ffmpeg-android-java/
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.Calls.BackEnd.Api.FileSpeech;
 import com.example.Calls.WaitInEndPlay;
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
@@ -17,6 +20,9 @@ import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 //TODO do listener FFmpegProgress
@@ -26,7 +32,6 @@ public class FFmpegCutter {
 
     //object activity
     private Context context;
-
     //load FFMpeg library
     public FFmpegCutter(Context _context){
         try{
@@ -71,10 +76,12 @@ public class FFmpegCutter {
         });
     }
 
-    public void executeCommandForCutFileAfterPlay(List<FileForCutter> filesForCutter){
+    public void executeCommandForCutFileAfterPlay(List<FileForCutter> filesForCutter, String _pathForCopy){
         for(FileForCutter file : filesForCutter){
             try{
-                executeFFMpegCommand(getCommand(file));
+                File sourceFile = new File(file.getDestination().getAbsolutePath());
+                File copyFile = new File(getTargetFileForCopy(_pathForCopy, file.getDestination().getName()).getAbsolutePath());
+                executeFFMpegCommand(getCommand(file), sourceFile, copyFile);
             }
             catch (FFmpegCommandAlreadyRunningException ex){
                 Log.d("FFAlreadyRunningEx", ex.getMessage());
@@ -86,6 +93,12 @@ public class FFmpegCutter {
         }
     }
 
+    private File getTargetFileForCopy(String _pathForCopy,String fileName){
+        return new File(_pathForCopy.concat(fileName));
+    }
+
+
+
     private String[] getCommand(FileForCutter fileForCutter){
         String intent = "-i ".concat(fileForCutter.getSource().getAbsolutePath()).concat(" ");
         String start = "-ss ".concat(String.valueOf(fileForCutter.getStart())).concat(" ");
@@ -95,19 +108,32 @@ public class FFmpegCutter {
         return command.split(" ");
     }
 
-    private void executeFFMpegCommand(String[] command) throws FFmpegCommandAlreadyRunningException {
+    private void executeFFMpegCommand(String[] command, final File sourceFile, final File copyFile) throws FFmpegCommandAlreadyRunningException {
             ffmpeg.execute(command, new ExecuteBinaryResponseHandler(){
                 @Override
                 public void onFailure(String message) {
                     Log.d("onFailure", message);
                 }
 
+                @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onSuccess(String message) {
                     Toast.makeText(context, "Записи успешно переведены", Toast.LENGTH_SHORT).show();
                     WaitInEndPlay waitInEndPlay = (WaitInEndPlay) context;
                     waitInEndPlay.setProgressBarWaitEndCutter("успех");
                     Log.d("onSuccess", message.toString());
+
+                    try{
+                        Copy.CopyFile(sourceFile, copyFile);
+                        Log.d("Copy", "FileCopy");
+                    }
+                    catch (IOException io){
+                        Log.d("ioExceptionFFmpeg", io.getMessage());
+                    }
+                    catch (Exception ex){
+                        Log.d("ExceptionFFmpeg", ex.getMessage());
+                    }
+
                 }
 
                 @Override

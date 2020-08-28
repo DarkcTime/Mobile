@@ -79,7 +79,7 @@
                 <Button
                     style="@style/StyleButtonIconBig2"
                     android:background="@drawable/save"
-                    android:onClick="onClickButtonSaveSettings"
+                    android:onClick="onClickButtonApiStart"
                     android:layout_centerHorizontal="true"/>
             </RelativeLayout>
             <RelativeLayout
