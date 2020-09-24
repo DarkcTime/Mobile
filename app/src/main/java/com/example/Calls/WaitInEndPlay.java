@@ -15,6 +15,7 @@ import com.example.Calls.BackEnd.Api.ApiSpeech;
 import com.example.Calls.BackEnd.Api.FileSpeech;
 import com.example.Calls.BackEnd.Contacts;
 import com.example.Calls.BackEnd.CutterFiles.Cutter;
+import com.example.Calls.BackEnd.CutterFiles.WorkWithFileForCutter;
 import com.example.Calls.BackEnd.FilesWork;
 
 import java.io.File;
@@ -23,13 +24,13 @@ import java.util.List;
 
 public class WaitInEndPlay extends AppCompatActivity {
 
-    TextView textViewProgressWaitEndCutter, textViewProgressWaitEndApi;
+    TextView textViewProgress;
 
-    ProgressBar progressBarWaitEndCutter, progressBarWaitEndApi;
-
-    private Cutter cutter;
+    ProgressBar progressBarTranslate;
 
     private String nameRecord;
+
+    private WorkWithFileForCutter workWithFileForCutter;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -37,16 +38,24 @@ public class WaitInEndPlay extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wait_in_end_play);
 
-        setVariablesForWorkWithFrontend();
+        textViewProgress = findViewById(R.id.textViewProgress);
+        progressBarTranslate = findViewById(R.id.progressBarTranslate);
 
-        setVariablesFromPlay();
 
         try{
+            //get nameRecord
             nameRecord = getIntent().getExtras().getString("nameRecord");
 
-            cutter = Play.getCutter();
+            //get cutter obj
+            Cutter cutter = Play.getCutter();
 
+            //create dirs
+            new WorkWithFileForCutter(nameRecord).createDirsForCutter();
+
+            //cut files in intervals
             cutter.startCutFileIntervals(this);
+
+
         }
         catch (NullPointerException ex){
             Log.d("NullPointWait", ex.getMessage());
@@ -57,22 +66,25 @@ public class WaitInEndPlay extends AppCompatActivity {
 
     }
 
-    private void setVariablesForWorkWithFrontend(){
-        textViewProgressWaitEndCutter = (TextView) findViewById(R.id.textViewProgressWaitEndCutter);
-        textViewProgressWaitEndApi = (TextView) findViewById(R.id.textViewProgressWaitEndApi);
-        progressBarWaitEndCutter = (ProgressBar) findViewById(R.id.progressBarWaitEndCutter);
-        progressBarWaitEndApi = (ProgressBar) findViewById(R.id.progressBarWaitEndApi);
-    }
-
-    private void setVariablesFromPlay(){
+    public void onClickReadyTranslate(View view){
 
     }
 
-    public void setProgressBarWaitEndCutter(String progress){
-        textViewProgressWaitEndApi.setText(progress);
+    public void onClickCancelTranslate(View view){
+
+    }
+
+    public void onClickTestStartApi(View view){
+        FileSpeech.startApiTranslate(nameRecord);
     }
 
 
+    public void setProgressBar(int progressBar){
+        progressBarTranslate.setProgress(progressBar);
+    }
+
+
+    /*
     public void onClickButtonApiStart(View view) {
         Toast.makeText(this, "clickToats", Toast.LENGTH_SHORT).show();
         List<File> listFiles = new ArrayList<File>(FileSpeech.getFiles(FilesWork.getPathForWorkWithApi(nameRecord)));
@@ -92,4 +104,6 @@ public class WaitInEndPlay extends AppCompatActivity {
         }
 
     }
+
+     */
 }

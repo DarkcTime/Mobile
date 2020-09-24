@@ -41,42 +41,21 @@ public class Cutter {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void startCutFileIntervals(Context _context) throws Exception {
 
-        //создание файловой директории для записи
-        getDirForRecord().mkdir();
-
-        //создание файловой директории для сохранения отдельных записей
-        getDirForRecords().mkdir();
-
-        //create dir for work with api
-        Copy.createDirForWorkWithApi(nameRecord);
-
         FFmpegCutter fFmpegCutter = new FFmpegCutter(_context);
 
         fFmpegCutter.executeCommandForCutFileAfterPlay(getFilesForCutter(), FilesWork.getPathForWorkWithApi(nameRecord));
 
     }
 
-    private File getDirForRecord(){
-        return new File(FilesWork.getPathForOnlyRecord(nameRecord));
-    }
-
-    private File getDirForRecords(){
-        return  new File(FilesWork.getPathForListRecord(nameRecord));
-    }
-
-    private File getSourceFile(){
-        return  new File(Records.pathForFindRecords.concat(nameRecord));
-    }
-
-
     private List<FileForCutter> getFilesForCutter(){
+        WorkWithFileForCutter workWithFileForCutter = new WorkWithFileForCutter(nameRecord);
         int i = 0;
         List<FileForCutter> fileForCutterList = new ArrayList<FileForCutter>();
         for (CutterInterval interval : intervalList) {
             int duration = interval.getEnd() - interval.getStart();
-            File targetFile = new File(getDirForRecords().getAbsolutePath().concat("/").concat(String.valueOf(i)).concat(".mp3"));
+            File targetFile = new File(workWithFileForCutter.getDirForRecords().getAbsolutePath().concat("/").concat(String.valueOf(i)).concat(".mp3"));
             Log.d("targetFile", targetFile.getAbsolutePath());
-            FileForCutter fileForCutter = new FileForCutter(interval.getStart(),duration, getSourceFile(),targetFile);
+            FileForCutter fileForCutter = new FileForCutter(interval.getStart(),duration, workWithFileForCutter.getSourceFile(),targetFile);
             fileForCutterList.add(fileForCutter);
             i++;
         }

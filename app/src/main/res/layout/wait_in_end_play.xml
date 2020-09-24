@@ -1,98 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="57dp"
+        tools:layout_editor_absoluteY="127dp">
+
+        <ProgressBar
+            android:id="@+id/progressBarTranslate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:layout_marginBottom="30dp" />
+
+        <TextView
+            android:id="@+id/textViewProgress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerInParent="true">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_centerInParent="true"
-                    android:text="Выделение слов \n собеседника"/>
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <ProgressBar
-                    android:layout_width="250dp"
-                    android:layout_height="150dp"
-                    android:layout_centerInParent="true"
-                    android:id="@+id/progressBarWaitEndCutter"/>
-                <TextView
-                android:id="@+id/textViewProgressWaitEndCutter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_centerInParent="true"
-                    android:text="Перевод слов в текст"/>
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <ProgressBar
-                    android:layout_width="250dp"
-                    android:layout_height="150dp"
-                    android:layout_centerInParent="true"
-                    android:id="@+id/progressBarWaitEndApi"/>
-                <TextView
-                    android:id="@+id/textViewProgressWaitEndApi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"/>
-            </RelativeLayout>
-        </LinearLayout>
+            android:layout_centerInParent="true" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginBottom="@dimen/size_help"
-            android:orientation="horizontal"
+            android:layout_height="100dp"
             android:layout_alignParentBottom="true"
-            >
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-                <Button
-                    style="@style/StyleButtonIconBig2"
-                    android:background="@drawable/save"
-                    android:onClick="onClickButtonApiStart"
-                    android:layout_centerHorizontal="true"/>
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-                <Button
-                    style="@style/StyleButtonIconBig2"
-                    android:background="@drawable/cancel"
-                    android:onClick="onClickCancelSaveSettings"
-                    android:layout_centerHorizontal="true"/>
-            </RelativeLayout>
+            android:layout_margin="20dp"
+            android:layout_marginBottom="@dimen/size_help"
+            android:orientation="vertical">
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:onClick="onClickTestStartApi"
+                android:text="test" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:onClick="onClickReadyTranslate"
+                android:text="@string/ready" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:onClick="onClickCancelTranslate"
+                android:text="@string/cancel" />
 
         </LinearLayout>
     </RelativeLayout>

@@ -22,8 +22,12 @@ import java.util.List;
 public class FileSpeech {
 
 
+
+    private static String nameRecord;
+
     /**
      * Метод для записи в файл
+     *
      * @param path Путь к файлу
      * @param data Данные для записи
      * @throws IOException
@@ -41,12 +45,13 @@ public class FileSpeech {
 
     /**
      * Чтение файла
+     *
      * @param file путь к файлу
      * @return Возврат текста содержащегося в файле
      * @throws IOException
      */
     protected static String ReadFile(File file) throws IOException {
-        if (file.exists()){
+        if (file.exists()) {
             int length = (int) file.length();
             byte[] bytes = new byte[length];
             FileInputStream in = new FileInputStream(file);
@@ -58,17 +63,14 @@ public class FileSpeech {
                 in.close();
             }
             return new String(bytes);
-        }
-        else {
+        } else {
             return null;
         }
     }
 
-
-    //выдает список файлов для xiaomi
     //TODO переписать метод для получения .mp и .txt
-    public static List<File> getFiles(String currentPath){
-        File directory = new File(currentPath);
+    public static List<File> getFilesRecordsForApi() {
+        File directory = new File(FilesWork.getPathForOnlyRecord(nameRecord).concat("/api/"));
         String ext = ".mp3";
         List<File> fileList = Arrays.asList(directory.listFiles(new Records.MyFileNameFilter(ext)));
         Collections.sort(fileList, new Comparator<File>() {
@@ -83,7 +85,32 @@ public class FileSpeech {
             }
         });
         return fileList;
+    }
 
+    //TODO decomposition func
+    public static void startApiTranslate(String _nameRecord){
+        //TODO catch error
+        if(_nameRecord.isEmpty()) return;
+
+        nameRecord = _nameRecord;
+
+        List<File> records = getFilesRecordsForApi();
+
+        try{
+
+            ApiSpeech api = new ApiSpeech();
+
+            for (File rec : records){
+                api.SpeechToText(rec.getAbsolutePath(),
+                        new Contacts(),
+                        Integer.valueOf(rec.getName()),
+                        FilesWork.getPathForOnlyRecord(nameRecord).concat("/api/"));
+            }
+
+        }
+        catch (Exception ex){
+            Log.d("ExceptionStartApi", ex.getMessage());
+        }
     }
 
     //write result files in .txt files
@@ -94,7 +121,7 @@ public class FileSpeech {
 
         Log.d("pathWriteAfterApi", path);
 
-       // String fullContent = content;
+        // String fullContent = content;
 
         File inputStream = new File(path);
 
@@ -102,17 +129,19 @@ public class FileSpeech {
 
         Log.d("content", content);
 
-        WriteFile(path,content.getBytes());
+        WriteFile(path, content.getBytes());
     }
 
 
     //зачем?
+
     /**
      * Получение длины аудио
+     *
      * @param path Путь к аудио
      * @return Длина аудио
      */
-    public static int getLengthAudio(String path){
+    public static int getLengthAudio(String path) {
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         mmr.setDataSource(path);
         String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);

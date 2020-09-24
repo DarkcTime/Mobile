@@ -82,5 +82,7 @@
     <string name="rewindTime">Время перемотки записи:</string>
     <string name="pauseTime">Время включения паузы\nпосле отпускания:</string>
     <string name="stopGame">Завершить</string>
+    <string name="ready">Готово</string>
+
 </resources>
 

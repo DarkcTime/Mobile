@@ -32,37 +32,35 @@ public class FFmpegCutter {
 
     //object activity
     private Context context;
+
     //load FFMpeg library
-    public FFmpegCutter(Context _context){
-        try{
-            if(isNullContext(_context)) loadFFMpegBinary();
-        }
-        catch (FFmpegNotSupportedException ex){
+    public FFmpegCutter(Context _context) {
+        try {
+            if (isNullContext(_context)) loadFFMpegBinary();
+        } catch (FFmpegNotSupportedException ex) {
             Log.d("FFmpegNotSupportedEx", ex.getMessage());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             Log.d("FFmpegCutterException", ex.getMessage());
         }
 
     }
 
-    private boolean isNullContext(Context _context){
-        if(_context != null){
+    private boolean isNullContext(Context _context) {
+        if (_context != null) {
             context = _context;
             return true;
-        }
-        else{
+        } else {
             Log.d("FFmpegContext", "contextNull");
             return false;
         }
     }
 
     private void loadFFMpegBinary() throws FFmpegNotSupportedException {
-        if(ffmpeg == null){
+        if (ffmpeg == null) {
             ffmpeg = FFmpeg.getInstance(context);
         }
 
-        ffmpeg.loadBinary(new LoadBinaryResponseHandler(){
+        ffmpeg.loadBinary(new LoadBinaryResponseHandler() {
             @Override
             public void onFailure() {
                 Log.d("loadBinary", "failure");
@@ -76,30 +74,27 @@ public class FFmpegCutter {
         });
     }
 
-    public void executeCommandForCutFileAfterPlay(List<FileForCutter> filesForCutter, String _pathForCopy){
-        for(FileForCutter file : filesForCutter){
-            try{
+    public void executeCommandForCutFileAfterPlay(List<FileForCutter> filesForCutter, String _pathForCopy) {
+        for (FileForCutter file : filesForCutter) {
+            try {
                 File sourceFile = new File(file.getDestination().getAbsolutePath());
                 File copyFile = new File(getTargetFileForCopy(_pathForCopy, file.getDestination().getName()).getAbsolutePath());
                 executeFFMpegCommand(getCommand(file), sourceFile, copyFile);
-            }
-            catch (FFmpegCommandAlreadyRunningException ex){
+            } catch (FFmpegCommandAlreadyRunningException ex) {
                 Log.d("FFAlreadyRunningEx", ex.getMessage());
-            }
-            catch (Exception ex){
+            } catch (Exception ex) {
                 Log.d("ExecuteFFMpegException", ex.getMessage());
             }
 
         }
     }
 
-    private File getTargetFileForCopy(String _pathForCopy,String fileName){
+    private File getTargetFileForCopy(String _pathForCopy, String fileName) {
         return new File(_pathForCopy.concat(fileName));
     }
 
 
-
-    private String[] getCommand(FileForCutter fileForCutter){
+    private String[] getCommand(FileForCutter fileForCutter) {
         String intent = "-i ".concat(fileForCutter.getSource().getAbsolutePath()).concat(" ");
         String start = "-ss ".concat(String.valueOf(fileForCutter.getStart())).concat(" ");
         String duration = "-t ".concat(String.valueOf(fileForCutter.getDuration())).concat(" ");
@@ -109,48 +104,50 @@ public class FFmpegCutter {
     }
 
     private void executeFFMpegCommand(String[] command, final File sourceFile, final File copyFile) throws FFmpegCommandAlreadyRunningException {
-            ffmpeg.execute(command, new ExecuteBinaryResponseHandler(){
-                @Override
-                public void onFailure(String message) {
-                    Log.d("onFailure", message);
+        final WaitInEndPlay waitInEndPlay = (WaitInEndPlay) context;
+        ffmpeg.execute(command, new ExecuteBinaryResponseHandler() {
+            @Override
+            public void onFailure(String message) {
+                Log.d("onFailure", message);
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onSuccess(String message) {
+                Toast.makeText(context, "Записи успешно переведены", Toast.LENGTH_SHORT).show();
+
+
+                waitInEndPlay.setProgressBar(60);
+
+                Log.d("onSuccess", message.toString());
+
+                try {
+                    //copy files in dir for work with Api
+                    WorkWithFileForCutter.CopyFile(sourceFile, copyFile);
+                    Log.d("Copy", "FileCopy");
+                } catch (IOException io) {
+                    Log.d("ioExceptionFFmpeg", io.getMessage());
+                } catch (Exception ex) {
+                    Log.d("ExceptionFFmpeg", ex.getMessage());
                 }
 
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public void onSuccess(String message) {
-                    Toast.makeText(context, "Записи успешно переведены", Toast.LENGTH_SHORT).show();
-                    WaitInEndPlay waitInEndPlay = (WaitInEndPlay) context;
-                    waitInEndPlay.setProgressBarWaitEndCutter("успех");
-                    Log.d("onSuccess", message.toString());
+            }
 
-                    try{
-                        Copy.CopyFile(sourceFile, copyFile);
-                        Log.d("Copy", "FileCopy");
-                    }
-                    catch (IOException io){
-                        Log.d("ioExceptionFFmpeg", io.getMessage());
-                    }
-                    catch (Exception ex){
-                        Log.d("ExceptionFFmpeg", ex.getMessage());
-                    }
+            @Override
+            public void onProgress(String message) {
+                waitInEndPlay.setProgressBar(25);
+            }
 
-                }
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
 
-                @Override
-                public void onProgress(String message) {
-                    Log.d("onProgress", message);
-                }
-
-                @Override
-                public void onStart() {
-                    super.onStart();
-                }
-
-                @Override
-                public void onFinish() {
-                    super.onFinish();
-                }
-            });
+            @Override
+            public void onFinish() {
+                super.onFinish();
+            }
+        });
 
     }
 
