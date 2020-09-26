@@ -4,6 +4,7 @@ import android.media.MediaMetadataRetriever;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.Calls.BackEnd.Contacts;
 import com.example.Calls.BackEnd.FilesWork;
@@ -95,6 +96,11 @@ public class FileSpeech {
         nameRecord = _nameRecord;
 
         List<File> records = getFilesRecordsForApi();
+
+        //TODO test
+        if(records.size() == 0){
+            int f = 9/0;
+        }
 
         try{
 

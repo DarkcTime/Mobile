@@ -3,41 +3,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_margin="10dp"
-    >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_alignParentTop="true"
             android:orientation="horizontal">
+
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
+
                 <Button
                     style="@style/StyleButtonIconBig"
-                    android:background="@drawable/que"
                     android:layout_centerInParent="true"
+                    android:background="@drawable/que"
                     android:onClick="onCLickButtonHelp">
 
                 </Button>
 
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
+
                 <Button
                     style="@style/StyleButtonIconBig"
-                    android:background="@drawable/ser"
                     android:layout_centerInParent="true"
+                    android:background="@drawable/ser"
                     android:onClick="onCLickButtonSettings">
 
                 </Button>
@@ -48,10 +50,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="90dp">
+
             <ListView
+                android:id="@+id/listViewContactsMA"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/listViewContactsMA">
+                android:layout_height="match_parent">
 
             </ListView>
         </LinearLayout>

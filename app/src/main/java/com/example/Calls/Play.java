@@ -131,9 +131,6 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
         linerMedia = "";
 
-        progressTextView = (ProgressTextView) findViewById(R.id.progressTextView);
-
-        progressTextView.setValue(5000);
 
         textViewSelectedRecPlay.setText("Выбранная запись: ".concat(nameRecord));
 
@@ -228,7 +225,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 {
                     updateGame();
                     levelGame--;
-                    progressTextView.setValue(levelGame);
+                    
 
                     //add interval media
                     if(!hearing){

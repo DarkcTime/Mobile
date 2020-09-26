@@ -56,6 +56,7 @@ public class WaitInEndPlay extends AppCompatActivity {
             cutter.startCutFileIntervals(this);
 
 
+
         }
         catch (NullPointerException ex){
             Log.d("NullPointWait", ex.getMessage());
@@ -84,26 +85,5 @@ public class WaitInEndPlay extends AppCompatActivity {
     }
 
 
-    /*
-    public void onClickButtonApiStart(View view) {
-        Toast.makeText(this, "clickToats", Toast.LENGTH_SHORT).show();
-        List<File> listFiles = new ArrayList<File>(FileSpeech.getFiles(FilesWork.getPathForWorkWithApi(nameRecord)));
-        Log.d("pathApi", FilesWork.getPathForWorkWithApi(nameRecord));
-        Log.d("listFiles", String.valueOf(listFiles.size()));
-        try{
-            ApiSpeech api = new ApiSpeech();
 
-            int i = 0;
-            for(File file : listFiles){
-                api.SpeechToText(file.getAbsolutePath(), new Contacts(),i, FilesWork.getPathForWorkWithApi(nameRecord));
-                i++;
-            }
-        }
-        catch (Exception ex){
-            Log.d("api", ex.getMessage());
-        }
-
-    }
-
-     */
 }
