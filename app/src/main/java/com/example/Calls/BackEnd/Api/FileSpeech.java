@@ -1,12 +1,11 @@
 package com.example.Calls.BackEnd.Api;
 
 import android.media.MediaMetadataRetriever;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.Calls.BackEnd.Contacts;
+import com.example.Calls.BackEnd.CutterFiles.WorkWithFileForCutter;
 import com.example.Calls.BackEnd.FilesWork;
 import com.example.Calls.BackEnd.Records;
 import com.example.Calls.BackEnd.SharedVariables;
@@ -22,26 +21,19 @@ import java.util.List;
  */
 public class FileSpeech {
 
-
-
     private static String nameRecord;
 
     /**
      * Метод для записи в файл
      *
      * @param path Путь к файлу
-     * @param data Данные для записи
+     * @param str Данные для записи
      * @throws IOException
      */
-    protected static void WriteFile(String path, byte[] data) throws IOException {
-        FileOutputStream stream = new FileOutputStream(path);
-        try {
-            stream.write(data);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            stream.close();
-        }
+    public static void WriteFile(String path, String str) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+        writer.write(str);
+        writer.close();
     }
 
     /**
@@ -69,10 +61,26 @@ public class FileSpeech {
         }
     }
 
-    //TODO переписать метод для получения .mp и .txt
-    public static List<File> getFilesRecordsForApi() {
-        File directory = new File(FilesWork.getPathForOnlyRecord(nameRecord).concat("/api/"));
-        String ext = ".mp3";
+    //TODO rewrite method
+    public static void WriteFullFile() throws IOException{
+        WorkWithFileForCutter workWithFileForCutter = new WorkWithFileForCutter(nameRecord);
+
+        for (File file : getFiles(FilesWork.getPathForOnlyRecord(nameRecord).concat("/api/"), ".txt")){
+            WriteFileAddData(workWithFileForCutter.getDirForRecord().getAbsolutePath().concat("/result.txt"), ReadFile(file));
+        }
+
+    }
+
+    private static void WriteFileAddData(String targetFilePath, String str) throws IOException{
+        BufferedWriter writer = new BufferedWriter(new FileWriter(targetFilePath,true));
+        writer.write(str);
+        writer.close();
+    }
+
+
+
+    private static List<File> getFiles(String path, String ext) throws IOException{
+        File directory = new File(path);
         List<File> fileList = Arrays.asList(directory.listFiles(new Records.MyFileNameFilter(ext)));
         Collections.sort(fileList, new Comparator<File>() {
             @Override
@@ -88,29 +96,24 @@ public class FileSpeech {
         return fileList;
     }
 
+
+
     //TODO decomposition func
-    public static void startApiTranslate(String _nameRecord){
+    public static void startApiTranslate(String _nameRecord) throws IOException{
         //TODO catch error
         if(_nameRecord.isEmpty()) return;
 
         nameRecord = _nameRecord;
 
-        List<File> records = getFilesRecordsForApi();
-
-        //TODO test
-        if(records.size() == 0){
-            int f = 9/0;
-        }
+        List<File> records = getFiles(FilesWork.getPathForOnlyRecord(nameRecord).concat("/api/"), ".mp3");
 
         try{
 
             ApiSpeech api = new ApiSpeech();
 
             for (File rec : records){
-                api.SpeechToText(rec.getAbsolutePath(),
-                        new Contacts(),
-                        Integer.valueOf(rec.getName()),
-                        FilesWork.getPathForOnlyRecord(nameRecord).concat("/api/"));
+                Log.d("SpeechToText", rec.getAbsolutePath());
+                api.SpeechToText(rec.getAbsolutePath());
             }
 
         }
@@ -119,6 +122,7 @@ public class FileSpeech {
         }
     }
 
+    //TODO to rewrite the method
     //write result files in .txt files
     public static void WriteFileOnSpeech(Contacts contact, String content, int stage, String pathRecord, String pathDir) throws IOException {
         //путь с файлами
@@ -135,8 +139,11 @@ public class FileSpeech {
 
         Log.d("content", content);
 
-        WriteFile(path, content.getBytes());
+        WriteFile(path, content);
     }
+
+
+
 
 
     //зачем?

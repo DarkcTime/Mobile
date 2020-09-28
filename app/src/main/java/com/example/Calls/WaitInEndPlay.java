@@ -38,7 +38,7 @@ public class WaitInEndPlay extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wait_in_end_play);
 
-        textViewProgress = findViewById(R.id.textViewProgress);
+        //textViewProgress = findViewById(R.id.textViewProgress);
         progressBarTranslate = findViewById(R.id.progressBarTranslate);
 
 
@@ -79,6 +79,9 @@ public class WaitInEndPlay extends AppCompatActivity {
         FileSpeech.startApiTranslate(nameRecord);
     }
 
+    public void onClickTestFullApi(View view) throws Exception{
+        FileSpeech.WriteFullFile();
+    }
 
     public void setProgressBar(int progressBar){
         progressBarTranslate.setProgress(progressBar);

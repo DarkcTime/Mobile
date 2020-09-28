@@ -43,14 +43,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"></TextView>
 
-            <com.example.Calls.ProgressTextView
-                android:id="@+id/progressTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background"
-                android:gravity="center">
-
-            </com.example.Calls.ProgressTextView>
 
             <LinearLayout
                 android:layout_width="match_parent"

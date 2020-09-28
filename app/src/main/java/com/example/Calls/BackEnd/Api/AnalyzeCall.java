@@ -118,23 +118,6 @@ public class AnalyzeCall{
 
     }
 
-
-
-
-    /**
-     * Запись сумарного времени разговора
-     * @param contact Контакт по времени
-     * @param LengthOne Длина разговора
-     * @throws IOException
-     */
-    public static void WriteAllLengthCalls(Contacts contact, int LengthOne) throws IOException {
-        String path = "/data/data/com.example.Calls/cache/"+contact.getPhoneNumberCurrentContact()+"length.txt";
-        File file = new File(path);
-        int fullContent = LengthOne;
-        if (file.exists()) fullContent = GetAllLengthCalls(contact) + LengthOne;
-        WriteFile(path,String.valueOf(fullContent).getBytes());
-    }
-
     /**
      * Получить сохраненную длину всех разгворов
      * @param contact Контакт у которого нужно узнать время

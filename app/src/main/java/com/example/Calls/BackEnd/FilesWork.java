@@ -26,7 +26,7 @@ public class FilesWork {
     }
 
     public static String getPathForOnlyRecord(String nameRecord){
-        return getPathForSelectedUser().concat("/").concat(nameRecord.replace(".mp3", ""));
+        return getPathForSelectedUser().concat("/").concat(nameRecord.replace(".mp3", "").concat("/"));
     }
 
     public static String getPathForListRecord(String nameRecord){

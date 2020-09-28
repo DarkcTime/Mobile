@@ -84,9 +84,6 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     private static int levelGame = 5000;
 
-    ProgressTextView progressTextView;
-
-
     private static Cutter cutter;
 
     public static Cutter getCutter(){
@@ -225,7 +222,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 {
                     updateGame();
                     levelGame--;
-                    
+
 
                     //add interval media
                     if(!hearing){
@@ -246,7 +243,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 {
                     updateGame();
                     levelGame++;
-                    progressTextView.setValue(levelGame);
+                    //progressTextView.setValue(levelGame);
                     //stop interval media
                     if(hearing){
                         cutter.StopInterval(AnalyzeCall.getCurrentPositionSec(mp));

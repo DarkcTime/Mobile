@@ -17,6 +17,11 @@
             android:layout_margin="20dp"
             android:layout_marginBottom="30dp" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="fullapi"
+            android:onClick="onClickTestFullApi"/>
 
 
         <LinearLayout
@@ -27,11 +32,6 @@
             android:layout_marginBottom="@dimen/size_help"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textViewProgress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true" />
 
             <Button
                 android:layout_width="match_parent"

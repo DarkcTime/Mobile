@@ -73,16 +73,15 @@ public class ApiSpeech extends FileSpeech{
      * @param key key
      */
     private void setKey(String key) throws IOException {
-        WriteFile(pathForSaveKeyApi,key.getBytes());
+        WriteFile(pathForSaveKeyApi,key);
         this.key = key;
     }
 
     /**
      * parsing json answer
-     * @param path путь к файлу для сохранения
-     * @param contact контакт к которому прикрепляется ответ
+     * @param path путь к выбранной записи
      */
-    private void ReturnText(final String path, final Contacts contact, final int stage, final String pathDir){
+    private void ReturnText(final String path){
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -96,10 +95,12 @@ public class ApiSpeech extends FileSpeech{
 
                         if (key.equals("text")) {
                             String str = jsonReader.nextString();
-                            Log.d("ApiSpeech", "WriteFile");
-                            Log.d("ApiSpeech", str);
-                            FileSpeech.WriteFileOnSpeech(contact,str,stage,path,pathDir);
-                            log.info(str);
+                            Log.d("ApiSpeechText", str);
+
+
+                            //write data in file
+                            FileSpeech.WriteFile(path.concat(".txt"),str);
+
                             break;
                         } else {
                             Log.d("ApiSpeech", "key.noequals");
@@ -185,13 +186,18 @@ public class ApiSpeech extends FileSpeech{
         return myConnection;
     }
 
+
+    //TODO rewrite method
     /**
      * Перевод слов в текст
      * @param pathSelectRecord путь к файлу записи разговора
      * @param contact контакт запись которого необходимо сохранить
      * @throws IOException
      */
-    public void SpeechToText(String pathSelectRecord, Contacts contact, int stage, String pathDir) throws IOException {
+    public void SpeechToText(String pathSelectRecord) throws IOException {
+
+        Log.d("SpeechToText", pathSelectRecord);
+
         int Length = FileSpeech.getLengthAudio(pathSelectRecord)/1000;
         int count;
         //String pathCut = "/data/data/com.example.Calls/BackEnd/CheapSound";
@@ -204,7 +210,9 @@ public class ApiSpeech extends FileSpeech{
                 log.info("file cutter");
                 FileCutter(pathSelectRecord,i, StartValue,String.valueOf(i));
                 log.info("return cutter");
-                ReturnText(pathCut+ i + ".mp3",contact,stage, pathDir);
+
+
+                ReturnText(pathCut+ i + ".mp3");
             }
 
             int finalStart = count * 19;
@@ -212,13 +220,15 @@ public class ApiSpeech extends FileSpeech{
 
             if (finalStart != Length){
                 FileCutter(pathSelectRecord, finalStart,Length,String.valueOf(finalStart));
-                ReturnText(pathCut+ finalStart +".mp3",contact,stage, pathDir);
+
+                ReturnText(pathCut+ finalStart +".mp3");
             }
 
         }
         else {
             log.info("api sheech");
-            new ApiSpeech().ReturnText(pathSelectRecord,contact,stage, pathDir);
+
+            new ApiSpeech().ReturnText(pathSelectRecord);
         }
     }
 
