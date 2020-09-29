@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager manager = getSupportFragmentManager();
         MyDialogHelp.getButton = numButton;
         //MyDialogHelp.setContextMain(this);
-        MyDialogHelp myDialogHelp = new MyDialogHelp(this);
+        MyDialogHelp myDialogHelp = new MyDialogHelp(this,3);
         myDialogHelp.show(manager, "myDialog");
     }
 

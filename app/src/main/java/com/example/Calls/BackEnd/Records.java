@@ -34,8 +34,18 @@ public class Records {
 
     private static FilesWork filesWork = new FilesWork();
 
-
     final public static String pathFileFilterRecords = "/data/data/com.example.Calls/cache/trRecord";
+
+    private static String NameSelectedRecord;
+
+    public static String getNameSelectedRecord(){
+        return NameSelectedRecord;
+    }
+
+    public static void setNameSelectedRecord(String _nameRecord){
+        NameSelectedRecord = _nameRecord;
+    }
+
 
     //выдает список файлов для xiaomi
     public static List<File> getFiles(String currentPath){
@@ -60,10 +70,6 @@ public class Records {
     public static boolean checkPath(String str){
         File file = new File(str);
         return file.exists();
-    }
-
-    public  Records(){
-
     }
 
     public static void resetFile(String phone){
@@ -208,6 +214,7 @@ public class Records {
         public MyFileNameFilter(String ext){
             this.ext = ext.toLowerCase();
         }
+
         @Override
         public boolean accept(File dir, String name) {
             return name.toLowerCase().endsWith(ext);

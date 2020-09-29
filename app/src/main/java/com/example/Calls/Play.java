@@ -91,7 +91,6 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     }
 
 
-
     //endregion
 
     @SuppressLint("ClickableViewAccessibility")
@@ -120,7 +119,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         buttonExit.setVisibility(View.GONE);
 
         //get Name Selected Record
-        nameRecord = nameRecordStatic;
+        nameRecord = Records.getNameSelectedRecord();
 
         pathRecord = Records.pathForFindRecords + nameRecord;
 

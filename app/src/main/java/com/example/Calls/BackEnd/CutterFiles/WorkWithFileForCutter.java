@@ -4,6 +4,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import com.example.Calls.BackEnd.FileSystemParameters;
 import com.example.Calls.BackEnd.FilesWork;
 import com.example.Calls.BackEnd.Records;
 
@@ -22,7 +23,7 @@ public class WorkWithFileForCutter {
     public void createDirsForCutter(){
 
         try{
-            getDirForRecord().mkdir();
+            new File(FileSystemParameters.getPathForSelectedRecord(nameRecord)).mkdir();
             getDirForRecords().mkdir();
             createDirForWorkWithApi();
         }
@@ -32,7 +33,8 @@ public class WorkWithFileForCutter {
 
     }
 
-    public File getDirForRecord(){
+
+    public File getPathDirSelectedRecord(String nameRecord){
         return new File(FilesWork.getPathForOnlyRecord(nameRecord));
     }
 
@@ -43,7 +45,6 @@ public class WorkWithFileForCutter {
     public File getSourceFile(){
         return  new File(Records.pathForFindRecords.concat(nameRecord));
     }
-
 
 
     private void createDirForWorkWithApi() throws IOException {

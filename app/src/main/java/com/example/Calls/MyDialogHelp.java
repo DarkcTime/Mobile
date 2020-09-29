@@ -8,13 +8,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.Toast;
 
 import android.support.v7.app.AppCompatDialogFragment;
 
+import com.example.Calls.BackEnd.FileSystem;
+import com.example.Calls.BackEnd.FileSystemParameters;
 import com.example.Calls.BackEnd.SharedVariables;
 
+import java.io.IOException;
+
 public class MyDialogHelp extends AppCompatDialogFragment{
+
+    //TODO refactor getButton!
 
     private static String ClickResultMain = "";
 
@@ -30,9 +37,18 @@ public class MyDialogHelp extends AppCompatDialogFragment{
 
     private MainActivity context;
 
+    private WaitInEndPlay contextWaitEndPlay;
+
     @SuppressLint("ValidFragment")
-    public MyDialogHelp(MainActivity _context){
+    public MyDialogHelp(MainActivity _context,int _getButton){
         context = _context;
+        getButton = _getButton;
+    }
+
+    @SuppressLint("ValidFragment")
+    public MyDialogHelp(WaitInEndPlay _context,int _getButton){
+        contextWaitEndPlay = _context;
+        getButton = _getButton;
     }
 
     public MyDialogHelp(){
@@ -116,10 +132,29 @@ public class MyDialogHelp extends AppCompatDialogFragment{
                                 context.finish();
                             }
                         });
-
+            case 4:
+                try{
+                    builder.setTitle("Результат текста полученный в данной записи")
+                            .setMessage(contextWaitEndPlay.getApiMain().readFullFileSelectedRecord())
+                            .setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            })
+                            .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                }
+                catch (IOException ioe)
+                {
+                    Log.d("MyDialogHelpEx", ioe.getMessage());
+                }
 
         }
-
 
         return builder.create();
     }

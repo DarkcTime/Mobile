@@ -5,8 +5,6 @@ package com.example.Calls.BackEnd;
 //прости меня господи за этот класс
 public class Contacts {
 
-
-
     public static String informationAboutUser = "";
 
     private String nameCurrentContact, phoneNumberCurrentContact;

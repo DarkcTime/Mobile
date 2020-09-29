@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.Calls.BackEnd.Api.FileSpeech;
+import com.example.Calls.BackEnd.Record.RecordProcessing;
 import com.example.Calls.WaitInEndPlay;
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
@@ -75,6 +76,9 @@ public class FFmpegCutter {
     }
 
     public void executeCommandForCutFileAfterPlay(List<FileForCutter> filesForCutter, String _pathForCopy) {
+
+        RecordProcessing.setMaxDurationProcessing(filesForCutter.size());
+
         for (FileForCutter file : filesForCutter) {
             try {
                 File sourceFile = new File(file.getDestination().getAbsolutePath());
@@ -116,15 +120,13 @@ public class FFmpegCutter {
             public void onSuccess(String message) {
                 Toast.makeText(context, "Записи успешно переведены", Toast.LENGTH_SHORT).show();
 
-
-                waitInEndPlay.setProgressBar(60);
-
-                Log.d("onSuccess", message.toString());
-
                 try {
                     //copy files in dir for work with Api
                     WorkWithFileForCutter.CopyFile(sourceFile, copyFile);
                     Log.d("Copy", "FileCopy");
+                    //set Text View Duration
+                    RecordProcessing.changeDurationProcessingAndStartApi();
+
                 } catch (IOException io) {
                     Log.d("ioExceptionFFmpeg", io.getMessage());
                 } catch (Exception ex) {

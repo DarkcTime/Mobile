@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
 import com.example.Calls.BackEnd.Contacts;
+import com.example.Calls.BackEnd.FileSystem;
 import com.example.Calls.BackEnd.SharedVariables;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -73,7 +74,7 @@ public class ApiSpeech extends FileSpeech{
      * @param key key
      */
     private void setKey(String key) throws IOException {
-        WriteFile(pathForSaveKeyApi,key);
+        FileSystem.WriteFile(pathForSaveKeyApi,key,false);
         this.key = key;
     }
 
@@ -99,7 +100,7 @@ public class ApiSpeech extends FileSpeech{
 
 
                             //write data in file
-                            FileSpeech.WriteFile(path.concat(".txt"),str);
+                            FileSystem.WriteFile(path.concat(".txt"),str,false);
 
                             break;
                         } else {
@@ -191,7 +192,6 @@ public class ApiSpeech extends FileSpeech{
     /**
      * Перевод слов в текст
      * @param pathSelectRecord путь к файлу записи разговора
-     * @param contact контакт запись которого необходимо сохранить
      * @throws IOException
      */
     public void SpeechToText(String pathSelectRecord) throws IOException {

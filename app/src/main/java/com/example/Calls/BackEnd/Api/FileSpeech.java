@@ -21,20 +21,22 @@ import java.util.List;
  */
 public class FileSpeech {
 
-    private static String nameRecord;
+
 
     /**
      * Метод для записи в файл
      *
      * @param path Путь к файлу
      * @param str Данные для записи
+     * @param append Создавать новый файл, или дописывать в текущий
      * @throws IOException
      */
-    public static void WriteFile(String path, String str) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+    public static void WriteFile(String path, String str, boolean append) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(path, append));
         writer.write(str);
         writer.close();
     }
+
 
     /**
      * Чтение файла
@@ -61,25 +63,10 @@ public class FileSpeech {
         }
     }
 
-    //TODO rewrite method
-    public static void WriteFullFile() throws IOException{
-        WorkWithFileForCutter workWithFileForCutter = new WorkWithFileForCutter(nameRecord);
-
-        for (File file : getFiles(FilesWork.getPathForOnlyRecord(nameRecord).concat("/api/"), ".txt")){
-            WriteFileAddData(workWithFileForCutter.getDirForRecord().getAbsolutePath().concat("/result.txt"), ReadFile(file));
-        }
-
-    }
-
-    private static void WriteFileAddData(String targetFilePath, String str) throws IOException{
-        BufferedWriter writer = new BufferedWriter(new FileWriter(targetFilePath,true));
-        writer.write(str);
-        writer.close();
-    }
 
 
 
-    private static List<File> getFiles(String path, String ext) throws IOException{
+    protected static List<File> getFiles(String path, String ext) throws IOException{
         File directory = new File(path);
         List<File> fileList = Arrays.asList(directory.listFiles(new Records.MyFileNameFilter(ext)));
         Collections.sort(fileList, new Comparator<File>() {
@@ -96,56 +83,6 @@ public class FileSpeech {
         return fileList;
     }
 
-
-
-    //TODO decomposition func
-    public static void startApiTranslate(String _nameRecord) throws IOException{
-        //TODO catch error
-        if(_nameRecord.isEmpty()) return;
-
-        nameRecord = _nameRecord;
-
-        List<File> records = getFiles(FilesWork.getPathForOnlyRecord(nameRecord).concat("/api/"), ".mp3");
-
-        try{
-
-            ApiSpeech api = new ApiSpeech();
-
-            for (File rec : records){
-                Log.d("SpeechToText", rec.getAbsolutePath());
-                api.SpeechToText(rec.getAbsolutePath());
-            }
-
-        }
-        catch (Exception ex){
-            Log.d("ExceptionStartApi", ex.getMessage());
-        }
-    }
-
-    //TODO to rewrite the method
-    //write result files in .txt files
-    public static void WriteFileOnSpeech(Contacts contact, String content, int stage, String pathRecord, String pathDir) throws IOException {
-        //путь с файлами
-        String file = String.valueOf(stage).concat(".mp3.txt");
-        String path = pathDir.concat(file);
-
-        Log.d("pathWriteAfterApi", path);
-
-        // String fullContent = content;
-
-        File inputStream = new File(path);
-
-        //if (inputStream.exists()) fullContent = ReadFileSpeech(contact) + "\n" + content;
-
-        Log.d("content", content);
-
-        WriteFile(path, content);
-    }
-
-
-
-
-
     //зачем?
 
     /**
@@ -161,23 +98,6 @@ public class FileSpeech {
         return Integer.parseInt(durationStr);
     }
 
-    /**
-     * Чтение полного файла разговра.
-     * @param contact Конткакт у которого необходимо прочитать файл разгвора
-     * @return текст файла разговора
-     * @throws IOException
-     * file = path + phoneNumber + one + .txt
-     */
-    /*
-    public static String ReadFileSpeech(Contacts contact) throws IOException {
-        String path = FilesWork.getPathForSelectedUser() + "/result.txt";
-        File file = new File(path);
-        if(!file.exists())
-            WriteFileOnSpeech(contact,"");
-        return ReadFile(file);
-    }
-
-     */
 
 }
 

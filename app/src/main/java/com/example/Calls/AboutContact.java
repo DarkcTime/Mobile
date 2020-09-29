@@ -64,7 +64,8 @@ public class AboutContact extends AppCompatActivity {
 
     public void startGame(String nameRecord){
         Intent play = new Intent(AboutContact.this, Play.class);
-        Play.nameRecordStatic = nameRecord;
+        //set NameSelectedRecordForApp
+        Records.setNameSelectedRecord(nameRecord);
         startActivity(play);
     }
 
