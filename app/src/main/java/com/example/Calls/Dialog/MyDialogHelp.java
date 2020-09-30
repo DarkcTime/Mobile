@@ -1,4 +1,4 @@
-package com.example.Calls;
+package com.example.Calls.Dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -16,6 +16,9 @@ import android.support.v7.app.AppCompatDialogFragment;
 import com.example.Calls.BackEnd.FileSystem;
 import com.example.Calls.BackEnd.FileSystemParameters;
 import com.example.Calls.BackEnd.SharedVariables;
+import com.example.Calls.MainActivity;
+import com.example.Calls.R;
+import com.example.Calls.WaitInEndPlay;
 
 import java.io.IOException;
 

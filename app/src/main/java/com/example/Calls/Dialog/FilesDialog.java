@@ -1,4 +1,4 @@
-package com.example.Calls;
+package com.example.Calls.Dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 
+import com.example.Calls.AboutContact;
 import com.example.Calls.BackEnd.Contacts;
 import com.example.Calls.BackEnd.Records;
 

@@ -1,10 +1,8 @@
 package com.example.Calls.Dialog;
 
-import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
 import com.example.Calls.MainActivity;
-import com.example.Calls.MyDialogHelp;
 import com.example.Calls.WaitInEndPlay;
 
 public class DialogMain {

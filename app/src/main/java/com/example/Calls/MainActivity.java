@@ -1,7 +1,6 @@
 package com.example.Calls;
 
 //region import
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +10,6 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,6 +24,7 @@ import com.example.Calls.BackEnd.Permissions;
 import com.example.Calls.BackEnd.Records;
 import com.example.Calls.BackEnd.SavedSettings;
 import com.example.Calls.BackEnd.SharedVariables;
+import com.example.Calls.Dialog.MyDialogHelp;
 
 import java.io.File;
 import java.util.ArrayList;

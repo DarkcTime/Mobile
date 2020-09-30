@@ -22,18 +22,14 @@ import android.widget.Toast;
 
 import com.example.Calls.BackEnd.Api.AnalyzeCall;
 import com.example.Calls.BackEnd.Api.ApiSpeech;
-import com.example.Calls.BackEnd.Api.FileSpeech;
 import com.example.Calls.BackEnd.CheapSound.Cut;
 import com.example.Calls.BackEnd.Contacts;
 import com.example.Calls.BackEnd.CutterFiles.Cutter;
-import com.example.Calls.BackEnd.FilesWork;
 import com.example.Calls.BackEnd.Records;
 import com.example.Calls.BackEnd.SavedSettings;
+import com.example.Calls.Dialog.MyDialogHelp;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 

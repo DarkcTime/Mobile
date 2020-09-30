@@ -118,7 +118,7 @@ public class FFmpegCutter {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onSuccess(String message) {
-                Toast.makeText(context, "Записи успешно переведены", Toast.LENGTH_SHORT).show();
+
 
                 try {
                     //copy files in dir for work with Api
