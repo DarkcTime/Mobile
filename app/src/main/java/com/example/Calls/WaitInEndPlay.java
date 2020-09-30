@@ -88,13 +88,8 @@ public class WaitInEndPlay extends AppCompatActivity {
 
     }
 
-    public void onClickTestStartApi(View view) throws IOException {
-        apiMain.startApiTranslate();
-    }
-
-    public void onClickTestFullApi(View view) throws Exception{
-        apiMain.createResultFileForSelectedRecord();
-        Log.d("TestFull", apiMain.readFullFileSelectedRecord());
+    public void finishProcessingAndTranslating(){
+        //DialogMain.startAlertDialog(this, 4);
     }
 
     public void setTextViewProcessing(){

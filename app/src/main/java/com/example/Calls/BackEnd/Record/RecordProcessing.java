@@ -6,6 +6,9 @@ import android.util.Log;
 import com.example.Calls.BackEnd.Api.ApiMain;
 import com.example.Calls.WaitInEndPlay;
 
+//класс включает в себя методы и переменные
+//для работы с прогрессом нарезки и перевода в окне WaitEndPlay
+
 public class RecordProcessing {
 
     private static int maxDurationProcessing;
@@ -53,8 +56,8 @@ public class RecordProcessing {
         durationProcessing++;
         waitInEndPlay.setTextViewProcessing();
         if(durationProcessing == maxDurationProcessing){
-           setMaxDurationTranslating(maxDurationProcessing);
            try{
+               setMaxDurationTranslating(maxDurationProcessing);
                ApiMain apiMain = new ApiMain();
                apiMain.startApiTranslate();
            }
@@ -68,7 +71,7 @@ public class RecordProcessing {
         durationTranslating++;
         waitInEndPlay.setTextViewTranslation();
         if(durationTranslating == maxDurationTranslation){
-
+            waitInEndPlay.finishProcessingAndTranslating();
         }
     }
 

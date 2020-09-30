@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class ApiMain extends ApiSpeech{
+public class ApiMain{
 
     private static String nameRecord;
 
@@ -25,6 +25,7 @@ public class ApiMain extends ApiSpeech{
     private String getNameRecord(){
         return nameRecord;
     }
+
 
     public ApiMain() throws IOException{
         try{
@@ -38,9 +39,9 @@ public class ApiMain extends ApiSpeech{
     //запускает перевод всех файлов для записи
     public void startApiTranslate() throws IOException{
         try{
-            List<File> listRecords = getFiles(FilesWork.getPathForOnlyRecord(getNameRecord()).concat("/api/"), ".mp3");
+            List<File> listRecords = ApiSpeech.getFiles(FilesWork.getPathForOnlyRecord(getNameRecord()).concat("/api/"), ".mp3");
             for (File rec : listRecords){
-                SpeechToText(rec.getAbsolutePath());
+                new ApiSpeech(rec.getAbsolutePath()).SpeechToText();
             }
         }
         catch (Exception ex){
@@ -67,9 +68,9 @@ public class ApiMain extends ApiSpeech{
     //создание файла с результатами для записи
     public void createResultFileForSelectedRecord() throws IOException{
 
-        for (File file : getFiles(FileSystemParameters.getPathForSelectedRecordApi(nameRecord), ".txt")){
+        for (File file : ApiSpeech.getFiles(FileSystemParameters.getPathForSelectedRecordApi(nameRecord), ".txt")){
             Log.d("createResultFile", file.getAbsolutePath());
-            WriteFile(FileSystemParameters.getPathFileResultForRecord(nameRecord), FileSystem.ReadFile(file.getAbsolutePath()),true);
+            ApiSpeech.WriteFile(FileSystemParameters.getPathFileResultForRecord(nameRecord), FileSystem.ReadFile(file.getAbsolutePath()),true);
         }
     }
 }

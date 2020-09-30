@@ -5,6 +5,7 @@ import android.util.JsonReader;
 import android.util.Log;
 import com.example.Calls.BackEnd.Contacts;
 import com.example.Calls.BackEnd.FileSystem;
+import com.example.Calls.BackEnd.Record.RecordProcessing;
 import com.example.Calls.BackEnd.SharedVariables;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -32,6 +33,13 @@ public class ApiSpeech extends FileSpeech{
     private static Logger log = Logger.getLogger(ApiSpeech.class.getName());
 
     private final String Token = "V6BBXKPFPAARQCOMTOIGKGQRUBLCGV4R";
+
+    private String pathRecord;
+
+    public ApiSpeech(String _pathRecord) throws IOException {
+        setKey(Token);
+        pathRecord = _pathRecord;
+    }
 
     public ApiSpeech() throws IOException {
         setKey(Token);
@@ -101,6 +109,8 @@ public class ApiSpeech extends FileSpeech{
 
                             //write data in file
                             FileSystem.WriteFile(path.concat(".txt"),str,false);
+                            //change duration for ProgressBar
+                            RecordProcessing.changeDurationTranslatingAndEndTranslation();
 
                             break;
                         } else {
@@ -119,6 +129,42 @@ public class ApiSpeech extends FileSpeech{
             }
         });
     }
+
+
+    //TODO varible for path
+    private void startAsyncApiForTranslated(){
+        AsyncApi asyncApi = new AsyncApi();
+        asyncApi.execute(pathRecord);
+    }
+
+    public void writeTextTranslatedRecord(){
+        try {
+            HttpsURLConnection myConnection = getWITConnection();
+            SetOutput(myConnection, pathRecord);
+            JsonReader jsonReader = getJsonInput(myConnection);
+            while (jsonReader.hasNext()){
+                String key = jsonReader.nextName();
+
+                if (key.equals("text")) {
+                    String str = jsonReader.nextString();
+                    Log.d("ApiSpeechText", str);
+
+                    //write data in file
+                    FileSystem.WriteFile(pathRecord.concat(".txt"),str,false);
+                    break;
+                } else {
+                    Log.d("ApiSpeech", "key.noequals");
+                    jsonReader.skipValue();
+                }
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Получение ответа от WIT api
@@ -191,24 +237,23 @@ public class ApiSpeech extends FileSpeech{
     //TODO rewrite method
     /**
      * Перевод слов в текст
-     * @param pathSelectRecord путь к файлу записи разговора
      * @throws IOException
      */
-    public void SpeechToText(String pathSelectRecord) throws IOException {
+    public void SpeechToText() throws IOException {
 
-        Log.d("SpeechToText", pathSelectRecord);
+        Log.d("SpeechToText", pathRecord);
 
-        int Length = FileSpeech.getLengthAudio(pathSelectRecord)/1000;
+        int Length = FileSpeech.getLengthAudio(pathRecord)/1000;
         int count;
         //String pathCut = "/data/data/com.example.Calls/BackEnd/CheapSound";
         String pathCut = SharedVariables.getPathApplicationFileSystem();
-        log.info(pathSelectRecord);
+        log.info(pathRecord);
         if (Length>19){
             count = Length /19;
             for (int i = 0;i<count;i++){
                 int StartValue = i + 1 * 19;
                 log.info("file cutter");
-                FileCutter(pathSelectRecord,i, StartValue,String.valueOf(i));
+                FileCutter(pathRecord,i, StartValue,String.valueOf(i));
                 log.info("return cutter");
 
 
@@ -219,17 +264,36 @@ public class ApiSpeech extends FileSpeech{
 
 
             if (finalStart != Length){
-                FileCutter(pathSelectRecord, finalStart,Length,String.valueOf(finalStart));
+                FileCutter(pathCut, finalStart,Length,String.valueOf(finalStart));
 
                 ReturnText(pathCut+ finalStart +".mp3");
             }
 
         }
         else {
-            log.info("api sheech");
-
-            new ApiSpeech().ReturnText(pathSelectRecord);
+            startAsyncApiForTranslated();
         }
+    }
+}
+
+class AsyncApi extends AsyncTask<String, Void, Void> {
+    @Override
+    protected Void doInBackground(String... parameters) {
+        try{
+            new ApiSpeech(parameters[0]).writeTextTranslatedRecord();
+        }
+        catch (IOException ex){
+            Log.d("AsyncApi", ex.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        // [... Сообщите о результате через обновление пользовательского
+        // интерфейса, диалоговое окно или уведомление ...]
+        RecordProcessing.changeDurationTranslatingAndEndTranslation();
     }
 
 }
