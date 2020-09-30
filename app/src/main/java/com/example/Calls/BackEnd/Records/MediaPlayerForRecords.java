@@ -1,5 +1,7 @@
-package com.example.Calls.BackEnd;
+package com.example.Calls.BackEnd.Records;
 
+
+//TODO включить код логики media в данный класс
 public class MediaPlayerForRecords {
 
     public MediaPlayerForRecords(){

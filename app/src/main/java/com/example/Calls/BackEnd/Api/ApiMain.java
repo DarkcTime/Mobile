@@ -4,11 +4,9 @@ package com.example.Calls.BackEnd.Api;
 
 import android.util.Log;
 
-import com.example.Calls.BackEnd.CutterFiles.WorkWithFileForCutter;
-import com.example.Calls.BackEnd.FileSystem;
-import com.example.Calls.BackEnd.FileSystemParameters;
-import com.example.Calls.BackEnd.FilesWork;
-import com.example.Calls.BackEnd.Records;
+import com.example.Calls.BackEnd.Files.FileSystem;
+import com.example.Calls.BackEnd.Files.FileSystemParameters;
+import com.example.Calls.BackEnd.Records.Records;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,8 +21,8 @@ public class ApiMain{
     //запускает перевод всех файлов для записи
     public void startApiTranslate() throws IOException{
         try{
-            List<File> listRecords = ApiSpeech.getFiles(FilesWork.
-                    getPathForOnlyRecord(Records.getNameSelectedRecord()).concat("/api/"), ".mp3");
+            List<File> listRecords = ApiSpeech.getFiles(
+                    FileSystemParameters.getPathForSelectedRecord().concat("/api/"), ".mp3");
             for (File rec : listRecords){
                 new ApiSpeech(rec.getAbsolutePath()).SpeechToText();
             }

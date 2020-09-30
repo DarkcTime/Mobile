@@ -5,10 +5,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
-import com.example.Calls.BackEnd.CheapSound.SoundFileCutter;
-import com.example.Calls.BackEnd.FilesWork;
-import com.example.Calls.BackEnd.Records;
-import com.example.Calls.BackEnd.SharedVariables;
+import com.example.Calls.BackEnd.Files.FileSystemParameters;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,7 +40,7 @@ public class Cutter {
 
         FFmpegCutter fFmpegCutter = new FFmpegCutter(_context);
 
-        fFmpegCutter.executeCommandForCutFileAfterPlay(getFilesForCutter(), FilesWork.getPathForWorkWithApi(nameRecord));
+        fFmpegCutter.executeCommandForCutFileAfterPlay(getFilesForCutter(), FileSystemParameters.getPathForSelectedRecordApi());
 
     }
 
@@ -53,7 +50,7 @@ public class Cutter {
         List<FileForCutter> fileForCutterList = new ArrayList<FileForCutter>();
         for (CutterInterval interval : intervalList) {
             int duration = interval.getEnd() - interval.getStart();
-            File targetFile = new File(workWithFileForCutter.getDirForRecords().getAbsolutePath().concat("/").concat(String.valueOf(i)).concat(".mp3"));
+            File targetFile = new File(FileSystemParameters.getPathForSelectedRecordsForCutter().concat(String.valueOf(i)).concat(".mp3"));
             Log.d("targetFile", targetFile.getAbsolutePath());
             FileForCutter fileForCutter = new FileForCutter(interval.getStart(),duration, workWithFileForCutter.getSourceFile(),targetFile);
             fileForCutterList.add(fileForCutter);

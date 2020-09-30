@@ -1,16 +1,14 @@
 package com.example.Calls.Dialog;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 
 import com.example.Calls.AboutContact;
-import com.example.Calls.BackEnd.Contacts;
-import com.example.Calls.BackEnd.Records;
+import com.example.Calls.BackEnd.Contacts.Contacts;
+import com.example.Calls.BackEnd.Records.Records;
 
 import java.io.File;
 import java.util.List;

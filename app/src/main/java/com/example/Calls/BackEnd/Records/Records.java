@@ -1,8 +1,10 @@
-package com.example.Calls.BackEnd;
+package com.example.Calls.BackEnd.Records;
 
 import android.content.Context;
 import android.util.Log;
 import android.widget.ListView;
+
+import com.example.Calls.BackEnd.Contacts.Contacts;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,8 +33,6 @@ public class Records {
 
     final public String EnglishLanguageFilter = "Call@";
     final public String RussiaLanguageFilter = "Вызов@";
-
-    private static FilesWork filesWork = new FilesWork();
 
     final public static String pathFileFilterRecords = "/data/data/com.example.Calls/cache/trRecord";
 

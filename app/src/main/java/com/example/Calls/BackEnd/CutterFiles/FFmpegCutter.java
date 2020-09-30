@@ -10,10 +10,8 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.Calls.BackEnd.Api.FileSpeech;
-import com.example.Calls.BackEnd.Record.RecordProcessing;
+import com.example.Calls.BackEnd.Records.RecordProcessing;
 import com.example.Calls.WaitInEndPlay;
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
@@ -23,7 +21,6 @@ import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedExceptio
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 
 //TODO do listener FFmpegProgress

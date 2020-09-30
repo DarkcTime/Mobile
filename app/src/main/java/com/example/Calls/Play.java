@@ -20,13 +20,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.Calls.BackEnd.Api.AnalyzeCall;
+import com.example.Calls.BackEnd.Analysis.AnalyzeCall;
 import com.example.Calls.BackEnd.Api.ApiSpeech;
-import com.example.Calls.BackEnd.CheapSound.Cut;
-import com.example.Calls.BackEnd.Contacts;
+import com.example.Calls.BackEnd.Contacts.Contacts;
 import com.example.Calls.BackEnd.CutterFiles.Cutter;
-import com.example.Calls.BackEnd.Records;
-import com.example.Calls.BackEnd.SavedSettings;
+import com.example.Calls.BackEnd.Records.Records;
+import com.example.Calls.BackEnd.Settings.SavedSettings;
 import com.example.Calls.Dialog.MyDialogHelp;
 
 import java.io.IOException;
@@ -74,8 +73,6 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     //аpi
     private ApiSpeech api;
 
-    //нарезка записи
-    private Cut cutMedia;
     private boolean hearing;
 
     private static int levelGame = 5000;

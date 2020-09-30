@@ -1,14 +1,8 @@
 package com.example.Calls.BackEnd.Api;
 
 import android.media.MediaMetadataRetriever;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.example.Calls.BackEnd.Contacts;
-import com.example.Calls.BackEnd.CutterFiles.WorkWithFileForCutter;
-import com.example.Calls.BackEnd.FilesWork;
-import com.example.Calls.BackEnd.Records;
-import com.example.Calls.BackEnd.SharedVariables;
+import com.example.Calls.BackEnd.Records.Records;
 
 import java.io.*;
 import java.util.Arrays;

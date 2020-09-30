@@ -7,7 +7,4 @@ import java.util.Objects;
 
 public class SharedMethods {
 
-
-
-
 }

@@ -18,12 +18,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.Calls.BackEnd.Contacts;
-import com.example.Calls.BackEnd.FilesWork;
-import com.example.Calls.BackEnd.Permissions;
-import com.example.Calls.BackEnd.Records;
-import com.example.Calls.BackEnd.SavedSettings;
-import com.example.Calls.BackEnd.SharedVariables;
+import com.example.Calls.BackEnd.Contacts.Contacts;
+import com.example.Calls.BackEnd.Files.FileSystemParameters;
+import com.example.Calls.BackEnd.Permissions.Permissions;
+import com.example.Calls.BackEnd.Records.Records;
+import com.example.Calls.BackEnd.Settings.SavedSettings;
 import com.example.Calls.Dialog.MyDialogHelp;
 
 import java.io.File;
@@ -88,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView text = (TextView) view;
                 Contacts.informationAboutUser = text.getText().toString();
                 //создание отдельной директории для пользователя в файловой системе
-                new File(FilesWork.getPathForSelectedUser()).mkdir();
+                new File(FileSystemParameters.getPathForSelectedContact()).mkdir();
                 Intent aboutContact = new Intent(MainActivity.this, AboutContact.class);
                 startActivity(aboutContact);
             }
@@ -155,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
     //загрузка страницы, после запроса прав у пользователя
     private void loadMain(){
         //создаёт директорию для работы приложения с файлами
-        new File(SharedVariables.getPathApplicationFileSystem()).mkdir();
+        new File(FileSystemParameters.getPathApplicationFileSystem()).mkdir();
 
         //установка пути в настройках
         Records.pathForFindRecords = mSettings.getString("path", Records.currentPathForRecordsXiomi);

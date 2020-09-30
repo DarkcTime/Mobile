@@ -1,15 +1,14 @@
-package com.example.Calls.BackEnd.Api;
+package com.example.Calls.BackEnd.Analysis;
 
 import android.media.MediaPlayer;
 
-import com.example.Calls.BackEnd.Contacts;
-import com.example.Calls.BackEnd.Records;
+import com.example.Calls.BackEnd.Api.FileSpeech;
+import com.example.Calls.BackEnd.Contacts.Contacts;
+import com.example.Calls.BackEnd.Records.Records;
 
 import java.io.File;
 
 import java.io.IOException;
-
-import static com.example.Calls.BackEnd.Api.FileSpeech.*;
 
 //TODO refactor class
 public class AnalyzeCall{
@@ -118,18 +117,6 @@ public class AnalyzeCall{
 
     }
 
-    /**
-     * Получить сохраненную длину всех разгворов
-     * @param contact Контакт у которого нужно узнать время
-     * @return Возврат Времени разговора
-     * @throws IOException
-     */
-    public static int GetAllLengthCalls(Contacts contact) throws IOException {
-        String path = "/data/data/com.example.Calls/cache/"+contact.getPhoneNumberCurrentContact()+"length.txt";
-        File file = new File(path);
-
-        return file.exists() ? Integer.getInteger(FileSpeech.ReadFile(file)) : 0;
-    }
 
 
 

@@ -2,20 +2,14 @@ package com.example.Calls.Dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.widget.Toast;
 
 import android.support.v7.app.AppCompatDialogFragment;
 
-import com.example.Calls.BackEnd.FileSystem;
-import com.example.Calls.BackEnd.FileSystemParameters;
-import com.example.Calls.BackEnd.SharedVariables;
 import com.example.Calls.MainActivity;
 import com.example.Calls.R;
 import com.example.Calls.WaitInEndPlay;

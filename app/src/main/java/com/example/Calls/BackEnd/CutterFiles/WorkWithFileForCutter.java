@@ -4,9 +4,8 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
-import com.example.Calls.BackEnd.FileSystemParameters;
-import com.example.Calls.BackEnd.FilesWork;
-import com.example.Calls.BackEnd.Records;
+import com.example.Calls.BackEnd.Files.FileSystemParameters;
+import com.example.Calls.BackEnd.Records.Records;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +23,7 @@ public class WorkWithFileForCutter {
 
         try{
             new File(FileSystemParameters.getPathForSelectedRecord()).mkdir();
-            getDirForRecords().mkdir();
+            new File(FileSystemParameters.getPathForSelectedRecord()).mkdir();
             createDirForWorkWithApi();
         }
         catch (Exception ex){
@@ -34,21 +33,12 @@ public class WorkWithFileForCutter {
     }
 
 
-    public File getPathDirSelectedRecord(String nameRecord){
-        return new File(FilesWork.getPathForOnlyRecord(nameRecord));
-    }
-
-    public File getDirForRecords(){
-        return  new File(FilesWork.getPathForListRecord(nameRecord));
-    }
-
     public File getSourceFile(){
         return  new File(Records.pathForFindRecords.concat(nameRecord));
     }
 
-
     private void createDirForWorkWithApi() throws IOException {
-        File dir = new File(FilesWork.getPathForOnlyRecord(nameRecord).concat("/api/"));
+        File dir = new File(FileSystemParameters.getPathForSelectedRecordApi());
         if(!dir.exists()) if(dir.mkdir()) Log.d("FileCopy", "dir created");
     }
 

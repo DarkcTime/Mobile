@@ -1,12 +1,7 @@
 package com.example.Calls.BackEnd.Mail;
 
-import com.example.Calls.BackEnd.Contacts;
+import com.example.Calls.BackEnd.Contacts.Contacts;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Authenticator;

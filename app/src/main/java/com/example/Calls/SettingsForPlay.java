@@ -6,11 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.Calls.BackEnd.SavedSettings;
-
-import org.w3c.dom.Text;
+import com.example.Calls.BackEnd.Settings.SavedSettings;
 
 public class SettingsForPlay extends AppCompatActivity {
 

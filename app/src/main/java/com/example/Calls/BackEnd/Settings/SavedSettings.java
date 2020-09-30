@@ -1,4 +1,4 @@
-package com.example.Calls.BackEnd;
+package com.example.Calls.BackEnd.Settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -7,26 +7,17 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.Calls.BackEnd.Api.ApiMain;
-import com.example.Calls.BackEnd.Api.ApiSpeech;
-import com.example.Calls.BackEnd.Api.FileSpeech;
-import com.example.Calls.BackEnd.Contacts;
 import com.example.Calls.BackEnd.CutterFiles.Cutter;
 import com.example.Calls.BackEnd.CutterFiles.WorkWithFileForCutter;
-import com.example.Calls.BackEnd.FilesWork;
-import com.example.Calls.BackEnd.Record.RecordProcessing;
-import com.example.Calls.BackEnd.Records;
+import com.example.Calls.BackEnd.Records.RecordProcessing;
+import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.Dialog.DialogMain;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class WaitInEndPlay extends AppCompatActivity {
 

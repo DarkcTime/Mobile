@@ -11,8 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.Calls.BackEnd.Api.ApiMain;
-import com.example.Calls.BackEnd.Contacts;
-import com.example.Calls.BackEnd.Records;
+import com.example.Calls.BackEnd.Contacts.Contacts;
+import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.Dialog.FilesDialog;
 
 import java.io.File;

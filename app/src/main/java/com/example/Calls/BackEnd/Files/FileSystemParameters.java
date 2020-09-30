@@ -1,8 +1,9 @@
-package com.example.Calls.BackEnd;
+package com.example.Calls.BackEnd.Files;
 
 import android.annotation.SuppressLint;
 
-import java.io.File;
+import com.example.Calls.BackEnd.Contacts.Contacts;
+import com.example.Calls.BackEnd.Records.Records;
 
 public class FileSystemParameters {
 
@@ -11,7 +12,7 @@ public class FileSystemParameters {
     @SuppressLint("SdCardPath")
     private static final String PathApplicationFileSystem = "/storage/emulated/0/Android/data/com.Calls/";
 
-    private static String getPathApplicationFileSystem(){
+    public static String getPathApplicationFileSystem(){
         return PathApplicationFileSystem;
     }
 
@@ -22,11 +23,19 @@ public class FileSystemParameters {
                 .concat("/");
     }
 
-    //example: storage/emulated/0/Android/data/com.Calls/Миха/Call@4321432/
+    //example: storage/emulated/0/Android/data/com.Calls/Миха/Call@4321432/records
     public static String getPathForSelectedRecord(){
         return getPathForSelectedContact()
                 .concat(Records.getNameSelectedRecord()
                         .replace(".mp3", "").concat("/"));
+    }
+
+    //example: storage/emulated/0/Android/data/com.Calls/Миха/Call@4321432/
+    public static String getPathForSelectedRecordsForCutter(){
+        return getPathForSelectedContact()
+                .concat(Records.getNameSelectedRecord()
+                        .replace(".mp3", "").concat("/")
+                .concat("records/"));
     }
 
     public static String getPathForSelectedRecordApi(){

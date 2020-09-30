@@ -1,12 +1,13 @@
 package com.example.Calls.BackEnd.Api;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
-import com.example.Calls.BackEnd.Contacts;
-import com.example.Calls.BackEnd.FileSystem;
-import com.example.Calls.BackEnd.Record.RecordProcessing;
-import com.example.Calls.BackEnd.SharedVariables;
+
+import com.example.Calls.BackEnd.Files.FileSystem;
+import com.example.Calls.BackEnd.Files.FileSystemParameters;
+import com.example.Calls.BackEnd.Records.RecordProcessing;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
@@ -15,18 +16,15 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.logging.Logger;
-
-import static android.content.ContentValues.TAG;
-import static com.example.Calls.BackEnd.Api.FileSpeech.ReadFile;
-import static com.example.Calls.BackEnd.Api.FileSpeech.WriteFile;
-import static com.example.Calls.BackEnd.CheapSound.Utilities.FileCutter;
 
 //class work with Api
 public class ApiSpeech extends FileSpeech{
 
-    private final String pathForSaveKeyApi = SharedVariables.getBufferPathForApplicationFileSystem().concat("key.txt");
+    @SuppressLint("SdCardPath")
+    private static final String BufferPathForApplicationFileSystem = "/data/data/com.example.Calls/cache/";
+
+    private final String pathForSaveKeyApi = BufferPathForApplicationFileSystem.concat("key.txt");
 
     private String key;
 
@@ -246,14 +244,14 @@ public class ApiSpeech extends FileSpeech{
         int Length = FileSpeech.getLengthAudio(pathRecord)/1000;
         int count;
         //String pathCut = "/data/data/com.example.Calls/BackEnd/CheapSound";
-        String pathCut = SharedVariables.getPathApplicationFileSystem();
+        String pathCut = FileSystemParameters.getPathApplicationFileSystem();
         log.info(pathRecord);
         if (Length>19){
             count = Length /19;
             for (int i = 0;i<count;i++){
                 int StartValue = i + 1 * 19;
                 log.info("file cutter");
-                FileCutter(pathRecord,i, StartValue,String.valueOf(i));
+
                 log.info("return cutter");
 
 
@@ -264,7 +262,7 @@ public class ApiSpeech extends FileSpeech{
 
 
             if (finalStart != Length){
-                FileCutter(pathCut, finalStart,Length,String.valueOf(finalStart));
+
 
                 ReturnText(pathCut+ finalStart +".mp3");
             }
