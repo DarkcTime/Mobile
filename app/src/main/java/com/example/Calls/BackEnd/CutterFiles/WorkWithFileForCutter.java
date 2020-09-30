@@ -23,7 +23,7 @@ public class WorkWithFileForCutter {
     public void createDirsForCutter(){
 
         try{
-            new File(FileSystemParameters.getPathForSelectedRecord(nameRecord)).mkdir();
+            new File(FileSystemParameters.getPathForSelectedRecord()).mkdir();
             getDirForRecords().mkdir();
             createDirForWorkWithApi();
         }

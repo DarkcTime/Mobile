@@ -16,30 +16,15 @@ import java.util.List;
 
 public class ApiMain{
 
-    private static String nameRecord;
-
-    private void setNameRecord(String _nameRecord){
-        nameRecord = _nameRecord;
-    }
-
-    private String getNameRecord(){
-        return nameRecord;
-    }
-
-
     public ApiMain() throws IOException{
-        try{
-            setNameRecord(Records.getNameSelectedRecord());
-        }
-        catch (Exception e){
-            Log.d("ApiMainEx", e.getMessage());
-        }
+
     }
 
     //запускает перевод всех файлов для записи
     public void startApiTranslate() throws IOException{
         try{
-            List<File> listRecords = ApiSpeech.getFiles(FilesWork.getPathForOnlyRecord(getNameRecord()).concat("/api/"), ".mp3");
+            List<File> listRecords = ApiSpeech.getFiles(FilesWork.
+                    getPathForOnlyRecord(Records.getNameSelectedRecord()).concat("/api/"), ".mp3");
             for (File rec : listRecords){
                 new ApiSpeech(rec.getAbsolutePath()).SpeechToText();
             }
@@ -52,24 +37,26 @@ public class ApiMain{
     //добавляет данные в общий результат пользователя
     public void addTextInFullFileSelectedContact() throws IOException{
         FileSystem.WriteFile(FileSystemParameters.getPathFileResultForSelectedContact(),
-                FileSystemParameters.getPathFileResultForRecord(nameRecord),true);
+                readFullFileSelectedRecord(),true);
     }
 
     //читает полный файл пользователя
-    public String readFullFileSelectedContact() throws IOException{
+    public static String readFullFileSelectedContact() throws IOException{
         return FileSystem.ReadFile(FileSystemParameters.getPathFileResultForSelectedContact());
     }
 
     //читает полный файл записи
     public String readFullFileSelectedRecord() throws IOException{
-        return FileSystem.ReadFile(FileSystemParameters.getPathFileResultForRecord(nameRecord));
+        return FileSystem.ReadFile(FileSystemParameters.getPathFileResultForRecord());
     }
 
     //создание файла с результатами для записи
     public void createResultFileForSelectedRecord() throws IOException{
-        for (File file : ApiSpeech.getFiles(FileSystemParameters.getPathForSelectedRecordApi(nameRecord), ".txt")){
+        for (File file : ApiSpeech.getFiles(FileSystemParameters.getPathForSelectedRecordApi(), ".txt")){
             Log.d("createResultFile", file.getAbsolutePath());
-            ApiSpeech.WriteFile(FileSystemParameters.getPathFileResultForRecord(nameRecord), FileSystem.ReadFile(file.getAbsolutePath()),true);
+
+            ApiSpeech.WriteFile(FileSystemParameters.getPathFileResultForRecord(),
+                    FileSystem.ReadFile(file.getAbsolutePath()),true);
         }
     }
 }

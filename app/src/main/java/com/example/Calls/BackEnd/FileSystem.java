@@ -24,9 +24,7 @@ public class FileSystem {
 
     //чтение данных из файла
     public static String ReadFile(String path) throws IOException {
-
         File file = new File(path);
-
         if (file.exists()) {
             int length = (int) file.length();
             byte[] bytes = new byte[length];
