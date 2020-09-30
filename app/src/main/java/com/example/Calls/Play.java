@@ -344,7 +344,6 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         try{
 
             Intent WaitEndPlay = new Intent(Play.this, WaitInEndPlay.class);
-            WaitEndPlay.putExtra("nameRecord", nameRecord);
             startActivity(WaitEndPlay);
 
         }

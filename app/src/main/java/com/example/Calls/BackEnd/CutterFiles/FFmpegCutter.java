@@ -137,7 +137,7 @@ public class FFmpegCutter {
 
             @Override
             public void onProgress(String message) {
-                waitInEndPlay.setProgressBar(25);
+
             }
 
             @Override

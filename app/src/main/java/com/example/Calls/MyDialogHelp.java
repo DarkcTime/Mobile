@@ -139,12 +139,14 @@ public class MyDialogHelp extends AppCompatDialogFragment{
                             .setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    contextWaitEndPlay.dialogResultAdd();
                                     dialog.cancel();
                                 }
                             })
                             .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    contextWaitEndPlay.dialogResultCancel();
                                     dialog.cancel();
                                 }
                             });

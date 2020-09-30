@@ -1,5 +1,6 @@
 package com.example.Calls;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -80,16 +81,34 @@ public class WaitInEndPlay extends AppCompatActivity {
 
     }
 
-    public void onClickReadyTranslate(View view){
-        DialogMain.startAlertDialog(this, 4);
+    public void dialogResultAdd(){
+        try{
+            apiMain.addTextInFullFileSelectedContact();
+            startActivityAboutContact();
+        }
+        catch (Exception ex){
+            Log.d("dialogResultAdd", ex.getMessage());
+        }
     }
 
-    public void onClickCancelTranslate(View view){
-
+    public void dialogResultCancel(){
+        startActivityAboutContact();
     }
+
+    private void startActivityAboutContact(){
+        Intent WaitEndPlay = new Intent(WaitInEndPlay.this, AboutContact.class);
+        startActivity(WaitEndPlay);
+    }
+
 
     public void finishProcessingAndTranslating(){
-        //DialogMain.startAlertDialog(this, 4);
+        try{
+            apiMain.createResultFileForSelectedRecord();
+            DialogMain.startAlertDialog(this, 4);
+        }
+        catch (IOException ex) {
+            Log.d("finishProcessing", ex.getMessage());
+        }
     }
 
     public void setTextViewProcessing(){
@@ -113,11 +132,5 @@ public class WaitInEndPlay extends AppCompatActivity {
                 .concat("/")
                 .concat(String.valueOf(RecordProcessing.getMaxDurationTranslation()));
     }
-
-    public void setProgressBar(int progressBar){
-        progressBarTranslate.setProgress(progressBar);
-    }
-
-
 
 }

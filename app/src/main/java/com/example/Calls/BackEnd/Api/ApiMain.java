@@ -51,7 +51,7 @@ public class ApiMain{
 
     //добавляет данные в общий результат пользователя
     public void addTextInFullFileSelectedContact() throws IOException{
-        FileSystem.WriteFile(FileSystemParameters.getPathForSelectedContact(),
+        FileSystem.WriteFile(FileSystemParameters.getPathFileResultForSelectedContact(),
                 FileSystemParameters.getPathFileResultForRecord(nameRecord),true);
     }
 
@@ -67,7 +67,6 @@ public class ApiMain{
 
     //создание файла с результатами для записи
     public void createResultFileForSelectedRecord() throws IOException{
-
         for (File file : ApiSpeech.getFiles(FileSystemParameters.getPathForSelectedRecordApi(nameRecord), ".txt")){
             Log.d("createResultFile", file.getAbsolutePath());
             ApiSpeech.WriteFile(FileSystemParameters.getPathFileResultForRecord(nameRecord), FileSystem.ReadFile(file.getAbsolutePath()),true);
