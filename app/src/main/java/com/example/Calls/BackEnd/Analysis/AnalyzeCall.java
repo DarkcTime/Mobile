@@ -63,15 +63,11 @@ public class AnalyzeCall{
     }
 
 
-    public static int getCurrentPositionSec(MediaPlayer mp){
-        return (int)Math.round(mp.getCurrentPosition() / 1000);
-
-    }
 
     public static int getDurationRecord(File file) throws Exception{
         int result = 0;
         MediaPlayer mp = new MediaPlayer();
-        mp.setDataSource(Records.pathForFindRecords + file.getName());
+        mp.setDataSource(Records.getPathForFindRecords() + file.getName());
         mp.prepare();
         result += AnalyzeCall.countSecond(mp.getDuration());
         return result;

@@ -100,7 +100,7 @@ public class AboutContact extends AppCompatActivity {
 
     private void loadDataInList(){
         listFiles.clear();
-        listFiles.addAll(Records.getFiles(Records.pathForFindRecords));
+        listFiles.addAll(Records.getFiles(Records.getPathForFindRecords()));
         DialogMain.startFilesDialog(this,listFiles);
     }
 

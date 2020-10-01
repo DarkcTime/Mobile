@@ -6,6 +6,7 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.example.Calls.BackEnd.Files.FileSystemParameters;
+import com.example.Calls.BackEnd.Records.Records;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,9 +29,9 @@ public class Cutter {
 
     private String nameRecord;
 
-    public Cutter(String _nameRecord){
+    public Cutter(){
         intervalList = new ArrayList<CutterInterval>();
-        nameRecord = _nameRecord;
+        nameRecord = Records.getNameSelectedRecord();
     }
 
     //полный путь с именем записи

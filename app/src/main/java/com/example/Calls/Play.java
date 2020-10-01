@@ -20,10 +20,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.Calls.BackEnd.Analysis.AnalyzeCall;
-import com.example.Calls.BackEnd.Api.ApiSpeech;
-import com.example.Calls.BackEnd.Contacts.Contacts;
 import com.example.Calls.BackEnd.CutterFiles.Cutter;
+import com.example.Calls.BackEnd.Debug.DebugMessages;
+import com.example.Calls.BackEnd.Media.MediaPlayerForRecords;
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
 import com.example.Calls.Dialog.DialogMain;
@@ -31,52 +30,33 @@ import com.example.Calls.Dialog.MyDialogHelp;
 
 import java.io.IOException;
 
+//TODO декомпозировать код после определения интерфейса и планов на переработку
+
 public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
-    //region varibls
-    //имя записи
-    public static String nameRecordStatic;
 
-    //text get from Api
-    private String textApi;
-
-    private TextView textViewSelectedRecPlay, textViewCountMinuteMake, textViewLevelUser, textViewStartPositionPlay, textViewLinerForMedia;
+    private TextView textViewSelectedRecPlay, textViewStartPositionPlay;
 
     private SeekBar seekBarPositionPlay;
 
-    private Button buttonStartPlay, buttonCut;
-
-    private String pathRecord, nameRecord;
-
     private MediaPlayer mp;
-
-    private Contacts contacts;
 
     private Handler handler;
 
     private Runnable runnable;
 
-    private Button buttonMyPlay, buttonExit, buttonCompanion;
+    private Button buttonStartPlay,buttonMyPlay, buttonExit, buttonCompanion;
 
     private static boolean checkPlayCycle = false;
 
     private static int checkPlaying;
-
-    private String linerMedia, spaces = "";
 
     //значение паузы и перемотки
     private int secRewind, secPause;
 
     private SharedPreferences mSettings;
 
-    private Button buttonBackRewind, buttonFordRewind;
-
-    //аpi
-    private ApiSpeech api;
-
     private boolean hearing;
-
-    private static int levelGame = 5000;
 
     private static Cutter cutter;
 
@@ -84,6 +64,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         return cutter;
     }
 
+    private Button buttonBackRewind, buttonFordRewind;
 
     //endregion
 
@@ -93,10 +74,69 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.play);
 
+        if(!SavedSettings.isExpert()){
+            DialogMain.startAlertDialog(this, MyDialogHelp.Windows.PLAY);
+        }
+
+        setVariablesForPlay();
+
+        setSettingsForRewards();
+
+        createMediaPlayer();
+
+
+        buttonExit.setVisibility(View.GONE);
+
+        textViewSelectedRecPlay.setText("Выбранная запись: ".concat(Records.getNameSelectedRecord()));
+
+        handler = new Handler();
+
+        hearing = false;
+
+        cutter = new Cutter();
+
+
+        //endregion
+
+
+        //region button I and Other
+
+
+        //логика при нажатии кнопки Я
+        buttonMyPlay.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
+                {
+                    updateGame();
+                    setIntervalAdd();
+                }
+                return false;
+
+            }
+        });
+
+        //логика при нажатии кнопки Собеседник
+        buttonCompanion.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
+                {
+                    updateGame();
+                    setIntervalStop();
+                }
+                return false;
+            }
+        });
+
+        //endregion
+
+    }
+
+    //region loadPage
+    private void setVariablesForPlay(){
         //region first create variables
-        textViewCountMinuteMake = (TextView) findViewById(R.id.textViewCountMinuteMake);
         textViewSelectedRecPlay = (TextView) findViewById(R.id.textViewSelectedRecPlay);
-        textViewLevelUser = (TextView) findViewById(R.id.textViewLevelUser);
         textViewStartPositionPlay = (TextView) findViewById(R.id.textViewStartPositionPlay);
 
         seekBarPositionPlay = (SeekBar) findViewById(R.id.seekBarPositionPlay);
@@ -108,85 +148,10 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
         buttonBackRewind = (Button) findViewById(R.id.buttonBackRewind);
         buttonFordRewind = (Button) findViewById(R.id.buttonFordRewind);
-        //buttonCut = (Button) findViewById(R.id.buttonCut);
 
-        buttonExit.setVisibility(View.GONE);
+    }
 
-        //get Name Selected Record
-        nameRecord = Records.getNameSelectedRecord();
-
-        pathRecord = Records.pathForFindRecords + nameRecord;
-
-
-
-        linerMedia = "";
-
-
-        textViewSelectedRecPlay.setText("Выбранная запись: ".concat(nameRecord));
-
-        textViewCountMinuteMake.setText("Количество минут: 02:00");
-
-        textViewLevelUser.setText("Уровень пользователя: не определен");
-
-        handler = new Handler();
-
-        contacts = new Contacts();
-
-
-        //create class ApiSpeech
-        try{
-            api = new ApiSpeech(Records.getNameSelectedRecord());
-        }
-        catch (Exception ex){
-            Toast.makeText(this, ex.toString(), Toast.LENGTH_SHORT).show();
-        }
-
-        hearing = false;
-
-        if(!SavedSettings.isExpert()){
-            DialogMain.startAlertDialog(this, MyDialogHelp.Windows.PLAY);
-        }
-
-        //endregion
-
-        //region create MediaPlayer
-        mp = new MediaPlayer();
-        try{
-            mp.setDataSource(pathRecord);
-            mp.prepare();
-        }
-        catch (IOException ioEx){
-            Toast.makeText(this, "Ошибка при получении записи: " + ioEx.toString(), Toast.LENGTH_SHORT).show();
-        }
-
-        mp.setLooping(true);
-
-        textViewStartPositionPlay.setText(setDurationStr());
-
-        seekBarPositionPlay.setMax(mp.getDuration());
-
-        seekBarPositionPlay.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(fromUser){
-                    mp.seekTo(progress);
-                    textViewStartPositionPlay.setText(setDurationStr());
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        //endregion
-
+    private void setSettingsForRewards(){
         //region set Settings from file
         mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
 
@@ -202,134 +167,95 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         buttonBackRewind.setText("назад ".concat(String.valueOf(secRewind).concat(" сек")));
 
         //endregion
+    }
 
-        //region button I and Other
+    private void createMediaPlayer(){
+        mp = new MediaPlayer();
+        try{
+            mp.setDataSource(Records.getFullPathSelectedRecord());
+            mp.prepare();
+        }
+        catch (IOException ioEx){
+            Toast.makeText(this, "Ошибка при получении записи: " + ioEx.toString(), Toast.LENGTH_SHORT).show();
+        }
 
+        mp.setLooping(true);
 
-        //логика при нажатии кнопки Я
-        buttonMyPlay.setOnTouchListener(new View.OnTouchListener() {
+        textViewStartPositionPlay.setText(MediaPlayerForRecords.setDurationStr(mp));
+
+        seekBarPositionPlay.setMax(mp.getDuration());
+
+        seekBarPositionPlay.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
-                {
-                    updateGame();
-                    levelGame--;
-
-
-                    //add interval media
-                    if(!hearing){
-                        cutter.AddInterval(AnalyzeCall.getCurrentPositionSec(mp));
-                        hearing = true;
-                    }
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(fromUser){
+                    mp.seekTo(progress);
+                    textViewStartPositionPlay.setText(MediaPlayerForRecords.setDurationStr(mp));
                 }
-                return false;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
         });
-
-        //логика при нажатии кнопки Собеседник
-        buttonCompanion.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
-                {
-                    updateGame();
-                    levelGame++;
-                    //progressTextView.setValue(levelGame);
-                    //stop interval media
-                    if(hearing){
-                        cutter.StopInterval(AnalyzeCall.getCurrentPositionSec(mp));
-                        hearing = false;
-                    }
-                }
-                return false;
-
-            }
-        });
-
-        //endregion
-
     }
 
 
-    private void loadMain(){
+    //endregion
 
-    }
+    //region Rewards
 
-
-
-
-    //region buttons Click
-
-    //TODO test start api
     public void onClickButtonForwardSecond(View view){
-
         try{
-
+            RewardMedia(true);
         }
         catch (Exception ex){
-            Log.d("api", ex.toString());
+            DebugMessages.ErrorMessage(ex, this, "ButtonForRew");
         }
-
-
-        /*
-        Cut cut = new Cut();
-        cut.AddInterval(6);
-        cut.StopInterval(12);
-
-        List<FriendInterval> friendIntervalList = new ArrayList<>();
-        friendIntervalList = cut.getIntervalList();
-        Log.d("interval", String.valueOf(friendIntervalList.get(0).getStart()));
-        try{
-            cut.Cutter(nameRecord);
-        }
-        catch (Exception ex){
-            Log.d("cutter", ex.toString());
-        }
-
-
-
-        mp.seekTo(mp.getCurrentPosition() + secRewind*1000);
-        textViewStartPositionPlay.setText(setDurationStr());
-        updateGame();
-
-         */
-
     }
 
+    public void onClickButtonBackSecond(View view){
+        try{
+            RewardMedia(false);
+        }
+        catch (Exception ex){
+            DebugMessages.ErrorMessage(ex, this, "ButtonBackRew");
+        }
+    }
+
+    private void RewardMedia(boolean isForward){
+        if(isForward) ForwardReward();
+        else BackReward();
+        textViewStartPositionPlay.setText(MediaPlayerForRecords.setDurationStr(mp));
+        updateGame();
+    }
+
+    private void ForwardReward(){
+        mp.seekTo(mp.getCurrentPosition() + secRewind*1000);
+    }
+
+    private void BackReward(){
+        mp.seekTo(mp.getCurrentPosition() - secRewind*1000);
+    }
+
+    //endregion
+
+    //region PopupMenu
     public void onClickButtonSettingsPlay(View view){
         try{
-            PopupMenu popup = new PopupMenu(this, view);
-            popup.setOnMenuItemClickListener(this);
-            popup.inflate(R.menu.menu_settings);
-            popup.show();
+            com.example.Calls.Dialog.PopupMenu.showPopupMenu(this, view);
         }
         catch (Exception ex){
-            Toast.makeText(this, "Ошибка при открытии меню" + ex.toString(), Toast.LENGTH_SHORT).show();
+            DebugMessages.ErrorMessage(ex, this, "ButtonSettingsPlay");
         }
     }
 
-    //запускает перевод записи в текст
-    public void onClickButtonStopGame(View view){
-        try{
-
-            Intent WaitEndPlay = new Intent(Play.this, WaitInEndPlay.class);
-            startActivity(WaitEndPlay);
-
-        }
-        catch (Exception ex){
-            Log.d("cutter", ex.toString());
-        }
-
-        /*
-        Intent aboutContact = new Intent(Play.this, AboutContact.class);
-        startActivity(aboutContact);
-
-         */
-    }
-
-    //TODO зачем?
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()){
@@ -352,16 +278,19 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         }
         return false;
     }
+    //endregion
 
+    //region Start and Exit play
+    public void onClickButtonStopGame(View view){
+        try{
 
-    public void onClickButtonBackSecond(View view){
+            Intent WaitEndPlay = new Intent(Play.this, WaitInEndPlay.class);
+            startActivity(WaitEndPlay);
 
-        /*
-        mp.seekTo(mp.getCurrentPosition() - secRewind*1000);
-        textViewStartPositionPlay.setText(setDurationStr());
-        updateGame();
-
-         */
+        }
+        catch (Exception ex){
+            Log.d("cutter", ex.toString());
+        }
     }
 
     public void onClickStartPlay(View view){
@@ -374,8 +303,6 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
             buttonStartPlay.setVisibility(View.GONE);
 
-            cutter = new Cutter(nameRecord);
-
         }
         catch (Exception ex){
             ex.printStackTrace();
@@ -385,24 +312,24 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     //endregion
 
-    //region helperMethods
-    private String setDurationStr(){
-        return AnalyzeCall.createTimeLabel(mp.getCurrentPosition()).concat(" - ").concat(AnalyzeCall.createTimeLabel(mp.getDuration()));
+    //region Interval
+
+    private void setIntervalStop(){
+        //stop interval media
+        if(hearing){
+            cutter.StopInterval(MediaPlayerForRecords.getCurrentPositionSec(mp));
+            hearing = false;
+        }
+    }
+
+    private void setIntervalAdd(){
+        if(!hearing){
+            cutter.AddInterval(MediaPlayerForRecords.getCurrentPositionSec(mp));
+            hearing = true;
+        }
     }
 
 
-    private void setLinerMedia(int time){
-        linerMedia += spaces + "|";
-        spaces = "";
-        textViewLinerForMedia.setText(linerMedia);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mp.release();
-        handler.removeCallbacks(runnable);
-    }
 
     private void stopPlaying(){
         checkPlaying--;
@@ -438,7 +365,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     private void playCycle(){
         if(checkPlayCycle){
             seekBarPositionPlay.setProgress(mp.getCurrentPosition());
-            textViewStartPositionPlay.setText(setDurationStr());
+            textViewStartPositionPlay.setText(MediaPlayerForRecords.setDurationStr(mp));
 
             if(mp.isPlaying()){
                 runnable = new Runnable() {
@@ -455,7 +382,15 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     }
 
+
     //endregion
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mp.release();
+        handler.removeCallbacks(runnable);
+    }
 
 
 }

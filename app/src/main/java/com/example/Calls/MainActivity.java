@@ -112,15 +112,15 @@ public class MainActivity extends AppCompatActivity {
             FileSystem.createDirectoryApplication();
 
             //установка пути в настройках
-            Records.pathForFindRecords = mSettings.getString("path", Records.currentPathForRecordsXiomi);
+            Records.setPathForFindRecords(mSettings.getString("path", Records.currentPathForRecordsXiomi));
 
-            if(!Records.checkPath(Records.pathForFindRecords)){
-                Toast.makeText(this, Records.pathForFindRecords, Toast.LENGTH_SHORT).show();
+            if(!Records.checkPath(Records.getPathForFindRecords())){
+                Toast.makeText(this, Records.getPathForFindRecords(), Toast.LENGTH_SHORT).show();
                 return;
             }
 
             //add list from selected path
-            listFiles.addAll(Records.getFiles(Records.pathForFindRecords));
+            listFiles.addAll(Records.getFiles(Records.getPathForFindRecords()));
 
             //вывод список контактов в list
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,  android.R.layout.simple_list_item_1, Contacts.getListContacts(listFiles, this));

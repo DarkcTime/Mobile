@@ -34,7 +34,7 @@ public class WorkWithFileForCutter {
 
 
     public File getSourceFile(){
-        return  new File(Records.pathForFindRecords.concat(nameRecord));
+        return  new File(Records.getPathForFindRecords().concat(nameRecord));
     }
 
     private void createDirForWorkWithApi() throws IOException {

@@ -1,5 +1,9 @@
-package com.example.Calls.BackEnd.Records;
+package com.example.Calls.BackEnd.Media;
 
+
+import android.media.MediaPlayer;
+
+import com.example.Calls.BackEnd.Analysis.AnalyzeCall;
 
 //TODO включить код логики media в данный класс
 public class MediaPlayerForRecords {
@@ -8,7 +12,17 @@ public class MediaPlayerForRecords {
 
     }
 
-    public String createTimeLabel(int currentPosition){
+
+    public static int getCurrentPositionSec(MediaPlayer mp){
+        return (int)Math.round(mp.getCurrentPosition() / 1000);
+    }
+
+    //region helperMethods
+    public static String setDurationStr(MediaPlayer mp){
+        return createTimeLabel(mp.getCurrentPosition()).concat(" - ").concat(AnalyzeCall.createTimeLabel(mp.getDuration()));
+    }
+
+    private static String createTimeLabel(int currentPosition){
         //создание пустой строки
         String timeLabel = "";
         //выделяет кол-во минут и секунд
@@ -20,5 +34,6 @@ public class MediaPlayerForRecords {
         timeLabel += sec;
         return timeLabel;
     }
+
 
 }

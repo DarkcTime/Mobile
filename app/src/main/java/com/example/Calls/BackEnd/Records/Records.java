@@ -24,18 +24,18 @@ import java.util.List;
 //работа с записями звонков
 public class Records {
 
-    public static String durationSelectRecord;
+    //местонахождение записей
+    private static String pathForFindRecords = "";
 
-    public static String pathForFindRecords = "";
+    public static void setPathForFindRecords(String _pathForFindRecords){
+        pathForFindRecords = _pathForFindRecords;
+    }
 
-    final public static String currentPathForRecordsXiomi = "/storage/emulated/0/MIUI/sound_recorder/call_rec/";
-    final public static String currentPathForZTE = "/sdcard/PhoneRecord/";
+    public static String getPathForFindRecords(){
+        return pathForFindRecords;
+    }
 
-    final public String EnglishLanguageFilter = "Call@";
-    final public String RussiaLanguageFilter = "Вызов@";
-
-    final public static String pathFileFilterRecords = "/data/data/com.example.Calls/cache/trRecord";
-
+    //данные о выбранной записи
     private static String NameSelectedRecord;
 
     public static String getNameSelectedRecord(){
@@ -45,6 +45,19 @@ public class Records {
     public static void setNameSelectedRecord(String _nameRecord){
         NameSelectedRecord = _nameRecord;
     }
+
+    public static String getFullPathSelectedRecord(){
+        return getPathForFindRecords().concat(getNameSelectedRecord());
+    }
+
+
+    final public static String currentPathForRecordsXiomi = "/storage/emulated/0/MIUI/sound_recorder/call_rec/";
+    final public static String currentPathForZTE = "/sdcard/PhoneRecord/";
+
+    final public String EnglishLanguageFilter = "Call@";
+    final public String RussiaLanguageFilter = "Вызов@";
+
+    final public static String pathFileFilterRecords = "/data/data/com.example.Calls/cache/trRecord";
 
 
     //выдает список файлов для xiaomi
