@@ -21,8 +21,9 @@ public class ApiMain{
     //запускает перевод всех файлов для записи
     public void startApiTranslate() throws IOException{
         try{
-            List<File> listRecords = ApiSpeech.getFiles(
-                    FileSystemParameters.getPathForSelectedRecord().concat("/api/"), ".mp3");
+
+            List<File> listRecords = FileSystem.getFilesWithSelectedExt(
+                    FileSystemParameters.getPathForSelectedRecordApi(), ".mp3");
             for (File rec : listRecords){
                 new ApiSpeech(rec.getAbsolutePath()).SpeechToText();
             }
@@ -50,10 +51,10 @@ public class ApiMain{
 
     //создание файла с результатами для записи
     public void createResultFileForSelectedRecord() throws IOException{
-        for (File file : ApiSpeech.getFiles(FileSystemParameters.getPathForSelectedRecordApi(), ".txt")){
+        for (File file : FileSystem.getFilesWithSelectedExt(FileSystemParameters.getPathForSelectedRecordApi(), ".txt")){
             Log.d("createResultFile", file.getAbsolutePath());
 
-            ApiSpeech.WriteFile(FileSystemParameters.getPathFileResultForRecord(),
+            FileSystem.WriteFile(FileSystemParameters.getPathFileResultForRecord(),
                     FileSystem.ReadFile(file.getAbsolutePath()),true);
         }
     }

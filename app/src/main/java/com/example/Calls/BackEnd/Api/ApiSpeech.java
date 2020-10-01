@@ -1,6 +1,7 @@
 package com.example.Calls.BackEnd.Api;
 
 import android.annotation.SuppressLint;
+import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
@@ -19,123 +20,53 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
 //class work with Api
-public class ApiSpeech extends FileSpeech{
+public class ApiSpeech{
 
-    @SuppressLint("SdCardPath")
-    private static final String BufferPathForApplicationFileSystem = "/data/data/com.example.Calls/cache/";
-
-    private final String pathForSaveKeyApi = BufferPathForApplicationFileSystem.concat("key.txt");
-
-    private String key;
-
-    private static Logger log = Logger.getLogger(ApiSpeech.class.getName());
-
-    private final String Token = "V6BBXKPFPAARQCOMTOIGKGQRUBLCGV4R";
+    private KeyApi keyApi;
 
     private String pathRecord;
 
     public ApiSpeech(String _pathRecord) throws IOException {
-        setKey(Token);
+        keyApi = new KeyApi();
+        keyApi.setKey();
         pathRecord = _pathRecord;
     }
 
-    public ApiSpeech() throws IOException {
-        setKey(Token);
-    }
-
+    //TODO rewrite method
     /**
-     * check key Api
-     * @return key
+     * Перевод слов в текст
+     * @throws IOException
      */
-    private boolean keyExists() throws IOException {
-        File file = new File(pathForSaveKeyApi);
-        if (file.exists()) {
-            try{
-                return ReadFile(file) != null;
-            }
-            catch (NullPointerException ex){
-                Log.d("NullPointerException", ex.toString());
-            }
+    void SpeechToText() throws IOException {
+
+        Log.d("SpeechToText", pathRecord);
+
+        int Length = getLengthAudio(pathRecord)/1000;
+
+
+        if (Length>19){
 
         }
-        return  false;
-    }
-
-    /**
-     * get key api
-     * @return key
-     */
-    private String getKey() throws IOException {
-        File file = new File(pathForSaveKeyApi);
-        if (keyExists()) {
-            key = ReadFile(file);
-            return key;
+        else {
+            startAsyncApiForTranslated();
         }
-        else
-            throw new NullPointerException();
     }
 
-    /**
-     * set key
-     * @param key key
-     */
-    private void setKey(String key) throws IOException {
-        FileSystem.WriteFile(pathForSaveKeyApi,key,false);
-        this.key = key;
-    }
-
-    /**
-     * parsing json answer
-     * @param path путь к выбранной записи
-     */
-    private void ReturnText(final String path){
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                URL githubEndpoint = null;
-                try {
-                    HttpsURLConnection myConnection = getWITConnection();
-                    SetOutput(myConnection, path);
-                    JsonReader jsonReader = getJsonInput(myConnection);
-                    while (jsonReader.hasNext()){
-                        String key = jsonReader.nextName();
-
-                        if (key.equals("text")) {
-                            String str = jsonReader.nextString();
-                            Log.d("ApiSpeechText", str);
-
-
-                            //write data in file
-                            FileSystem.WriteFile(path.concat(".txt"),str,false);
-                            //change duration for ProgressBar
-                            RecordProcessing.changeDurationTranslatingAndEndTranslation();
-
-                            break;
-                        } else {
-                            Log.d("ApiSpeech", "key.noequals");
-                            jsonReader.skipValue();
-                        }
-                    }
-
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
+    public static int getLengthAudio(String path) {
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(path);
+        String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        return Integer.parseInt(durationStr);
     }
 
 
-    //TODO varible for path
     private void startAsyncApiForTranslated(){
         AsyncApi asyncApi = new AsyncApi();
         asyncApi.execute(pathRecord);
     }
 
-    public void writeTextTranslatedRecord(){
+
+    void writeTextTranslatedRecord(){
         try {
             HttpsURLConnection myConnection = getWITConnection();
             SetOutput(myConnection, pathRecord);
@@ -222,7 +153,7 @@ public class ApiSpeech extends FileSpeech{
             e.printStackTrace();
         }
         try {
-            myConnection.setRequestProperty ("Authorization","Bearer " + getKey());
+            myConnection.setRequestProperty ("Authorization","Bearer " + keyApi.getKey());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -231,47 +162,6 @@ public class ApiSpeech extends FileSpeech{
         return myConnection;
     }
 
-
-    //TODO rewrite method
-    /**
-     * Перевод слов в текст
-     * @throws IOException
-     */
-    public void SpeechToText() throws IOException {
-
-        Log.d("SpeechToText", pathRecord);
-
-        int Length = FileSpeech.getLengthAudio(pathRecord)/1000;
-        int count;
-        //String pathCut = "/data/data/com.example.Calls/BackEnd/CheapSound";
-        String pathCut = FileSystemParameters.getPathApplicationFileSystem();
-        log.info(pathRecord);
-        if (Length>19){
-            count = Length /19;
-            for (int i = 0;i<count;i++){
-                int StartValue = i + 1 * 19;
-                log.info("file cutter");
-
-                log.info("return cutter");
-
-
-                ReturnText(pathCut+ i + ".mp3");
-            }
-
-            int finalStart = count * 19;
-
-
-            if (finalStart != Length){
-
-
-                ReturnText(pathCut+ finalStart +".mp3");
-            }
-
-        }
-        else {
-            startAsyncApiForTranslated();
-        }
-    }
 }
 
 class AsyncApi extends AsyncTask<String, Void, Void> {
@@ -289,8 +179,6 @@ class AsyncApi extends AsyncTask<String, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        // [... Сообщите о результате через обновление пользовательского
-        // интерфейса, диалоговое окно или уведомление ...]
         RecordProcessing.changeDurationTranslatingAndEndTranslation();
     }
 

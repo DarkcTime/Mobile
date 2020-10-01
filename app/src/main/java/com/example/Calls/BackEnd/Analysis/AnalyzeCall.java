@@ -2,13 +2,9 @@ package com.example.Calls.BackEnd.Analysis;
 
 import android.media.MediaPlayer;
 
-import com.example.Calls.BackEnd.Api.FileSpeech;
-import com.example.Calls.BackEnd.Contacts.Contacts;
 import com.example.Calls.BackEnd.Records.Records;
 
 import java.io.File;
-
-import java.io.IOException;
 
 //TODO refactor class
 public class AnalyzeCall{

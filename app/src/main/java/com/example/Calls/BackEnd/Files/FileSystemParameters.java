@@ -23,19 +23,19 @@ public class FileSystemParameters {
                 .concat("/");
     }
 
-    //example: storage/emulated/0/Android/data/com.Calls/Миха/Call@4321432/records
+    //example: storage/emulated/0/Android/data/com.Calls/Миха/Call@4321432/
     public static String getPathForSelectedRecord(){
         return getPathForSelectedContact()
                 .concat(Records.getNameSelectedRecord()
                         .replace(".mp3", "").concat("/"));
     }
 
-    //example: storage/emulated/0/Android/data/com.Calls/Миха/Call@4321432/
+    //example: storage/emulated/0/Android/data/com.Calls/Миха/Call@4321432/records
     public static String getPathForSelectedRecordsForCutter(){
         return getPathForSelectedContact()
                 .concat(Records.getNameSelectedRecord()
-                        .replace(".mp3", "").concat("/")
-                .concat("records/"));
+                        .replace(".mp3", "")
+                .concat("/records/"));
     }
 
     public static String getPathForSelectedRecordApi(){

@@ -10,6 +10,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.Calls.BackEnd.Records.RecordProcessing;
 import com.example.Calls.WaitInEndPlay;
@@ -109,7 +110,8 @@ public class FFmpegCutter {
         ffmpeg.execute(command, new ExecuteBinaryResponseHandler() {
             @Override
             public void onFailure(String message) {
-                Log.d("onFailure", message);
+
+                Toast.makeText(waitInEndPlay, message, Toast.LENGTH_SHORT).show();
             }
 
             @RequiresApi(api = Build.VERSION_CODES.O)

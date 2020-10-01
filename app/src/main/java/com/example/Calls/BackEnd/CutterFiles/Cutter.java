@@ -38,6 +38,12 @@ public class Cutter {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void startCutFileIntervals(Context _context) throws Exception {
 
+        //TODO refactor
+        if(!new File(FileSystemParameters.getPathForSelectedRecordsForCutter()).mkdir()){
+            Log.d("File", "file no mkdir");
+        };
+
+
         FFmpegCutter fFmpegCutter = new FFmpegCutter(_context);
 
         fFmpegCutter.executeCommandForCutFileAfterPlay(getFilesForCutter(), FileSystemParameters.getPathForSelectedRecordApi());

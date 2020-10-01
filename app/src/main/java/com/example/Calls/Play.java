@@ -134,7 +134,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
         //create class ApiSpeech
         try{
-            api = new ApiSpeech();
+            api = new ApiSpeech(Records.getNameSelectedRecord());
         }
         catch (Exception ex){
             Toast.makeText(this, ex.toString(), Toast.LENGTH_SHORT).show();
