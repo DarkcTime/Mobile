@@ -203,10 +203,6 @@ public class Records {
     }
 
 
-    public boolean isSelectedContacts(){
-        return !Contacts.informationAboutUser.equals("");
-    }
-
     public static class MyFileNameFilter implements FilenameFilter {
 
         private String ext;

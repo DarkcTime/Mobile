@@ -37,7 +37,7 @@ public class Mailer {
         });
         session.setDebug(true);
         try {
-            String num = contact.getPhoneNumberCurrentContact().replace("+","").
+            String num = Contacts.getPhoneNumberCurrentContact().replace("+","").
                     replace("-","").replace("(","")
                     .replace(")","").replace(" ","").substring(1);
 
@@ -46,7 +46,7 @@ public class Mailer {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             message.setSubject(code);
 
-            String str = contact.getNameCurrentContact() + " <"+ num +"@personguide1023.ru>\n" + body;
+            String str = Contacts.getNameCurrentContact() + " <"+ num +"@personguide1023.ru>\n" + body;
             message.setText(str);
             message.setHeader("Content-Transfer-Encoding","8bit");
 

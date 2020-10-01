@@ -22,9 +22,6 @@ import java.util.List;
 
 public class AboutContact extends AppCompatActivity {
 
-
-    private Contacts contacts;
-
     private TextView textViewNameContact, textViewPhoneContact, textViewCountReady, textViewNeedMin, textViewNeedWords;
 
     private EditText editTextEditRec;
@@ -55,11 +52,9 @@ public class AboutContact extends AppCompatActivity {
         textViewNeedMin = (TextView) findViewById(R.id.textViewNeedMin);
         textViewNeedWords = (TextView) findViewById(R.id.textViewNeedWords);
 
-        contacts = new Contacts();
-
         //region setTextView
-        textViewNameContact.setText("Имя: " + contacts.getNameCurrentContact());
-        textViewPhoneContact.setText("Телефон: " + contacts.getPhoneNumberCurrentContact());
+        textViewNameContact.setText("Имя: " + Contacts.getNameCurrentContact());
+        textViewPhoneContact.setText("Телефон: " + Contacts.getPhoneNumberCurrentContact());
         textViewCountReady.setText("Процент готовкности: 20%");
         textViewNeedMin.setText("Предположительно осталось: 10 минут разговора");
         textViewNeedWords.setText("Количество полученных слов: 201 из 1000");

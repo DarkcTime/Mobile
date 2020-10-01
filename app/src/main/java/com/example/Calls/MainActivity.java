@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.Calls.BackEnd.Contacts.Contacts;
+import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.Files.FileSystemParameters;
 import com.example.Calls.BackEnd.Permissions.Permissions;
 import com.example.Calls.BackEnd.Records.Records;
@@ -55,15 +57,14 @@ public class MainActivity extends AppCompatActivity {
         //объект для работы с настройками
         SavedSettings savedSettings = new SavedSettings(mSettings);
 
-        //Toast.makeText(this, mSettings.getBoolean(SavedSettings.App_P));
-
         //если приложение запускается впервые выполняет данное условие
         if(!mSettings.getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false))
         {
-            //выставляет что приложение открывается не впервые
+
             SharedPreferences.Editor e = mSettings.edit();
             e.putBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, true);
             e.apply();
+
             //открывает окно с выбором уровня для пользователя
             Intent help = new Intent(MainActivity.this, Help.class);
             startActivity(help);
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             askPermission();
         }
         else{
-            //выводит справку если пользователь не эспексперт
+            //выводит справку если пользователь не эксперт
             startAlertDialog(0);
         }
 
@@ -85,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView text = (TextView) view;
-                Contacts.informationAboutUser = text.getText().toString();
+                Contacts.setInformationAboutUser(text.getText().toString());
                 //создание отдельной директории для пользователя в файловой системе
-                new File(FileSystemParameters.getPathForSelectedContact()).mkdir();
+                FileSystem.createDirectoryForContact();
                 Intent aboutContact = new Intent(MainActivity.this, AboutContact.class);
                 startActivity(aboutContact);
             }
@@ -105,8 +106,14 @@ public class MainActivity extends AppCompatActivity {
 
     //открывает окно настроек
     public void onCLickButtonSettings(View view){
-        Intent settings = new Intent(MainActivity.this, Settings.class);
-        startActivity(settings);
+        try{
+            Intent settings = new Intent(MainActivity.this, Settings.class);
+            startActivity(settings);
+        }
+        catch (Exception ex){
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+            Log.d("StartSettings", ex.getMessage());
+        }
     }
 
 
@@ -133,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
             if(!permissions.EnablePermissions(this)) loadMain();
     }
 
+    //обработка ответа разрешений
+    //TODO добавить алгоритм действий при отрицательном ответе
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
@@ -154,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
     //загрузка страницы, после запроса прав у пользователя
     private void loadMain(){
         //создаёт директорию для работы приложения с файлами
-        new File(FileSystemParameters.getPathApplicationFileSystem()).mkdir();
+        FileSystem.createDirectoryApplication();
 
         //установка пути в настройках
         Records.pathForFindRecords = mSettings.getString("path", Records.currentPathForRecordsXiomi);
@@ -168,74 +177,11 @@ public class MainActivity extends AppCompatActivity {
         listFiles.addAll(Records.getFiles(Records.pathForFindRecords));
 
         //вывод список контактов в list
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,  android.R.layout.simple_list_item_1, this.getListContacts(listFiles));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,  android.R.layout.simple_list_item_1, Contacts.getListContacts(listFiles, this));
 
         listViewContactsMA.setAdapter(adapter);
     }
 
-    //возвращает список контактов, записи которых были найдены
-    private ArrayList<String> getListContacts(List<File> listFiles){
-
-        String[] listNames;
-        listNames = Records.getUniqueList(listFiles);
-
-
-        ArrayList<String> listContacts = new ArrayList<String>();
-
-        Cursor cursor= this.getContentResolver().query(
-                ContactsContract.Contacts.CONTENT_URI,
-                null, null, null, null);
-
-        int count = 0;
-        while (cursor.moveToNext()){
-            boolean check = false;
-            String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-            String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-            String phone = "";
-
-            if(name == null) continue;
-
-            //TODO Влад: протестировать логику во всех ситуациях, поставить максимальное число символов при выводе контакта
-            for (String listName : listNames) {
-
-                if(Records.isConstrainNameRecord(listName, name, 10)){
-                    check = true;
-                    break;
-                }
-
-                check = listName.equals(name);
-
-                if(check){
-                    break;
-                }
-            }
-            if(!check) continue;
-
-            int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)));
-            if(hasPhoneNumber > 0){
-                Cursor pCur;
-                pCur = this.getContentResolver().query(
-                        ContactsContract.CommonDataKinds
-                                .Phone.CONTENT_URI,
-                        null,
-                        ContactsContract.CommonDataKinds
-                                .Phone.CONTACT_ID + " = ?",
-                        new String[]{id},
-                        null);
-
-                while (pCur.moveToNext()){
-                    phone = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                }
-
-            }
-
-            listContacts.add(name + " | " + phone + "\nГотовность: " + "20%");
-        }
-
-        return listContacts;
-    }
-
-    //endregion
 
 
 }

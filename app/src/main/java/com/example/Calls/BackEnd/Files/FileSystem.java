@@ -64,6 +64,15 @@ public class FileSystem {
          */
     }
 
+
+    public static void createDirectoryForContact(){
+        new File(FileSystemParameters.getPathForSelectedContact()).mkdir();
+    }
+
+    public static void createDirectoryApplication(){
+        new File(FileSystemParameters.getPathApplicationFileSystem()).mkdir();
+    }
+
 }
 
 class MyFileNameFilter implements FilenameFilter {
