@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.example.Calls.BackEnd.Api.ApiMain;
 import com.example.Calls.BackEnd.Contacts.Contacts;
+import com.example.Calls.BackEnd.Debug.DebugMessages;
 import com.example.Calls.BackEnd.Records.Records;
+import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Dialog.FilesDialog;
 
 import java.io.File;
@@ -22,6 +24,7 @@ import java.util.List;
 
 public class AboutContact extends AppCompatActivity {
 
+    //TODO продумать и проработать статистические данные
     private TextView textViewNameContact, textViewPhoneContact, textViewCountReady, textViewNeedMin, textViewNeedWords;
 
     private EditText editTextEditRec;
@@ -30,79 +33,93 @@ public class AboutContact extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.about_contact);
-
         try{
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.about_contact);
+
             setParametersForView();
 
             setEditTextRecToFileContact();
         }
         catch (IOException ex){
-            Log.d("AboutContact", ex.getMessage());
+            DebugMessages.ErrorMessage(ex, this, "AboutContact");
         }
 
-
     }
 
+    //объявление переменных для AboutContact
     private void setParametersForView(){
-        textViewNameContact = (TextView) findViewById(R.id.textViewNameContact);
-        textViewPhoneContact = (TextView) findViewById(R.id.textViewPhoneContact);
-        textViewCountReady = (TextView) findViewById(R.id.textViewCountReady);
-        textViewNeedMin = (TextView) findViewById(R.id.textViewNeedMin);
-        textViewNeedWords = (TextView) findViewById(R.id.textViewNeedWords);
+        try{
+            textViewNameContact = (TextView) findViewById(R.id.textViewNameContact);
+            textViewPhoneContact = (TextView) findViewById(R.id.textViewPhoneContact);
+            textViewCountReady = (TextView) findViewById(R.id.textViewCountReady);
+            textViewNeedMin = (TextView) findViewById(R.id.textViewNeedMin);
+            textViewNeedWords = (TextView) findViewById(R.id.textViewNeedWords);
 
-        //region setTextView
-        textViewNameContact.setText("Имя: " + Contacts.getNameCurrentContact());
-        textViewPhoneContact.setText("Телефон: " + Contacts.getPhoneNumberCurrentContact());
-        textViewCountReady.setText("Процент готовкности: 20%");
-        textViewNeedMin.setText("Предположительно осталось: 10 минут разговора");
-        textViewNeedWords.setText("Количество полученных слов: 201 из 1000");
+            //region setTextView
+            textViewNameContact.setText("Имя: " + Contacts.getNameCurrentContact());
+            textViewPhoneContact.setText("Телефон: " + Contacts.getPhoneNumberCurrentContact());
+            textViewCountReady.setText("Процент готовкности: 20%");
+            textViewNeedMin.setText("Предположительно осталось: 10 минут разговора");
+            textViewNeedWords.setText("Количество полученных слов: 201 из 1000");
 
-        //endregion
+            //endregion
 
-        editTextEditRec = (EditText) findViewById(R.id.editTextEditRec);
+            editTextEditRec = (EditText) findViewById(R.id.editTextEditRec);
+        }
+        catch (Exception ex){
+            DebugMessages.ErrorMessage(ex,this, "setParametersForView");
+        }
     }
 
+    //загрузка текста из общего файла пользователя в окно для изменения
     private void setEditTextRecToFileContact() throws IOException{
         editTextEditRec.setText(ApiMain.readFullFileSelectedContact());
     }
 
 
-
-
-    private void startFilesDialog(List<File> listFiles){
-        FragmentManager manager = getSupportFragmentManager();
-        FilesDialog filesDialog = new FilesDialog();
-        filesDialog.setContext(this);
-        filesDialog.setListRecords(listFiles);
-        filesDialog.show(manager, "myDialog");
-
-    }
-
-    public void startGame(String nameRecord){
-        Intent play = new Intent(AboutContact.this, Play.class);
-        //set NameSelectedRecordForApp
-        Records.setNameSelectedRecord(nameRecord);
-        startActivity(play);
-    }
-
-
     public void onClickButtonSelectRecord(View view){
-        listFiles.clear();
-        listFiles.addAll(Records.getFiles(Records.pathForFindRecords));
-        startFilesDialog(listFiles);
+        try{
+            loadDataInList();
+        }
+        catch (Exception ex){
+            DebugMessages.ErrorMessage(ex, this, "ButtonSelectRecord");
+        }
     }
 
     public void onClickButtonCancel(View view){
-        Intent main = new Intent(AboutContact.this, MainActivity.class);
-        startActivity(main);
+        try{
+            Intent main = new Intent(AboutContact.this, MainActivity.class);
+            startActivity(main);
+        }
+        catch (Exception ex){
+            DebugMessages.ErrorMessage(ex,this, "ButtonCancel");
+        }
     }
 
+
+    private void loadDataInList(){
+        listFiles.clear();
+        listFiles.addAll(Records.getFiles(Records.pathForFindRecords));
+        DialogMain.startFilesDialog(this,listFiles);
+    }
+
+
+    //TODO дописать справку для окна выбора контакта
     public void onClickButtonHelpAboutContact(View view){
 
     }
 
+    public void startGame(String nameRecord){
+        try{
+            Intent play = new Intent(AboutContact.this, Play.class);
+            Records.setNameSelectedRecord(nameRecord);
+            startActivity(play);
+        }
+        catch (Exception ex){
+            DebugMessages.ErrorMessage(ex,this,"startGame");
+        }
+    }
 
 
 

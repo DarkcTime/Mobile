@@ -1,13 +1,25 @@
 package com.example.Calls.Dialog;
 
+import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
+import com.example.Calls.AboutContact;
 import com.example.Calls.MainActivity;
 import com.example.Calls.Play;
 import com.example.Calls.WaitInEndPlay;
 
+import java.io.File;
+import java.util.List;
+
 public class DialogMain {
 
+    public static void startFilesDialog(AboutContact aboutContact, List<File> listFiles){
+        FragmentManager manager = aboutContact.getSupportFragmentManager();
+        FilesDialog filesDialog = new FilesDialog();
+        filesDialog.setContext(aboutContact);
+        filesDialog.setListRecords(listFiles);
+        filesDialog.show(manager, "FilesDialog");
+    }
 
     public static void startAlertDialog(MainActivity mainActivity, MyDialogHelp.Windows window){
         FragmentManager manager = mainActivity.getSupportFragmentManager();

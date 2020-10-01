@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.Calls.BackEnd.Debug.DebugMessages;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
 
 public class Help extends AppCompatActivity {
@@ -18,10 +19,16 @@ public class Help extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.help);
+        try{
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.help);
 
-        mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
+            mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
+
+        }
+        catch (Exception ex){
+            DebugMessages.ErrorMessage(ex, this, "Help");
+        }
 
     }
 
@@ -40,7 +47,7 @@ public class Help extends AppCompatActivity {
             startMainActivity();
         }
         catch (Exception ex){
-            Toast.makeText(this, "Ошибка при установке уровня" + ex.toString(), Toast.LENGTH_SHORT).show();
+            DebugMessages.ErrorMessage(ex, this, "SetBegin");
         }
 
     }
@@ -52,18 +59,11 @@ public class Help extends AppCompatActivity {
             startMainActivity();
         }
         catch (Exception ex){
-            Toast.makeText(this, "Ошибка при установке уровня", Toast.LENGTH_SHORT).show();
+            DebugMessages.ErrorMessage(ex, this, "SetExpert");
         }
 
     }
 
     //endregion
-
-    //button back
-    @Override
-    public void onBackPressed() {
-        // super.onBackPressed();
-
-    }
 
 }

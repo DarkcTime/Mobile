@@ -252,36 +252,13 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     }
 
-    /*
-    //region workWithApi
-    private void startAllRecordsForTranslated() throws Exception{
-        ApiSpeech api = new ApiSpeech();
-        //получаем все файлы по выбранному пути
-        List<File> listFiles = new ArrayList<File>(Records.getFiles(FilesWork.getPathForListRecord(nameRecord)));
-        Log.d("countListFiles", String.valueOf(listFiles.size()));
 
-        for(File file : listFiles){
-            Log.d("getAbsolutFile", file.getAbsolutePath());
-            api.SpeechToText(file.getAbsolutePath(), contacts);
-            break;
-        }
-
-    }
-
-    private void readAllRecords(){
-        try{
-            String translatedText = FileSpeech.ReadFileSpeech(contacts);
-            Toast.makeText(this, translatedText, Toast.LENGTH_SHORT).show();
-        }
-        catch (Exception ex){
-            Toast.makeText(this, ex.toString(), Toast.LENGTH_SHORT).show();
-        }
+    private void loadMain(){
 
     }
 
 
-     */
-    //endregion
+
 
     //region buttons Click
 

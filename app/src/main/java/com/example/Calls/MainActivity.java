@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Debug;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.Calls.BackEnd.Contacts.Contacts;
+import com.example.Calls.BackEnd.Debug.DebugMessages;
 import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.Files.FileSystemParameters;
 import com.example.Calls.BackEnd.Permissions.Permissions;
@@ -48,51 +50,56 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        try{
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
 
-        listViewContactsMA = (ListView)(findViewById(R.id.listViewContactsMA));
+            listViewContactsMA = (ListView)(findViewById(R.id.listViewContactsMA));
 
-        mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
+            mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
 
-        //объект для работы с настройками
-        SavedSettings savedSettings = new SavedSettings(mSettings);
+            //объект для работы с настройками
+            SavedSettings savedSettings = new SavedSettings(mSettings);
 
-        //если приложение запускается впервые выполняет данное условие
-        if(!mSettings.getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false))
-        {
-            SharedPreferences.Editor e = mSettings.edit();
-            e.putBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, true);
-            e.apply();
+            //если приложение запускается впервые выполняет данное условие
+            if(!mSettings.getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false))
+            {
+                SharedPreferences.Editor e = mSettings.edit();
+                e.putBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, true);
+                e.apply();
 
-            //открывает окно с выбором уровня для пользователя
-            Intent help = new Intent(MainActivity.this, Help.class);
-            startActivity(help);
-            return;
-        }
-
-
-        if(SavedSettings.isExpert()){
-            //запрашивает разрения у пользователя
-            askPermission();
-        }
-        else{
-            //выводит справку если пользователь не эксперт
-            DialogMain.startAlertDialog(this, MyDialogHelp.Windows.HELP);
-        }
-
-        //определяет выбранный контакт и переходит на следующую activity
-        listViewContactsMA.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView text = (TextView) view;
-                Contacts.setInformationAboutUser(text.getText().toString());
-                //создание отдельной директории для пользователя в файловой системе
-                FileSystem.createDirectoryForContact();
-                Intent aboutContact = new Intent(MainActivity.this, AboutContact.class);
-                startActivity(aboutContact);
+                //открывает окно с выбором уровня для пользователя
+                Intent help = new Intent(MainActivity.this, Help.class);
+                startActivity(help);
+                return;
             }
-        });
+
+
+            if(SavedSettings.isExpert()){
+                //запрашивает разрения у пользователя
+                askPermission();
+            }
+            else{
+                //выводит справку если пользователь не эксперт
+                DialogMain.startAlertDialog(this, MyDialogHelp.Windows.HELP);
+            }
+
+            //определяет выбранный контакт и переходит на следующую activity
+            listViewContactsMA.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    TextView text = (TextView) view;
+                    Contacts.setInformationAboutUser(text.getText().toString());
+                    //создание отдельной директории для пользователя в файловой системе
+                    FileSystem.createDirectoryForContact();
+                    Intent aboutContact = new Intent(MainActivity.this, AboutContact.class);
+                    startActivity(aboutContact);
+                }
+            });
+        }
+        catch (Exception ex){
+            DebugMessages.ErrorMessage(ex, this, "MainActivity");
+        }
 
     }
 
@@ -100,24 +107,30 @@ public class MainActivity extends AppCompatActivity {
 
     //загрузка страницы, после запроса прав у пользователя
     private void loadMain(){
-        //создаёт директорию для работы приложения с файлами
-        FileSystem.createDirectoryApplication();
+        try{
+            //создаёт директорию для работы приложения с файлами
+            FileSystem.createDirectoryApplication();
 
-        //установка пути в настройках
-        Records.pathForFindRecords = mSettings.getString("path", Records.currentPathForRecordsXiomi);
+            //установка пути в настройках
+            Records.pathForFindRecords = mSettings.getString("path", Records.currentPathForRecordsXiomi);
 
-        if(!Records.checkPath(Records.pathForFindRecords)){
-            Toast.makeText(this, Records.pathForFindRecords, Toast.LENGTH_SHORT).show();
-            return;
+            if(!Records.checkPath(Records.pathForFindRecords)){
+                Toast.makeText(this, Records.pathForFindRecords, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            //add list from selected path
+            listFiles.addAll(Records.getFiles(Records.pathForFindRecords));
+
+            //вывод список контактов в list
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,  android.R.layout.simple_list_item_1, Contacts.getListContacts(listFiles, this));
+
+            listViewContactsMA.setAdapter(adapter);
+        }
+        catch (Exception ex){
+            DebugMessages.ErrorMessage(ex,this, "loadMain");
         }
 
-        //add list from selected path
-        listFiles.addAll(Records.getFiles(Records.pathForFindRecords));
-
-        //вывод список контактов в list
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,  android.R.layout.simple_list_item_1, Contacts.getListContacts(listFiles, this));
-
-        listViewContactsMA.setAdapter(adapter);
     }
 
 
@@ -135,8 +148,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(settings);
         }
         catch (Exception ex){
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
-            Log.d("StartSettings", ex.getMessage());
+            DebugMessages.ErrorMessage(ex,this, "onClickSettings");
         }
     }
 
@@ -145,9 +157,15 @@ public class MainActivity extends AppCompatActivity {
     //region permissions
     //запрос разрешений
     public void askPermission(){
+        try{
+
             Permissions permissions = new Permissions();
             //если разрешения были получены, выводит список записей
             if(!permissions.EnablePermissions(this)) loadMain();
+        }
+        catch (Exception ex){
+            DebugMessages.ErrorMessage(ex,this, "askPermission");
+        }
     }
 
     //обработка ответа разрешений
@@ -155,15 +173,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if (grantResults.length > 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-        {
-            // permission granted
-            loadMain();
-        }
-        else
+        try{
+            if (grantResults.length > 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
             {
+                // permission granted
+                loadMain();
+            }
+            else {
                 // permission denied
                 DialogMain.startAlertDialog(this, MyDialogHelp.Windows.PERMISSIONS);
+            }
+
+        }
+        catch (Exception ex){
+            DebugMessages.ErrorMessage(ex,this, "onRequestPermission");
         }
 
     }
