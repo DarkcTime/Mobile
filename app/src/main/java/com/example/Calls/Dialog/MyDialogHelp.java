@@ -11,41 +11,42 @@ import android.util.Log;
 import android.support.v7.app.AppCompatDialogFragment;
 
 import com.example.Calls.MainActivity;
+import com.example.Calls.Play;
 import com.example.Calls.R;
 import com.example.Calls.WaitInEndPlay;
 
 import java.io.IOException;
 
+import static com.example.Calls.Dialog.MyDialogHelp.Windows.API;
+
 public class MyDialogHelp extends AppCompatDialogFragment{
 
     //TODO refactor getButton!
 
-    private static String ClickResultMain = "";
+    private static Windows window;
 
-    private static void setClickResultMain(String _clickResult){
-        ClickResultMain = _clickResult;
-    }
+    private MainActivity MainActivityContext;
 
-    public static String getClickResultMain(){
-        return ClickResultMain;
-    }
+    private WaitInEndPlay WaitEndPlayContext;
 
-    public static int getButton;
-
-    private MainActivity context;
-
-    private WaitInEndPlay contextWaitEndPlay;
+    private Play PlayContext;
 
     @SuppressLint("ValidFragment")
-    public MyDialogHelp(MainActivity _context,int _getButton){
-        context = _context;
-        getButton = _getButton;
+    public MyDialogHelp(MainActivity _context,Windows _window){
+        MainActivityContext = _context;
+        window = _window;
     }
 
     @SuppressLint("ValidFragment")
-    public MyDialogHelp(WaitInEndPlay _context,int _getButton){
-        contextWaitEndPlay = _context;
-        getButton = _getButton;
+    public MyDialogHelp(WaitInEndPlay _context,Windows _window){
+        WaitEndPlayContext = _context;
+        window = _window;
+    }
+
+    @SuppressLint("ValidFragment")
+    public MyDialogHelp(Play _context, Windows _window){
+        PlayContext = _context;
+        window = _window;
     }
 
     public MyDialogHelp(){
@@ -57,8 +58,9 @@ public class MyDialogHelp extends AppCompatDialogFragment{
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        switch (getButton){
-            case 0:
+
+        switch (window){
+            case HELP:
                 builder.setTitle("Справка")
                         .setIcon(R.drawable.que)
                         .setMessage("1) Ознакомьтесь со справкой\n2) Выберите распложение записей разговоров в настройках\n(если марка телефона Xiaomi," +
@@ -74,13 +76,13 @@ public class MyDialogHelp extends AppCompatDialogFragment{
                         .setPositiveButton("Ок, понял", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // Закрываем окно
-                                context.askPermission();
+                                MainActivityContext.askPermission();
                                 dialog.cancel();
                             }
                         });
 
                 break;
-            case 1:
+            case PLAY:
                 builder.setTitle("Голосовые потоки")
                         .setIcon(R.drawable.que)
                         .setMessage("Цель: выделить свой голос и голос собеседника,\n" +
@@ -102,7 +104,7 @@ public class MyDialogHelp extends AppCompatDialogFragment{
                                 dialog.cancel();
                             }
                         });
-            case 2:
+            case TEST:
                 builder.setTitle("Запись звонка успешно выделена")
                         .setMessage("Здесь должен быть текст который получиться после перевода записи")
                         .setPositiveButton("ОК, понял", new DialogInterface.OnClickListener() {
@@ -111,7 +113,7 @@ public class MyDialogHelp extends AppCompatDialogFragment{
                                 dialog.cancel();
                             }
                         });
-            case 3:
+            case PERMISSIONS:
                 builder.setTitle("Дать приложению разрешения")
                         .setMessage("Если вы не дадите разрешения, то прижение не сможет использовать задуманный функционал( \n" +
                                 "Приложение использует защищенный протокол обработки данных. Также все записи и результаты переводов храняться на вашем телефоне без использования сторонних серверов")
@@ -119,31 +121,31 @@ public class MyDialogHelp extends AppCompatDialogFragment{
                             public void onClick(DialogInterface dialog, int id) {
                                 // Закрываем окно
                                 dialog.cancel();
-                                context.askPermission();
+                                MainActivityContext.askPermission();
                             }
                         })
                         .setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
-                                context.finish();
+                                MainActivityContext.finish();
                             }
                         });
-            case 4:
+            case API:
                 try{
                     builder.setTitle("Результат текста полученный в данной записи")
-                            .setMessage(contextWaitEndPlay.getApiMain().readFullFileSelectedRecord())
+                            .setMessage(WaitEndPlayContext.getApiMain().readFullFileSelectedRecord())
                             .setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    contextWaitEndPlay.dialogResultAdd();
+                                    WaitEndPlayContext.dialogResultAdd();
                                     dialog.cancel();
                                 }
                             })
                             .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    contextWaitEndPlay.dialogResultCancel();
+                                    WaitEndPlayContext.dialogResultCancel();
                                     dialog.cancel();
                                 }
                             });
@@ -156,6 +158,10 @@ public class MyDialogHelp extends AppCompatDialogFragment{
         }
 
         return builder.create();
+    }
+
+    public enum Windows{
+        HELP, PERMISSIONS, API, PLAY, TEST
     }
 
 

@@ -26,6 +26,7 @@ import com.example.Calls.BackEnd.Contacts.Contacts;
 import com.example.Calls.BackEnd.CutterFiles.Cutter;
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
+import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Dialog.MyDialogHelp;
 
 import java.io.IOException;
@@ -143,7 +144,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         hearing = false;
 
         if(!SavedSettings.isExpert()){
-            startAlertDialog(1);
+            DialogMain.startAlertDialog(this, MyDialogHelp.Windows.PLAY);
         }
 
         //endregion
@@ -360,7 +361,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 startActivity(settingsForPlay);
                 return true;
             case R.id.help:
-                startAlertDialog(2);
+                DialogMain.startAlertDialog(this, MyDialogHelp.Windows.TEST);
                 return true;
             case  R.id.reset:
                 Intent reset = getIntent();
@@ -412,14 +413,6 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         return AnalyzeCall.createTimeLabel(mp.getCurrentPosition()).concat(" - ").concat(AnalyzeCall.createTimeLabel(mp.getDuration()));
     }
 
-
-
-    private void startAlertDialog(int numButton){
-        FragmentManager manager = getSupportFragmentManager();
-        MyDialogHelp.getButton = numButton;
-        MyDialogHelp myDialogHelp = new MyDialogHelp();
-        myDialogHelp.show(manager, "myDialog");
-    }
 
     private void setLinerMedia(int time){
         linerMedia += spaces + "|";

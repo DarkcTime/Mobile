@@ -16,6 +16,7 @@ import com.example.Calls.BackEnd.CutterFiles.WorkWithFileForCutter;
 import com.example.Calls.BackEnd.Records.RecordProcessing;
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.Dialog.DialogMain;
+import com.example.Calls.Dialog.MyDialogHelp;
 
 import java.io.IOException;
 
@@ -95,7 +96,7 @@ public class WaitInEndPlay extends AppCompatActivity {
     public void finishProcessingAndTranslating(){
         try{
             apiMain.createResultFileForSelectedRecord();
-            DialogMain.startAlertDialog(this, 4);
+            DialogMain.startAlertDialog(this, MyDialogHelp.Windows.API);
         }
         catch (IOException ex) {
             Log.d("finishProcessing", ex.getMessage());

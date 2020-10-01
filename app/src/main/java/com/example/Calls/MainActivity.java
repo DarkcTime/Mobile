@@ -25,6 +25,7 @@ import com.example.Calls.BackEnd.Files.FileSystemParameters;
 import com.example.Calls.BackEnd.Permissions.Permissions;
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
+import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Dialog.MyDialogHelp;
 
 import java.io.File;
@@ -60,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         //если приложение запускается впервые выполняет данное условие
         if(!mSettings.getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false))
         {
-
             SharedPreferences.Editor e = mSettings.edit();
             e.putBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, true);
             e.apply();
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             //выводит справку если пользователь не эксперт
-            startAlertDialog(0);
+            DialogMain.startAlertDialog(this, MyDialogHelp.Windows.HELP);
         }
 
         //определяет выбранный контакт и переходит на следующую activity
@@ -94,71 +94,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-    }
-
-    //region ButtonsClick
-
-    //открывает диалоговое окно с контекстной справкой для данной страницы
-    public void onCLickButtonHelp(View view){
-        startAlertDialog(0);
-    }
-
-    //открывает окно настроек
-    public void onCLickButtonSettings(View view){
-        try{
-            Intent settings = new Intent(MainActivity.this, Settings.class);
-            startActivity(settings);
-        }
-        catch (Exception ex){
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
-            Log.d("StartSettings", ex.getMessage());
-        }
     }
 
 
-    //endregion
-
-
-    //region helper Methods
-    //TODO рефактор, может использоваться повторно в других местах
-    //открывает диалоговое окно
-    private void startAlertDialog(int numButton){
-        FragmentManager manager = getSupportFragmentManager();
-        MyDialogHelp.getButton = numButton;
-        //MyDialogHelp.setContextMain(this);
-        MyDialogHelp myDialogHelp = new MyDialogHelp(this,3);
-        myDialogHelp.show(manager, "myDialog");
-    }
-
-
-    //region permissions
-    //запрос разрешений
-    public void askPermission(){
-            Permissions permissions = new Permissions();
-            //если разрешения были получены, выводит список записей
-            if(!permissions.EnablePermissions(this)) loadMain();
-    }
-
-    //обработка ответа разрешений
-    //TODO добавить алгоритм действий при отрицательном ответе
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        if (grantResults.length > 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-        {
-            // permission granted
-            loadMain();
-        }
-        else
-            {
-                // permission denied
-                startAlertDialog(3);
-        }
-
-    }
-
-    //endregion
 
     //загрузка страницы, после запроса прав у пользователя
     private void loadMain(){
@@ -181,6 +119,58 @@ public class MainActivity extends AppCompatActivity {
 
         listViewContactsMA.setAdapter(adapter);
     }
+
+
+    //region ButtonsClick
+
+    //открывает диалоговое окно с контекстной справкой для данной страницы
+    public void onCLickButtonHelp(View view){
+        DialogMain.startAlertDialog(this, MyDialogHelp.Windows.HELP);
+    }
+
+    //открывает окно настроек
+    public void onCLickButtonSettings(View view){
+        try{
+            Intent settings = new Intent(MainActivity.this, Settings.class);
+            startActivity(settings);
+        }
+        catch (Exception ex){
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+            Log.d("StartSettings", ex.getMessage());
+        }
+    }
+
+    //endregion
+
+    //region permissions
+    //запрос разрешений
+    public void askPermission(){
+            Permissions permissions = new Permissions();
+            //если разрешения были получены, выводит список записей
+            if(!permissions.EnablePermissions(this)) loadMain();
+    }
+
+    //обработка ответа разрешений
+    //TODO добавить алгоритм действий при отрицательном ответе
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (grantResults.length > 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        {
+            // permission granted
+            loadMain();
+        }
+        else
+            {
+                // permission denied
+                DialogMain.startAlertDialog(this, MyDialogHelp.Windows.PERMISSIONS);
+        }
+
+    }
+
+    //endregion
+
+
 
 
 
