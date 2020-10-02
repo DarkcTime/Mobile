@@ -1,6 +1,11 @@
 package com.example.Calls.BackEnd.Mail;
 
+import android.content.Intent;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.example.Calls.BackEnd.Contacts.Contacts;
+import com.example.Calls.MainActivity;
 
 import java.util.Properties;
 
@@ -15,14 +20,39 @@ import javax.mail.internet.MimeMessage;
 
 public class Mailer {
 
-    String to = "cerebrofon@yandex.ru";
-    String from = "testsiteivans@gmail.com";
-    String host = "smtp.gmail.com";
-    String username = "testsiteivans@gmail.com";
-    String password = "123qweASD!qweASD";
-    String port = "587";
+    final String to = "vlad_chekmarev_01@mail.ru";
+    final String from = "sgk.inventories@gmail.com";
+    final String host = "smtp.gmail.com";
+    final String username = "sgk.inventories@gmail.com";
+    final String password = "wlad620!wlad620!";
+    final String port = "587";
 
-    public void SendMail(String code, Contacts contact, String body) {
+    public  Mailer(){
+
+    }
+
+    public void SendMessageAboutError(Exception ex, MainActivity mainActivity){
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{to});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Error from Android Application");
+        i.putExtra(Intent.EXTRA_TEXT   , ex.getMessage());
+        try {
+            mainActivity.startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException e) {
+            Toast.makeText(mainActivity, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private MainActivity mainActivity;
+
+    public void SendMain(String message, EmailType type){
+
+
+    }
+
+
+    public void SendMail2(String code, String body) {
         Properties properties = System.getProperties();
         properties.setProperty("mail.smtp.auth", "true");
         properties.setProperty("mail.smtp.host", host);
@@ -36,21 +66,27 @@ public class Mailer {
             }
         });
         session.setDebug(true);
-        try {
-            String num = Contacts.getPhoneNumberCurrentContact().replace("+","").
-                    replace("-","").replace("(","")
-                    .replace(")","").replace(" ","").substring(1);
 
+        try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             message.setSubject(code);
-
-            String str = Contacts.getNameCurrentContact() + " <"+ num +"@personguide1023.ru>\n" + body;
+            String str = body;
             message.setText(str);
             message.setHeader("Content-Transfer-Encoding","8bit");
 
             Transport.send(message); System.out.println("Email Sent successfully....");
-        } catch (MessagingException mex){ mex.printStackTrace(); }
+
+
+        } catch (Exception ex){
+            Log.d("mailer", ex.getMessage());
+        }
+    }
+
+    public enum EmailType{
+        Error, Path
     }
 }
+
+

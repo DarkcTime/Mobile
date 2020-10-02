@@ -1,6 +1,7 @@
 package com.example.Calls;
 
 //region import
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +25,7 @@ import com.example.Calls.BackEnd.Contacts.Contacts;
 import com.example.Calls.BackEnd.Debug.DebugMessages;
 import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.Files.FileSystemParameters;
+import com.example.Calls.BackEnd.Mail.Mailer;
 import com.example.Calls.BackEnd.Permissions.Permissions;
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(aboutContact);
                 }
             });
+            
         }
         catch (Exception ex){
             DebugMessages.ErrorMessage(ex, this, "MainActivity");

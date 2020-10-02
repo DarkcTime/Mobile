@@ -1,6 +1,7 @@
 package com.example.Calls.Dialog;
 
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
 import com.example.Calls.AboutContact;
@@ -40,6 +41,12 @@ public class DialogMain {
         //MyDialogHelp.setContextMain(this);
         MyDialogHelp myDialogHelp = new MyDialogHelp(play, window);
         myDialogHelp.show(manager, "myDialog");
+    }
+
+    public static void startErrorDialog(MainActivity mainActivity,Exception ex){
+        FragmentManager manager = mainActivity.getSupportFragmentManager();
+        ErrorDialog errorDialog = new ErrorDialog(mainActivity,ex);
+        errorDialog.show(manager, "ErrorDialog");
     }
 
 }
