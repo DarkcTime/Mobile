@@ -60,7 +60,7 @@ public class ErrorDialog extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle("Возникло исключение")
-                .setIcon(R.drawable.que)
+                .setIcon(R.drawable.unavailable)
                 .setMessage(ex.toString())
                 .setPositiveButton("Отправить разработчику на мыло", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

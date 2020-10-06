@@ -64,6 +64,8 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         return cutter;
     }
 
+    private boolean endRecord = false;
+
     private Button buttonBackRewind, buttonFordRewind;
 
     //endregion
@@ -74,10 +76,6 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         try{
             super.onCreate(savedInstanceState);
             setContentView(R.layout.play);
-
-            if(!SavedSettings.isExpert()){
-                DialogMain.startAlertDialog(this, MyDialogHelp.Windows.PLAY);
-            }
 
             setVariablesForPlay();
 
@@ -130,6 +128,13 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 }
             });
 
+
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    endRecord = true;
+                }
+            });
             //endregion
         }
         catch (Exception ex){
@@ -292,13 +297,22 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     public void onClickButtonStopGame(View view){
         try{
 
-            Intent WaitEndPlay = new Intent(Play.this, WaitInEndPlay.class);
-            startActivity(WaitEndPlay);
-
+            startCutterAndTranslateRecord();
         }
         catch (Exception ex){
            DebugMessages.ErrorMessage(ex, this, "StopGame");
         }
+    }
+
+    public void startCutterAndTranslateRecord(){
+        Intent WaitEndPlay = new Intent(Play.this, WaitInEndPlay.class);
+        startActivity(WaitEndPlay);
+    }
+
+
+    public void startAboutContact(){
+        Intent AboutContact = new Intent(Play.this, com.example.Calls.AboutContact.class);
+        startActivity(AboutContact);
     }
 
     public void onClickStartPlay(View view){
@@ -348,6 +362,10 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     }
 
     private void updateGame(){
+
+        if(endRecord) {
+            DialogMain.startAlertDialog(this, MyDialogHelp.Windows.MEDIA);
+        }
         if(checkPlaying <= 0){
             modeWait(false);
         }

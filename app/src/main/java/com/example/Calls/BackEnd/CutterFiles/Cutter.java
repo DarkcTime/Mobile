@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.Files.FileSystemParameters;
 import com.example.Calls.BackEnd.Records.Records;
 
@@ -27,11 +28,8 @@ public class Cutter {
         intervalList.add(interval);
     }
 
-    private String nameRecord;
-
     public Cutter(){
         intervalList = new ArrayList<CutterInterval>();
-        nameRecord = Records.getNameSelectedRecord();
     }
 
     //полный путь с именем записи
@@ -39,31 +37,12 @@ public class Cutter {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void startCutFileIntervals(Context _context) throws Exception {
 
-        //TODO refactor
-        if(!new File(FileSystemParameters.getPathForSelectedRecordsForCutter()).mkdir()){
-            Log.d("File", "file no mkdir");
-        };
-
-
         FFmpegCutter fFmpegCutter = new FFmpegCutter(_context);
 
-        fFmpegCutter.executeCommandForCutFileAfterPlay(getFilesForCutter(), FileSystemParameters.getPathForSelectedRecordApi());
+        fFmpegCutter.executeCommandForCutFileAfterPlay(FileSystem.getFilesForCutter(intervalList));
 
     }
 
-    private List<FileForCutter> getFilesForCutter(){
-        WorkWithFileForCutter workWithFileForCutter = new WorkWithFileForCutter(nameRecord);
-        int i = 0;
-        List<FileForCutter> fileForCutterList = new ArrayList<FileForCutter>();
-        for (CutterInterval interval : intervalList) {
-            int duration = interval.getEnd() - interval.getStart();
-            File targetFile = new File(FileSystemParameters.getPathForSelectedRecordsForCutter().concat(String.valueOf(i)).concat(".mp3"));
-            Log.d("targetFile", targetFile.getAbsolutePath());
-            FileForCutter fileForCutter = new FileForCutter(interval.getStart(),duration, workWithFileForCutter.getSourceFile(),targetFile);
-            fileForCutterList.add(fileForCutter);
-            i++;
-        }
-        return fileForCutterList;
-    }
+
 
 }

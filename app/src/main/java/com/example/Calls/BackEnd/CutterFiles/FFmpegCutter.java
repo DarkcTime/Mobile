@@ -13,6 +13,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.Calls.BackEnd.Debug.DebugMessages;
+import com.example.Calls.BackEnd.Files.FileSystem;
+import com.example.Calls.BackEnd.Files.FileSystemParameters;
 import com.example.Calls.BackEnd.Records.RecordProcessing;
 import com.example.Calls.WaitInEndPlay;
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
@@ -74,7 +76,7 @@ public class FFmpegCutter {
         });
     }
 
-    public void executeCommandForCutFileAfterPlay(List<FileForCutter> filesForCutter, String _pathForCopy) {
+    public void executeCommandForCutFileAfterPlay(List<FileForCutter> filesForCutter) {
 
         try{
             RecordProcessing.setMaxDurationProcessing(filesForCutter.size());
@@ -82,7 +84,7 @@ public class FFmpegCutter {
             for (FileForCutter file : filesForCutter) {
                 try {
                     File sourceFile = new File(file.getDestination().getAbsolutePath());
-                    File copyFile = new File(getTargetFileForCopy(_pathForCopy, file.getDestination().getName()).getAbsolutePath());
+                    File copyFile = new File(getTargetFileForCopy(FileSystemParameters.getPathForSelectedRecordApi(), file.getDestination().getName()).getAbsolutePath());
                     executeFFMpegCommand(getCommand(file), sourceFile, copyFile);
                 } catch (FFmpegCommandAlreadyRunningException ex) {
                     Log.d("FFAlreadyRunningEx", ex.getMessage());
@@ -102,8 +104,15 @@ public class FFmpegCutter {
     }
 
 
+    /**
+     * Генерирует команду для резчика
+     * Пример: -i /storage/emulated/0/MIUI/sound_recorder/call_rec/Миха(89636504365)_20200910105924.mp3 -ss 0
+     * -t 4 -b 32k /storage/emulated/0/Android/data/com.Calls/Миха/Миха(89636504365)_20200910105924/records/0.mp3
+     * @param fileForCutter
+     * @return
+     */
     private String[] getCommand(FileForCutter fileForCutter) {
-        String intent = "-i ".concat(fileForCutter.getSource().getAbsolutePath()).concat(" ");
+        String intent = "-i ".concat("'").concat(fileForCutter.getSource().getAbsolutePath()).concat("'").concat(" ");
         String start = "-ss ".concat(String.valueOf(fileForCutter.getStart())).concat(" ");
         String duration = "-t ".concat(String.valueOf(fileForCutter.getDuration())).concat(" ");
         String command = intent.concat(start).concat(duration).concat("-b ").concat(fileForCutter.getBitrate().concat(" ").concat(fileForCutter.getDestination().getAbsolutePath()));
@@ -117,7 +126,7 @@ public class FFmpegCutter {
             @Override
             public void onFailure(String message) {
                 try {
-                    Toast.makeText(waitInEndPlay, message, Toast.LENGTH_SHORT).show();
+                    throw new Exception(message);
                 }
                 catch (Exception ex){
                     DebugMessages.ErrorMessage(ex,waitInEndPlay, "executeFFMpegCommand");
@@ -131,7 +140,7 @@ public class FFmpegCutter {
                 try {
 
                     //copy files in dir for work with Api
-                    WorkWithFileForCutter.CopyFile(sourceFile, copyFile);
+                   FileSystem.CopyFile(sourceFile, copyFile);
                     Log.d("Copy", "FileCopy");
                     //set Text View Duration
                     RecordProcessing.changeDurationProcessingAndStartApi();

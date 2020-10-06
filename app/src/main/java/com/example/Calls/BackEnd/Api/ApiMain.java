@@ -14,10 +14,6 @@ import java.util.List;
 
 public class ApiMain{
 
-    public ApiMain() throws IOException{
-
-    }
-
     //запускает перевод всех файлов для записи
     public void startApiTranslate() throws IOException{
         try{

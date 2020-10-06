@@ -1,6 +1,12 @@
 package com.example.Calls.BackEnd.Files;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
+
+import com.example.Calls.BackEnd.CutterFiles.CutterInterval;
+import com.example.Calls.BackEnd.CutterFiles.FileForCutter;
+import com.example.Calls.BackEnd.Records.Records;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,6 +14,8 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,14 +72,44 @@ public class FileSystem {
          */
     }
 
+    /**
+    Генерирует список файлов для записи
+     **/
+    public static List<FileForCutter> getFilesForCutter(List<CutterInterval> intervalList){
+        int i = 0;
+        List<FileForCutter> fileForCutterList = new ArrayList<FileForCutter>();
 
-    public static void createDirectoryForContact(){
-        new File(FileSystemParameters.getPathForSelectedContact()).mkdir();
+        for (CutterInterval interval : intervalList) {
+            // генерация параметров
+            int duration = interval.getEnd() - interval.getStart();
+            File targetFile = new File(FileSystemParameters.getPathForSelectedRecordsForCutter().concat(String.valueOf(i)).concat(".mp3"));
+            File sourceFile = new File(Records.getFullPathSelectedRecord());
+
+            //генерация объекта
+            FileForCutter fileForCutter = new FileForCutter(interval.getStart(),
+                    duration,
+                    sourceFile,
+                    targetFile);
+
+            //заполнение листа
+            fileForCutterList.add(fileForCutter);
+            i++;
+        }
+
+        return fileForCutterList;
     }
 
-    public static void createDirectoryApplication(){
-        new File(FileSystemParameters.getPathApplicationFileSystem()).mkdir();
+    /**
+     * Копирует файл
+     * @param sourceFile файл для копирования
+     * @param targetFile новый файл
+     * @throws IOException
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static void CopyFile(File sourceFile, File targetFile) throws IOException {
+        Files.copy(sourceFile.toPath(), targetFile.toPath());
     }
+
 
 }
 

@@ -24,28 +24,29 @@ public class DialogMain {
 
     public static void startAlertDialog(MainActivity mainActivity, MyDialogHelp.Windows window){
         FragmentManager manager = mainActivity.getSupportFragmentManager();
-        //MyDialogHelp.setContextMain(this);
         MyDialogHelp myDialogHelp = new MyDialogHelp(mainActivity, window);
+        myDialogHelp.setCancelable(false);
         myDialogHelp.show(manager, "myDialog");
     }
 
     public static void startAlertDialog(WaitInEndPlay waitInEndPlay, MyDialogHelp.Windows window){
         FragmentManager manager = waitInEndPlay.getSupportFragmentManager();
-        //MyDialogHelp.setContextMain(this);
         MyDialogHelp myDialogHelp = new MyDialogHelp(waitInEndPlay, window);
+        myDialogHelp.setCancelable(false);
         myDialogHelp.show(manager, "myDialog");
     }
 
     public static void startAlertDialog(Play play, MyDialogHelp.Windows window){
         FragmentManager manager = play.getSupportFragmentManager();
-        //MyDialogHelp.setContextMain(this);
         MyDialogHelp myDialogHelp = new MyDialogHelp(play, window);
-        myDialogHelp.show(manager, "myDialog");
+        myDialogHelp.setCancelable(false);
+        myDialogHelp.show(manager, "mediaDialog");
     }
 
     public static void startErrorDialog(MainActivity mainActivity,Exception ex){
         FragmentManager manager = mainActivity.getSupportFragmentManager();
         ErrorDialog errorDialog = new ErrorDialog(mainActivity,ex);
+
         errorDialog.show(manager, "ErrorDialog");
     }
 
@@ -64,6 +65,7 @@ public class DialogMain {
         ErrorDialog errorDialog = new ErrorDialog(waitInEndPlay,ex);
         errorDialog.show(manager, "ErrorDialog");
     }
+
 
 
 }

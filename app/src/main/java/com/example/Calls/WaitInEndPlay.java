@@ -12,10 +12,9 @@ import android.widget.TextView;
 
 import com.example.Calls.BackEnd.Api.ApiMain;
 import com.example.Calls.BackEnd.CutterFiles.Cutter;
-import com.example.Calls.BackEnd.CutterFiles.WorkWithFileForCutter;
 import com.example.Calls.BackEnd.Debug.DebugMessages;
+import com.example.Calls.BackEnd.Files.Directories;
 import com.example.Calls.BackEnd.Records.RecordProcessing;
-import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Dialog.MyDialogHelp;
 
@@ -27,15 +26,7 @@ public class WaitInEndPlay extends AppCompatActivity {
 
     ProgressBar progressBarTranslate;
 
-    private String nameRecord;
-
-    private WorkWithFileForCutter workWithFileForCutter;
-
     private ApiMain apiMain;
-
-    public ApiMain getApiMain(){
-        return apiMain;
-    }
 
     private RecordProcessing recordProcessing;
 
@@ -57,10 +48,12 @@ public class WaitInEndPlay extends AppCompatActivity {
                 //get cutter obj
                 Cutter cutter = Play.getCutter();
 
+                //create dirs
+                Directories.createDirectories();
+
+
                 apiMain = new ApiMain();
 
-                //create dirs
-                new WorkWithFileForCutter(Records.getNameSelectedRecord()).createDirsForCutter();
 
                 //cut files in intervals
                 cutter.startCutFileIntervals(this);

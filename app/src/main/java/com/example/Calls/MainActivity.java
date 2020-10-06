@@ -91,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     TextView text = (TextView) view;
                     Contacts.setInformationAboutUser(text.getText().toString());
-                    //создание отдельной директории для пользователя в файловой системе
-                    FileSystem.createDirectoryForContact();
                     Intent aboutContact = new Intent(MainActivity.this, AboutContact.class);
                     startActivity(aboutContact);
                 }
@@ -108,8 +106,6 @@ public class MainActivity extends AppCompatActivity {
     //загрузка страницы, после запроса прав у пользователя
     private void loadMain() {
         try {
-            //создаёт директорию для работы приложения с файлами
-            FileSystem.createDirectoryApplication();
 
             //установка пути в настройках
             Records.setPathForFindRecords(mSettings.getString("path", Records.currentPathForRecordsXiomi));
