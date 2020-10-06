@@ -1,6 +1,7 @@
 package com.example.Calls;
 
 //region import
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -52,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        try{
+        try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-            listViewContactsMA = (ListView)(findViewById(R.id.listViewContactsMA));
+            listViewContactsMA = (ListView) (findViewById(R.id.listViewContactsMA));
 
             mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
 
@@ -64,8 +65,7 @@ public class MainActivity extends AppCompatActivity {
             SavedSettings savedSettings = new SavedSettings(mSettings);
 
             //если приложение запускается впервые выполняет данное условие
-            if(!mSettings.getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false))
-            {
+            if (!mSettings.getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false)) {
                 SharedPreferences.Editor e = mSettings.edit();
                 e.putBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, true);
                 e.apply();
@@ -77,11 +77,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-            if(SavedSettings.isExpert()){
+            if (SavedSettings.isExpert()) {
                 //запрашивает разрения у пользователя
                 askPermission();
-            }
-            else{
+            } else {
                 //выводит справку если пользователь не эксперт
                 DialogMain.startAlertDialog(this, MyDialogHelp.Windows.HELP);
             }
@@ -98,26 +97,24 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(aboutContact);
                 }
             });
-            
-        }
-        catch (Exception ex){
+
+        } catch (Exception ex) {
             DebugMessages.ErrorMessage(ex, this, "MainActivity");
         }
 
     }
 
 
-
     //загрузка страницы, после запроса прав у пользователя
-    private void loadMain(){
-        try{
+    private void loadMain() {
+        try {
             //создаёт директорию для работы приложения с файлами
             FileSystem.createDirectoryApplication();
 
             //установка пути в настройках
             Records.setPathForFindRecords(mSettings.getString("path", Records.currentPathForRecordsXiomi));
 
-            if(!Records.checkPath(Records.getPathForFindRecords())){
+            if (!Records.checkPath(Records.getPathForFindRecords())) {
                 Toast.makeText(this, Records.getPathForFindRecords(), Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -126,12 +123,11 @@ public class MainActivity extends AppCompatActivity {
             listFiles.addAll(Records.getFiles(Records.getPathForFindRecords()));
 
             //вывод список контактов в list
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,  android.R.layout.simple_list_item_1, Contacts.getListContacts(listFiles, this));
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Contacts.getListContacts(listFiles, this));
 
             listViewContactsMA.setAdapter(adapter);
-        }
-        catch (Exception ex){
-            DebugMessages.ErrorMessage(ex,this, "loadMain");
+        } catch (Exception ex) {
+            DebugMessages.ErrorMessage(ex, this, "loadMain");
         }
 
     }
@@ -140,18 +136,17 @@ public class MainActivity extends AppCompatActivity {
     //region ButtonsClick
 
     //открывает диалоговое окно с контекстной справкой для данной страницы
-    public void onCLickButtonHelp(View view){
+    public void onCLickButtonHelp(View view) {
         DialogMain.startAlertDialog(this, MyDialogHelp.Windows.HELP);
     }
 
     //открывает окно настроек
-    public void onCLickButtonSettings(View view){
-        try{
+    public void onCLickButtonSettings(View view) {
+        try {
             Intent settings = new Intent(MainActivity.this, Settings.class);
             startActivity(settings);
-        }
-        catch (Exception ex){
-            DebugMessages.ErrorMessage(ex,this, "onClickSettings");
+        } catch (Exception ex) {
+            DebugMessages.ErrorMessage(ex, this, "onClickSettings");
         }
     }
 
@@ -159,15 +154,14 @@ public class MainActivity extends AppCompatActivity {
 
     //region permissions
     //запрос разрешений
-    public void askPermission(){
-        try{
+    public void askPermission() {
+        try {
 
             Permissions permissions = new Permissions();
             //если разрешения были получены, выводит список записей
-            if(!permissions.EnablePermissions(this)) loadMain();
-        }
-        catch (Exception ex){
-            DebugMessages.ErrorMessage(ex,this, "askPermission");
+            if (!permissions.EnablePermissions(this)) loadMain();
+        } catch (Exception ex) {
+            DebugMessages.ErrorMessage(ex, this, "askPermission");
         }
     }
 
@@ -176,28 +170,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        try{
-            if (grantResults.length > 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
+        try {
+            if (grantResults.length > 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // permission granted
                 loadMain();
-            }
-            else {
+            } else {
                 // permission denied
                 DialogMain.startAlertDialog(this, MyDialogHelp.Windows.PERMISSIONS);
             }
 
-        }
-        catch (Exception ex){
-            DebugMessages.ErrorMessage(ex,this, "onRequestPermission");
+        } catch (Exception ex) {
+            DebugMessages.ErrorMessage(ex, this, "onRequestPermission");
         }
 
     }
 
     //endregion
-
-
-
 
 
 }

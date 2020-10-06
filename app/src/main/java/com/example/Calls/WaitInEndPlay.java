@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.Calls.BackEnd.Api.ApiMain;
 import com.example.Calls.BackEnd.CutterFiles.Cutter;
 import com.example.Calls.BackEnd.CutterFiles.WorkWithFileForCutter;
+import com.example.Calls.BackEnd.Debug.DebugMessages;
 import com.example.Calls.BackEnd.Records.RecordProcessing;
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.Dialog.DialogMain;
@@ -41,34 +42,40 @@ public class WaitInEndPlay extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.wait_in_end_play);
-
-        //textViewProgress = findViewById(R.id.textViewProgress);
-        progressBarTranslate = findViewById(R.id.progressBarTranslate);
-
-        textViewProgress = findViewById(R.id.textViewProgress);
-
-        recordProcessing = new RecordProcessing(this);
-
         try{
-            //get cutter obj
-            Cutter cutter = Play.getCutter();
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.wait_in_end_play);
 
-            apiMain = new ApiMain();
+            //textViewProgress = findViewById(R.id.textViewProgress);
+            progressBarTranslate = findViewById(R.id.progressBarTranslate);
 
-            //create dirs
-            new WorkWithFileForCutter(Records.getNameSelectedRecord()).createDirsForCutter();
+            textViewProgress = findViewById(R.id.textViewProgress);
 
-            //cut files in intervals
-            cutter.startCutFileIntervals(this);
+            recordProcessing = new RecordProcessing(this);
 
-        }
-        catch (NullPointerException ex){
-            Log.d("NullPointWait", ex.getMessage());
+            try{
+                //get cutter obj
+                Cutter cutter = Play.getCutter();
+
+                apiMain = new ApiMain();
+
+                //create dirs
+                new WorkWithFileForCutter(Records.getNameSelectedRecord()).createDirsForCutter();
+
+                //cut files in intervals
+                cutter.startCutFileIntervals(this);
+
+            }
+            catch (NullPointerException ex){
+                Log.d("NullPointWait", ex.getMessage());
+            }
+            catch (Exception ex){
+                Log.d("ExceptionStartCut", ex.getMessage());
+            }
+
         }
         catch (Exception ex){
-            Log.d("ExceptionStartCut", ex.getMessage());
+            DebugMessages.ErrorMessage(ex,this, "WaitEndPlay");
         }
 
     }
@@ -79,7 +86,7 @@ public class WaitInEndPlay extends AppCompatActivity {
             startActivityAboutContact();
         }
         catch (Exception ex){
-            Log.d("dialogResultAdd", ex.getMessage());
+            DebugMessages.ErrorMessage(ex,this, "dialogAddResult");
         }
     }
 
@@ -99,7 +106,7 @@ public class WaitInEndPlay extends AppCompatActivity {
             DialogMain.startAlertDialog(this, MyDialogHelp.Windows.API);
         }
         catch (IOException ex) {
-            Log.d("finishProcessing", ex.getMessage());
+            DebugMessages.ErrorMessage(ex,this,"finishProcessing");
         }
     }
 

@@ -49,4 +49,21 @@ public class DialogMain {
         errorDialog.show(manager, "ErrorDialog");
     }
 
+    public static void startErrorDialog(Play play,Exception ex){
+        FragmentManager manager = play.getSupportFragmentManager();
+        ErrorDialog errorDialog = new ErrorDialog(play,ex);
+        errorDialog.show(manager, "ErrorDialog");
+    }
+    public static void startErrorDialog(AboutContact aboutContact,Exception ex){
+        FragmentManager manager = aboutContact.getSupportFragmentManager();
+        ErrorDialog errorDialog = new ErrorDialog(aboutContact,ex);
+        errorDialog.show(manager, "ErrorDialog");
+    }
+    public static void startErrorDialog(WaitInEndPlay waitInEndPlay,Exception ex){
+        FragmentManager manager = waitInEndPlay.getSupportFragmentManager();
+        ErrorDialog errorDialog = new ErrorDialog(waitInEndPlay,ex);
+        errorDialog.show(manager, "ErrorDialog");
+    }
+
+
 }

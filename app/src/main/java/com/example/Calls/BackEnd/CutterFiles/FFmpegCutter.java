@@ -12,6 +12,7 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.Calls.BackEnd.Debug.DebugMessages;
 import com.example.Calls.BackEnd.Records.RecordProcessing;
 import com.example.Calls.WaitInEndPlay;
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
@@ -75,19 +76,24 @@ public class FFmpegCutter {
 
     public void executeCommandForCutFileAfterPlay(List<FileForCutter> filesForCutter, String _pathForCopy) {
 
-        RecordProcessing.setMaxDurationProcessing(filesForCutter.size());
+        try{
+            RecordProcessing.setMaxDurationProcessing(filesForCutter.size());
 
-        for (FileForCutter file : filesForCutter) {
-            try {
-                File sourceFile = new File(file.getDestination().getAbsolutePath());
-                File copyFile = new File(getTargetFileForCopy(_pathForCopy, file.getDestination().getName()).getAbsolutePath());
-                executeFFMpegCommand(getCommand(file), sourceFile, copyFile);
-            } catch (FFmpegCommandAlreadyRunningException ex) {
-                Log.d("FFAlreadyRunningEx", ex.getMessage());
-            } catch (Exception ex) {
-                Log.d("ExecuteFFMpegException", ex.getMessage());
+            for (FileForCutter file : filesForCutter) {
+                try {
+                    File sourceFile = new File(file.getDestination().getAbsolutePath());
+                    File copyFile = new File(getTargetFileForCopy(_pathForCopy, file.getDestination().getName()).getAbsolutePath());
+                    executeFFMpegCommand(getCommand(file), sourceFile, copyFile);
+                } catch (FFmpegCommandAlreadyRunningException ex) {
+                    Log.d("FFAlreadyRunningEx", ex.getMessage());
+                } catch (Exception ex) {
+                    Log.d("ExecuteFFMpegException", ex.getMessage());
+                }
+
             }
-
+        }
+        catch (Exception ex){
+            DebugMessages.ErrorMessage(ex, (WaitInEndPlay)context, "executeCommand");
         }
     }
 
@@ -110,26 +116,31 @@ public class FFmpegCutter {
         ffmpeg.execute(command, new ExecuteBinaryResponseHandler() {
             @Override
             public void onFailure(String message) {
+                try {
+                    Toast.makeText(waitInEndPlay, message, Toast.LENGTH_SHORT).show();
+                }
+                catch (Exception ex){
+                    DebugMessages.ErrorMessage(ex,waitInEndPlay, "executeFFMpegCommand");
+                }
 
-                Toast.makeText(waitInEndPlay, message, Toast.LENGTH_SHORT).show();
             }
 
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onSuccess(String message) {
-
-
                 try {
+
                     //copy files in dir for work with Api
                     WorkWithFileForCutter.CopyFile(sourceFile, copyFile);
                     Log.d("Copy", "FileCopy");
                     //set Text View Duration
                     RecordProcessing.changeDurationProcessingAndStartApi();
 
+
                 } catch (IOException io) {
-                    Log.d("ioExceptionFFmpeg", io.getMessage());
+                    DebugMessages.ErrorMessage(io, waitInEndPlay, "IOExceptionCutter");
                 } catch (Exception ex) {
-                    Log.d("ExceptionFFmpeg", ex.getMessage());
+                    DebugMessages.ErrorMessage(ex, waitInEndPlay, "ExceptionFFMpeg");
                 }
 
             }

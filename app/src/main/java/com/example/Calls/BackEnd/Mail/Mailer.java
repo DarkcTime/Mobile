@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.Calls.AboutContact;
 import com.example.Calls.BackEnd.Contacts.Contacts;
 import com.example.Calls.MainActivity;
+import com.example.Calls.Play;
+import com.example.Calls.WaitInEndPlay;
 
 import java.util.Properties;
 
@@ -43,6 +46,43 @@ public class Mailer {
             Toast.makeText(mainActivity, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }
     }
+    public void SendMessageAboutError(Exception ex, AboutContact aboutContact){
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{to});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Error from Android Application");
+        i.putExtra(Intent.EXTRA_TEXT   , ex.getMessage());
+        try {
+            aboutContact.startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException e) {
+            Toast.makeText(aboutContact, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void SendMessageAboutError(Exception ex, Play play){
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{to});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Error from Android Application");
+        i.putExtra(Intent.EXTRA_TEXT   , ex.getMessage());
+        try {
+            play.startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException e) {
+            Toast.makeText(play, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void SendMessageAboutError(Exception ex, WaitInEndPlay waitInEndPlay){
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{to});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Error from Android Application");
+        i.putExtra(Intent.EXTRA_TEXT   , ex.getMessage());
+        try {
+            waitInEndPlay.startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException e) {
+            Toast.makeText(waitInEndPlay, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     private MainActivity mainActivity;
 
