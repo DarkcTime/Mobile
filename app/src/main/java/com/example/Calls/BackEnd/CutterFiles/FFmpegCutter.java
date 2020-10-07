@@ -84,8 +84,11 @@ public class FFmpegCutter {
             for (FileForCutter file : filesForCutter) {
                 try {
                     File sourceFile = new File(file.getDestination().getAbsolutePath());
-                    File copyFile = new File(getTargetFileForCopy(FileSystemParameters.getPathForSelectedRecordApi(), file.getDestination().getName()).getAbsolutePath());
+                    File copyFile = new File(getTargetFileForCopy(FileSystemParameters.getPathForSelectedRecordApi(),
+                            file.getDestination().getName()).getAbsolutePath());
+
                     executeFFMpegCommand(getCommand(file), sourceFile, copyFile);
+
                 } catch (FFmpegCommandAlreadyRunningException ex) {
                     Log.d("FFAlreadyRunningEx", ex.getMessage());
                 } catch (Exception ex) {
@@ -108,16 +111,30 @@ public class FFmpegCutter {
      * Генерирует команду для резчика
      * Пример: -i /storage/emulated/0/MIUI/sound_recorder/call_rec/Миха(89636504365)_20200910105924.mp3 -ss 0
      * -t 4 -b 32k /storage/emulated/0/Android/data/com.Calls/Миха/Миха(89636504365)_20200910105924/records/0.mp3
-     * @param fileForCutter
-     * @return
+     * @param fileForCutter объект файла для резки
+     * @return команда в виде массива
      */
     private String[] getCommand(FileForCutter fileForCutter) {
-        String intent = "-i ".concat(fileForCutter.getSource().getAbsolutePath()).concat(",");
-        String start = "-ss ".concat(String.valueOf(fileForCutter.getStart())).concat(",");
-        String duration = "-t ".concat(String.valueOf(fileForCutter.getDuration())).concat(",");
-        String command = intent.concat(start).concat(duration).concat("-b ").concat(fileForCutter.getBitrate().concat(",").concat(fileForCutter.getDestination().getAbsolutePath()));
+        String s = ", "; //separator
+        String intent = "-i"
+                .concat(s)
+                .concat(fileForCutter.getSource().getAbsolutePath())
+                .concat(s);
+        String start = "-ss"
+                .concat(s)
+                .concat(String.valueOf(fileForCutter.getStart()))
+                .concat(s);
+        String duration = "-t"
+                .concat(s)
+                .concat(String.valueOf(fileForCutter.getDuration()))
+                .concat(s);
+        String command = intent.concat(start).concat(duration).concat("-b")
+                .concat(", ")
+                .concat(fileForCutter.getBitrate()
+                        .concat(", ")
+                        .concat(fileForCutter.getDestination().getAbsolutePath()));
         Log.d("command", command);
-        return command.split(",");
+        return command.split(s);
     }
 
     private void executeFFMpegCommand(String[] command, final File sourceFile, final File copyFile) throws FFmpegCommandAlreadyRunningException {

@@ -14,7 +14,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-//прости меня господи за этот класс
+/**
+ * Класс содержить выбранный контакт
+ * И методы для фильтрации
+ */
+
 public class Contacts {
 
 
@@ -40,28 +44,6 @@ public class Contacts {
         return getInformationAboutUser().substring(startPhone, endPhone);
 
     }
-
-    public String getCountMinuteStr(int countMinute, int countSecond){
-        String cm, cs;
-        if(countMinute < 10){
-            cm = "0" + String.valueOf(countMinute);
-        }
-        else{
-            cm = String.valueOf(countMinute);
-        }
-        if(countSecond < 10){
-            cs = "0" + String.valueOf(countSecond);
-        }
-        else{
-            cs = String.valueOf(countSecond);
-        }
-
-        return "Количество минут: " + cm + ":" + cs;
-    }
-    public String getPsyProfileStr(String profile){
-        return  "Психологический тип: " + profile;
-    }
-
 
     /**
      * Возвращает отфильтрованный список контактов
