@@ -14,7 +14,11 @@ import java.util.List;
 
 public class DialogMain {
 
-    public static void startFilesDialog(AboutContact aboutContact, List<File> listFiles){
+    public DialogMain(){
+
+    }
+
+    public void startFilesDialog(AboutContact aboutContact, List<File> listFiles){
         FragmentManager manager = aboutContact.getSupportFragmentManager();
         FilesDialog filesDialog = new FilesDialog();
         filesDialog.setContext(aboutContact);
@@ -22,25 +26,25 @@ public class DialogMain {
         filesDialog.show(manager, "FilesDialog");
     }
 
-    public static void startAlertDialog(MainActivity mainActivity, MyDialogHelp.Windows window){
+    public void startAlertDialog(MainActivity mainActivity, MyDialogHelp.Windows window){
         FragmentManager manager = mainActivity.getSupportFragmentManager();
         MyDialogHelp myDialogHelp = new MyDialogHelp(mainActivity, window);
         myDialogHelp.setCancelable(false);
-        myDialogHelp.show(manager, "myDialog");
+        myDialogHelp.show(manager, "MainActivity");
     }
 
-    public static void startAlertDialog(WaitInEndPlay waitInEndPlay, MyDialogHelp.Windows window){
+    public void startAlertDialog(WaitInEndPlay waitInEndPlay, MyDialogHelp.Windows window){
         FragmentManager manager = waitInEndPlay.getSupportFragmentManager();
         MyDialogHelp myDialogHelp = new MyDialogHelp(waitInEndPlay, window);
         myDialogHelp.setCancelable(false);
-        myDialogHelp.show(manager, "myDialog");
+        myDialogHelp.show(manager, "WaitEndPlay");
     }
 
-    public static void startAlertDialog(Play play, MyDialogHelp.Windows window){
+    public void startAlertDialog(Play play, MyDialogHelp.Windows window){
         FragmentManager manager = play.getSupportFragmentManager();
         MyDialogHelp myDialogHelp = new MyDialogHelp(play, window);
         myDialogHelp.setCancelable(false);
-        myDialogHelp.show(manager, "mediaDialog");
+        myDialogHelp.show(manager, "Play");
     }
 
     public static void startErrorDialog(MainActivity mainActivity,Exception ex){

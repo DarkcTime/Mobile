@@ -96,7 +96,7 @@ public class WaitInEndPlay extends AppCompatActivity {
     public void finishProcessingAndTranslating(){
         try{
             apiMain.createResultFileForSelectedRecord();
-            DialogMain.startAlertDialog(this, MyDialogHelp.Windows.API);
+            new DialogMain().startAlertDialog(this, MyDialogHelp.Windows.API);
         }
         catch (IOException ex) {
             DebugMessages.ErrorMessage(ex,this,"finishProcessing");

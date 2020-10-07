@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 askPermission();
             } else {
                 //выводит справку если пользователь не эксперт
-                DialogMain.startAlertDialog(this, MyDialogHelp.Windows.HELP);
+                new DialogMain().startAlertDialog(this, MyDialogHelp.Windows.HELP);
             }
 
             //определяет выбранный контакт и переходит на следующую activity
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
     //открывает диалоговое окно с контекстной справкой для данной страницы
     public void onCLickButtonHelp(View view) {
-        DialogMain.startAlertDialog(this, MyDialogHelp.Windows.HELP);
+        new DialogMain().startAlertDialog(this, MyDialogHelp.Windows.HELP);
     }
 
     //открывает окно настроек
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 loadMain();
             } else {
                 // permission denied
-                DialogMain.startAlertDialog(this, MyDialogHelp.Windows.PERMISSIONS);
+                new DialogMain().startAlertDialog(this, MyDialogHelp.Windows.PERMISSIONS);
             }
 
         } catch (Exception ex) {

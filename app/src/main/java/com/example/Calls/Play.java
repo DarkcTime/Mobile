@@ -277,7 +277,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 startActivity(settingsForPlay);
                 return true;
             case R.id.help:
-                DialogMain.startAlertDialog(this, MyDialogHelp.Windows.TEST);
+                new DialogMain().startAlertDialog(this, MyDialogHelp.Windows.TEST);
                 return true;
             case  R.id.reset:
                 Intent reset = getIntent();
@@ -364,7 +364,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     private void updateGame(){
 
         if(endRecord) {
-            DialogMain.startAlertDialog(this, MyDialogHelp.Windows.MEDIA);
+            new DialogMain().startAlertDialog(this, MyDialogHelp.Windows.MEDIA);
         }
         if(checkPlaying <= 0){
             modeWait(false);

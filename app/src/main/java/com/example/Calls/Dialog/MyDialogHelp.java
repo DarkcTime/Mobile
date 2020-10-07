@@ -57,6 +57,7 @@ public class MyDialogHelp extends AppCompatDialogFragment{
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
             switch (window){
@@ -104,6 +105,8 @@ public class MyDialogHelp extends AppCompatDialogFragment{
                                     dialog.cancel();
                                 }
                             });
+                    break;
+
                 case PERMISSIONS:
                     builder.setTitle("Дать приложению разрешения")
                             .setMessage("Если вы не дадите разрешения, то прижение не сможет использовать задуманный функционал( \n" +
@@ -122,11 +125,12 @@ public class MyDialogHelp extends AppCompatDialogFragment{
                                     MainActivityContext.finish();
                                 }
                             });
+                    break;
                 case API:
                     try{
                         builder.setTitle("Результат текста полученный в данной записи")
                                 .setIcon(R.drawable.success)
-                                .setMessage(ApiMain.readFullFileSelectedContact())
+                                .setMessage(ApiMain.readFullFileSelectedRecord())
                                 .setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -146,6 +150,8 @@ public class MyDialogHelp extends AppCompatDialogFragment{
                     {
                         Log.d("MyDialogHelpEx", ioe.getMessage());
                     }
+                    break;
+
                 case MEDIA:
                     builder.setTitle("Запись выделена")
                             .setIcon(R.drawable.media)
@@ -163,6 +169,7 @@ public class MyDialogHelp extends AppCompatDialogFragment{
                                     dialog.cancel();
                                 }
                             });
+                    break;
 
             }
 
@@ -170,7 +177,7 @@ public class MyDialogHelp extends AppCompatDialogFragment{
     }
 
     public enum Windows{
-        MEDIA, HELP, PERMISSIONS, API, PLAY, TEST,
+        MEDIA, HELP, PERMISSIONS, API, PLAY, TEST
     }
 
 

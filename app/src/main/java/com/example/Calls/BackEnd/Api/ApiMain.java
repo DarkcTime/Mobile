@@ -41,7 +41,7 @@ public class ApiMain{
     }
 
     //читает полный файл записи
-    public String readFullFileSelectedRecord() throws IOException{
+    public static String readFullFileSelectedRecord() throws IOException{
         return FileSystem.ReadFile(FileSystemParameters.getPathFileResultForRecord());
     }
 

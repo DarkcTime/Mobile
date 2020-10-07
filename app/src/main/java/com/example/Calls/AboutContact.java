@@ -102,7 +102,7 @@ public class AboutContact extends AppCompatActivity {
     private void loadDataInList(){
         listFiles.clear();
         listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(Records.getPathForFindRecords(), ".mp3"));
-        DialogMain.startFilesDialog(this,listFiles);
+        new DialogMain().startFilesDialog(this,listFiles);
     }
 
 
