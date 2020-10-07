@@ -1,14 +1,17 @@
 package com.example.Calls.BackEnd.Contacts;
 
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.util.Log;
 
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.MainActivity;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 //прости меня господи за этот класс
@@ -59,69 +62,126 @@ public class Contacts {
         return  "Психологический тип: " + profile;
     }
 
-    //TODO рефакторить данный метод
-    //TODO добавить логику для получения процентов пользователем
-    //возвращает список контактов, записи которых были найдены
-    public static ArrayList<String> getListContacts(List<File> listFiles, MainActivity mainActivity){
 
-        String[] listNames;
-        listNames = Records.getUniqueList(listFiles);
+    /**
+     * Возвращает отфильтрованный список контактов
+     * @param listFiles список файлов записей для фильтрации
+     * @param mainActivity окно для взаимодействия с Cursor
+     * @return список контактов у которых есть записи разговоров
+     */
+    public static ArrayList<String> getListContacts(List<File> listFiles, MainActivity mainActivity) throws NullPointerException{
 
+        /*
+        1) получает список контактов у которых есть записи
+        2) Cursor - получаем список всех контактов в Android
+        3) Проверяем и отсеиваем контакты у которых нет записей разговоров
+        4) Для оставшихся контактов получаем номер телефона
+         */
+            String[] listNames = getUniqueList(listFiles);
 
-        ArrayList<String> listContacts = new ArrayList<String>();
+            ArrayList<String> listContacts = new ArrayList<String>();
 
-        Cursor cursor= mainActivity.getContentResolver().query(
-                ContactsContract.Contacts.CONTENT_URI,
-                null, null, null, null);
+            @SuppressLint("Recycle") Cursor cursor= mainActivity.getContentResolver().query(
+                    ContactsContract.Contacts.CONTENT_URI,
+                    null, null, null, null);
 
-        int count = 0;
-        while (cursor.moveToNext()){
-            boolean check = false;
-            String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-            String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-            String phone = "";
+            if(cursor == null) throw new NullPointerException("Список контактов пуст");
 
-            if(name == null) continue;
+            while (cursor.moveToNext()){
 
-            //TODO Влад: протестировать логику во всех ситуациях, поставить максимальное число символов при выводе контакта
-            for (String listName : listNames) {
+                boolean check = false;
 
-                if(Records.isConstrainNameRecord(listName, name, 10)){
-                    check = true;
-                    break;
+                String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                String phone = "";
+
+                if(name == null) continue;
+
+                //отсеивает контакты у которых нет записей разговоров
+                for (String listName : listNames) {
+
+                    if(Records.isConstrainNameRecord(listName, name)){
+                        check = true;
+                        break;
+                    }
                 }
 
-                check = listName.equals(name);
+                if(!check) continue;
 
-                if(check){
-                    break;
+                int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)));
+
+                if(hasPhoneNumber > 0){
+                    Cursor pCur;
+                    pCur = mainActivity.getContentResolver().query(
+                            ContactsContract.CommonDataKinds
+                                    .Phone.CONTENT_URI,
+                            null,
+                            ContactsContract.CommonDataKinds
+                                    .Phone.CONTACT_ID + " = ?",
+                            new String[]{id},
+                            null);
+
+                    while (pCur.moveToNext()){
+                        phone = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    }
+
                 }
+
+                listContacts.add(name + " | " + phone + "\nГотовность: " + "20%");
             }
-            if(!check) continue;
 
-            int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)));
-            if(hasPhoneNumber > 0){
-                Cursor pCur;
-                pCur = mainActivity.getContentResolver().query(
-                        ContactsContract.CommonDataKinds
-                                .Phone.CONTENT_URI,
-                        null,
-                        ContactsContract.CommonDataKinds
-                                .Phone.CONTACT_ID + " = ?",
-                        new String[]{id},
-                        null);
+            return listContacts;
 
-                while (pCur.moveToNext()){
-                    phone = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                }
+    }
 
-            }
 
-            listContacts.add(name + " | " + phone + "\nГотовность: " + "20%");
+
+    /**
+     * Получает уникальный список имен которые содержаться в записи
+     * @param listFiles список всех файлов записей
+     * @return массив уникальных имен
+     */
+    private static String[] getUniqueList(List<File> listFiles){
+        List<String> listNames = new ArrayList<String>();
+        /*
+            добавляет имена в коллекцию
+            если имя записи не является номером телефона
+         */
+        for (File file : listFiles){
+            String nameRecord = Records.getNameContactInRecord(file.getAbsolutePath());
+            if (!isName(nameRecord)) continue;
+            listNames.add(nameRecord);
+        }
+        //создание массива типа String[]
+        HashSet<String> hashSetListNames = new HashSet<>(listNames);
+        String[] strListNames = new String[hashSetListNames.size()];
+        hashSetListNames.toArray(strListNames);
+        return  strListNames;
+    }
+
+
+    /**
+     * Данный метод определяет
+     * является ли переданное имя записи - именем контакта
+     * или номером телефона
+     * @param name имя записи
+     * @return true если это имя
+     */
+    private static boolean isName(String name){
+        if(name.length() < 5) return true;
+        try{
+            Integer.valueOf(name.substring(0,3));
+            return false;
+        }
+        catch (Exception ex){
+            Log.d("isName", ex.getMessage());
+            return true;
         }
 
-        return listContacts;
     }
+
+
+
 
     //endregion
 

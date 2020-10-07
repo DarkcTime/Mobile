@@ -116,10 +116,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //add list from selected path
-            listFiles.addAll(Records.getFiles(Records.getPathForFindRecords()));
+            listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(Records.getPathForFindRecords(), ".mp3"));
+
+            Log.d("listFiles", String.valueOf(listFiles.size()));
 
             //вывод список контактов в list
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Contacts.getListContacts(listFiles, this));
+            ArrayAdapter<String> adapter =
+                    new ArrayAdapter<String>(this,
+                            android.R.layout.simple_list_item_1,
+                            Contacts.getListContacts(listFiles, this));
 
             listViewContactsMA.setAdapter(adapter);
         } catch (Exception ex) {

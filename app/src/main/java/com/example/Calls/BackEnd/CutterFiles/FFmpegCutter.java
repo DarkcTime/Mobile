@@ -112,16 +112,17 @@ public class FFmpegCutter {
      * @return
      */
     private String[] getCommand(FileForCutter fileForCutter) {
-        String intent = "-i ".concat("'").concat(fileForCutter.getSource().getAbsolutePath()).concat("'").concat(" ");
-        String start = "-ss ".concat(String.valueOf(fileForCutter.getStart())).concat(" ");
-        String duration = "-t ".concat(String.valueOf(fileForCutter.getDuration())).concat(" ");
-        String command = intent.concat(start).concat(duration).concat("-b ").concat(fileForCutter.getBitrate().concat(" ").concat(fileForCutter.getDestination().getAbsolutePath()));
+        String intent = "-i ".concat(fileForCutter.getSource().getAbsolutePath()).concat(",");
+        String start = "-ss ".concat(String.valueOf(fileForCutter.getStart())).concat(",");
+        String duration = "-t ".concat(String.valueOf(fileForCutter.getDuration())).concat(",");
+        String command = intent.concat(start).concat(duration).concat("-b ").concat(fileForCutter.getBitrate().concat(",").concat(fileForCutter.getDestination().getAbsolutePath()));
         Log.d("command", command);
-        return command.split(" ");
+        return command.split(",");
     }
 
     private void executeFFMpegCommand(String[] command, final File sourceFile, final File copyFile) throws FFmpegCommandAlreadyRunningException {
         final WaitInEndPlay waitInEndPlay = (WaitInEndPlay) context;
+
         ffmpeg.execute(command, new ExecuteBinaryResponseHandler() {
             @Override
             public void onFailure(String message) {

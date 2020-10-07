@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.Calls.BackEnd.Api.ApiMain;
 import com.example.Calls.BackEnd.Contacts.Contacts;
 import com.example.Calls.BackEnd.Debug.DebugMessages;
+import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Dialog.FilesDialog;
@@ -100,7 +101,7 @@ public class AboutContact extends AppCompatActivity {
 
     private void loadDataInList(){
         listFiles.clear();
-        listFiles.addAll(Records.getFiles(Records.getPathForFindRecords()));
+        listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(Records.getPathForFindRecords(), ".mp3"));
         DialogMain.startFilesDialog(this,listFiles);
     }
 

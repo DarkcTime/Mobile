@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class FileSystem {
@@ -72,6 +74,29 @@ public class FileSystem {
          */
     }
 
+
+    /**
+     * Получение отсортированного списка файлов
+     * @param path путь для получения файлов
+     * @param ext расширение
+     * @return отсортированный список файлов
+     */
+    public static List<File> getFilesWithSelectedExtWithFilter(String path, String ext){
+        File directory = new File(path);
+        List<File> fileList = Arrays.asList(directory.listFiles(new Records.MyFileNameFilter(ext)));
+        Collections.sort(fileList, new Comparator<File>() {
+            @Override
+            public int compare(File file, File file2) {
+                if (file.isDirectory() && file2.isFile())
+                    return -1;
+                else if (file.isFile() && file2.isDirectory())
+                    return 1;
+                else
+                    return file.getPath().compareTo(file2.getPath());
+            }
+        });
+        return fileList;
+    }
     /**
     Генерирует список файлов для записи
      **/

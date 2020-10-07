@@ -59,27 +59,6 @@ public class Records {
 
     final public static String pathFileFilterRecords = "/data/data/com.example.Calls/cache/trRecord";
 
-
-    //выдает список файлов для xiaomi
-    public static List<File> getFiles(String currentPath){
-        File directory = new File(currentPath);
-        String ext = ".mp3";
-            List<File> fileList = Arrays.asList(directory.listFiles(new MyFileNameFilter(ext)));
-            Collections.sort(fileList, new Comparator<File>() {
-                @Override
-                public int compare(File file, File file2) {
-                    if (file.isDirectory() && file2.isFile())
-                        return -1;
-                    else if (file.isFile() && file2.isDirectory())
-                        return 1;
-                    else
-                        return file.getPath().compareTo(file2.getPath());
-                }
-            });
-            return fileList;
-
-    }
-
     public static boolean checkPath(String str){
         File file = new File(str);
         return file.exists();
@@ -114,12 +93,12 @@ public class Records {
         String nameRecord = "";
         while (iterator.hasNext())
         {
-            nameRecord = getNameSelectedRecord(iterator.next().getName());
+            nameRecord = getNameContactInRecord(iterator.next().getName());
             Log.d("nameRecord", nameRecord);
             Log.d("filter", filter);
 
 
-            if (isConstrainNameRecord(nameRecord, filter, 10)){
+            if (isConstrainNameRecord(nameRecord, filter)){
                 Log.d("isConstrain", "true");
             }
             else if(!nameRecord.equals(filter)){
@@ -131,24 +110,16 @@ public class Records {
 
     }
 
-    public static boolean isConstrainNameRecord(String nameRecord, String nameContact, int numberSym){
-        if(nameRecord.length() >= numberSym){
-            return nameContact.contains(nameRecord);
-        }
-        return false;
-    }
 
+    /**
+     * Определяет включает ли имя контакта, в свой состав имя записи
+     * @param nameRecord имя записи
+     * @param nameContact имя конктас
+     * @return true если вклюает
+     */
 
-
-    public static String[] getUniqueList(List<File> listFiles){
-        List<String> listNames = new ArrayList<String>();
-        for (File var : listFiles){
-            listNames.add(getNameSelectedRecord(var.getPath()));
-        }
-        HashSet<String> hashSetListNames = new HashSet<>(listNames);
-        String[] strListNames = new String[hashSetListNames.size()];
-        hashSetListNames.toArray(strListNames);
-        return  strListNames;
+    public static boolean isConstrainNameRecord(String nameRecord, String nameContact){
+        return nameContact.contains(nameRecord);
     }
 
     public static boolean isFileExists(String path){
@@ -196,10 +167,17 @@ public class Records {
         return listView;
     }
 
-    public static String getNameSelectedRecord(String path){
-        return path.substring(path.indexOf("@") + 1, path.lastIndexOf("("));
-
+    /**
+     * Выделяет имя контакта из записи
+     * @param fullPath путь к записи
+     * @return имя контакта
+     */
+    public static String getNameContactInRecord(String fullPath){
+        String fileName = new File(fullPath).getName();
+        return fileName.substring(fileName.indexOf("@") + 1,fileName.lastIndexOf("("));
     }
+
+
 
     public String getPhoneNumberSelectedRecord(String path){
         return path.substring(path.lastIndexOf("(") + 1, path.lastIndexOf(")"));
