@@ -76,9 +76,15 @@ public class FFmpegCutter {
         });
     }
 
+
+    /**
+     *
+     * @param filesForCutter
+     */
     public void executeCommandForCutFileAfterPlay(List<FileForCutter> filesForCutter) {
 
         try{
+
             RecordProcessing.setMaxDurationProcessing(filesForCutter.size());
 
             for (FileForCutter file : filesForCutter) {
@@ -86,6 +92,10 @@ public class FFmpegCutter {
                     File sourceFile = new File(file.getDestination().getAbsolutePath());
                     File copyFile = new File(getTargetFileForCopy(FileSystemParameters.getPathForSelectedRecordApi(),
                             file.getDestination().getName()).getAbsolutePath());
+
+
+
+
 
                     executeFFMpegCommand(getCommand(file), sourceFile, copyFile);
 
@@ -157,7 +167,7 @@ public class FFmpegCutter {
             public void onSuccess(String message) {
                 try {
                     //copy files in dir for work with Api
-                   FileSystem.CopyFile(sourceFile, copyFile);
+                    FileSystem.CopyFile(sourceFile, copyFile);
                     Log.d("Copy", "FileCopy");
                     //set Text View Duration
                     RecordProcessing.changeDurationProcessingAndStartApi();
@@ -185,6 +195,5 @@ public class FFmpegCutter {
         });
 
     }
-
 
 }

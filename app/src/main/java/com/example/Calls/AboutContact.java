@@ -30,8 +30,6 @@ public class AboutContact extends AppCompatActivity {
 
     private EditText editTextEditRec;
 
-    private List<File> listFiles = new ArrayList<File>();
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         try{

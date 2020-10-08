@@ -87,9 +87,13 @@ public class FileSystem {
         });
         return fileList;
     }
+
     /**
-    Генерирует список файлов для записи
-     **/
+     * Генерирует список файлов для резчика,
+     * параметры файлов устанавливаются на основе листа с интервалами
+     * @param intervalList
+     * @return
+     */
     public static List<FileForCutter> getFilesForCutter(List<CutterInterval> intervalList){
         int i = 0;
         List<FileForCutter> fileForCutterList = new ArrayList<FileForCutter>();
