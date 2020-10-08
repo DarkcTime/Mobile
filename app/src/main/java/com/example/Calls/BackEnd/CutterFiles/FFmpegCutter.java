@@ -156,16 +156,12 @@ public class FFmpegCutter {
             @Override
             public void onSuccess(String message) {
                 try {
-
                     //copy files in dir for work with Api
                    FileSystem.CopyFile(sourceFile, copyFile);
                     Log.d("Copy", "FileCopy");
                     //set Text View Duration
                     RecordProcessing.changeDurationProcessingAndStartApi();
 
-
-                } catch (IOException io) {
-                    DebugMessages.ErrorMessage(io, waitInEndPlay, "IOExceptionCutter");
                 } catch (Exception ex) {
                     DebugMessages.ErrorMessage(ex, waitInEndPlay, "ExceptionFFMpeg");
                 }

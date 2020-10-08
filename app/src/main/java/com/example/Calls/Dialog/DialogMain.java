@@ -10,6 +10,7 @@ import com.example.Calls.Play;
 import com.example.Calls.WaitInEndPlay;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class DialogMain {
@@ -18,11 +19,9 @@ public class DialogMain {
 
     }
 
-    public void startFilesDialog(AboutContact aboutContact, List<File> listFiles){
+    public void startFilesDialog(AboutContact aboutContact) throws IOException {
         FragmentManager manager = aboutContact.getSupportFragmentManager();
-        FilesDialog filesDialog = new FilesDialog();
-        filesDialog.setContext(aboutContact);
-        filesDialog.setListRecords(listFiles);
+        FilesDialog filesDialog = new FilesDialog(aboutContact);
         filesDialog.show(manager, "FilesDialog");
     }
 

@@ -79,9 +79,10 @@ public class AboutContact extends AppCompatActivity {
     }
 
 
+    //открывает диалоговое окно со списком записей для контакта
     public void onClickButtonSelectRecord(View view){
         try{
-            loadDataInList();
+            new DialogMain().startFilesDialog(this);
         }
         catch (Exception ex){
             DebugMessages.ErrorMessage(ex, this, "ButtonSelectRecord");
@@ -97,14 +98,6 @@ public class AboutContact extends AppCompatActivity {
             DebugMessages.ErrorMessage(ex,this, "ButtonCancel");
         }
     }
-
-
-    private void loadDataInList(){
-        listFiles.clear();
-        listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(Records.getPathForFindRecords(), ".mp3"));
-        new DialogMain().startFilesDialog(this,listFiles);
-    }
-
 
     //TODO дописать справку для окна выбора контакта
     public void onClickButtonHelpAboutContact(View view){

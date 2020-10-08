@@ -11,9 +11,11 @@ import com.example.Calls.BackEnd.Records.Records;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,27 +53,15 @@ public class FileSystem {
         }
     }
 
-    //получить список файлов из выбранной директории
-    public static List<File> getFilesWithSelectedExt(String path, String ext) throws IOException{
+    /**
+     * Выбирает список файлов и папок по выбранному пути
+     * @param path путь для поиска файлов
+     * @return список файлов
+     * @throws IOException
+     */
+    public static List<File> getFiles(String path) throws IOException{
         File directory = new File(path);
-        return Arrays.asList(directory.listFiles(new MyFileNameFilter(ext)));
-
-        //TODO test
-        /*
-        Collections.sort(fileList, new Comparator<File>() {
-            @Override
-            public int compare(File file, File file2) {
-                if (file.isDirectory() && file2.isFile())
-                    return -1;
-                else if (file.isFile() && file2.isDirectory())
-                    return 1;
-                else
-                    return file.getPath().compareTo(file2.getPath());
-            }
-        });
-        return fileList;
-
-         */
+        return Arrays.asList(directory.listFiles());
     }
 
 
@@ -124,15 +114,34 @@ public class FileSystem {
         return fileForCutterList;
     }
 
+
     /**
      * Копирует файл
      * @param sourceFile файл для копирования
-     * @param targetFile новый файл
-     * @throws IOException
+     * @param destFile новый файл
+     * @throws IOException в случае если файл не был скопирован
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static void CopyFile(File sourceFile, File targetFile) throws IOException {
-        Files.copy(sourceFile.toPath(), targetFile.toPath());
+    public static void CopyFile(File sourceFile, File destFile) throws IOException {
+        if(!destFile.exists()) {
+            destFile.createNewFile();
+        }
+
+        FileChannel source = null;
+        FileChannel destination = null;
+
+        try {
+            source = new FileInputStream(sourceFile).getChannel();
+            destination = new FileOutputStream(destFile).getChannel();
+            destination.transferFrom(source, 0, source.size());
+        }
+        finally {
+            if(source != null) {
+                source.close();
+            }
+            if(destination != null) {
+                destination.close();
+            }
+        }
     }
 
 
