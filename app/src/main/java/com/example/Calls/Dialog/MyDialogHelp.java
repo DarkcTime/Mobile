@@ -180,7 +180,4 @@ public class MyDialogHelp extends AppCompatDialogFragment{
         MEDIA, HELP, PERMISSIONS, API, PLAY, TEST
     }
 
-
-
-
 }

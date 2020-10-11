@@ -2,6 +2,7 @@ package com.example.Calls.Dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,67 +18,91 @@ import com.example.Calls.BackEnd.Mail.Mailer;
 import com.example.Calls.MainActivity;
 import com.example.Calls.Play;
 import com.example.Calls.R;
+import com.example.Calls.Settings;
 import com.example.Calls.WaitInEndPlay;
+
+/**
+ * Show user exception
+ * and send messages with use Email
+ * to team developers
+ */
 
 @SuppressLint("ValidFragment")
 public class ErrorDialog extends AppCompatDialogFragment {
 
-
-    private Exception ex;
+   private String typeException;
+   private String errorMessage;
+    /**
+     * Activity values
+     */
+    private Activities activity;
     private MainActivity mainActivity;
     private Play play;
+    private Settings settings;
     private AboutContact aboutContact;
     private WaitInEndPlay waitInEndPlay;
 
 
+    /**
+     * defines the activity
+     * @param _context activity
+     * @param _activity explicitly specifying the activity name
+     */
     @SuppressLint("ValidFragment")
-    public ErrorDialog(MainActivity _mainActivity,Exception _ex){
-        mainActivity = _mainActivity;
-        ex = _ex;
+    public ErrorDialog(Context _context,Activities _activity){
+        try{
+
+            activity = _activity;
+
+            switch (activity){
+                case  MainActivity:
+                    mainActivity = (MainActivity)_context;
+                    break;
+                case Play:
+                    play = (Play)_context;
+                    break;
+                case Settings:
+                    settings = (Settings)_context;
+                    break;
+                case AboutContact:
+                    aboutContact = (AboutContact)_context;
+                    break;
+                case WaitInEndPlay:
+                    waitInEndPlay = (WaitInEndPlay) _context;
+                    break;
+                default:
+                    throw new NullPointerException("UnknownActivity");
+            }
+        }
+        catch (NullPointerException nullPointException){
+            Log.d("ErrorDialog", nullPointException.getMessage());
+        }
+        catch (Exception ex){
+            //TODO create catch for this Error
+        }
+
     }
 
-    @SuppressLint("ValidFragment")
-    public ErrorDialog(Play _play, Exception _ex){
-        play = _play;
-        ex = _ex;
-    }
-
-    @SuppressLint("ValidFragment")
-    public ErrorDialog(AboutContact _aboutContact, Exception _ex){
-        aboutContact = _aboutContact;
-        ex = _ex;
-    }
-
-    @SuppressLint("ValidFragment")
-    public ErrorDialog(WaitInEndPlay _waitInEndPlay, Exception _ex){
-        waitInEndPlay = _waitInEndPlay;
-        ex = _ex;
-    }
-
-
+    /**
+     *
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle("Возникло исключение")
+        builder.setTitle(typeException)
                 .setIcon(R.drawable.unavailable)
-                .setMessage(ex.toString())
+                .setMessage(errorMessage)
                 .setPositiveButton("Отправить разработчику на мыло", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Mailer mailer = new Mailer();
-                        if(mainActivity != null){
-                            mailer.SendMessageAboutError(ex, mainActivity);
-                        }
-                        else if(play != null){
-                            mailer.SendMessageAboutError(ex, play);
-                        }
-                        else if(aboutContact != null){
-                            mailer.SendMessageAboutError(ex, aboutContact);
-                        }
-                        else if (waitInEndPlay != null){
-                            mailer.SendMessageAboutError(ex, waitInEndPlay);
-                        }
 
+                        Mailer mailer = new Mailer(builder.getContext());
+                        mailer.SendMail(typeException, errorMessage);
+
+                        //TODO debug test
+                        Log.d("Activity", builder.getContext().getPackageCodePath());
 
                         dialog.cancel();
                     }
@@ -92,4 +117,15 @@ public class ErrorDialog extends AppCompatDialogFragment {
 
         return builder.create();
     }
+
+
+    /**
+     * enum for select type Activity
+     */
+    public enum Activities {
+        MainActivity, Play, Settings, AboutContact, WaitInEndPlay
+    }
+
 }
+
+

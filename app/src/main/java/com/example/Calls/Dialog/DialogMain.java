@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
 import com.example.Calls.AboutContact;
+import com.example.Calls.BackEnd.SharedClasses.Application;
 import com.example.Calls.MainActivity;
 import com.example.Calls.Play;
 import com.example.Calls.WaitInEndPlay;
@@ -16,6 +17,10 @@ import java.util.List;
 public class DialogMain {
 
     public DialogMain(){
+
+    }
+
+    public static void startErrorDialog(String typeMessage, String ErrorMessage){
 
     }
 
@@ -48,25 +53,27 @@ public class DialogMain {
 
     public static void startErrorDialog(MainActivity mainActivity,Exception ex){
         FragmentManager manager = mainActivity.getSupportFragmentManager();
-        ErrorDialog errorDialog = new ErrorDialog(mainActivity,ex);
+        //ErrorDialog errorDialog = new ErrorDialog(mainActivity,ex);
 
-        errorDialog.show(manager, "ErrorDialog");
+        //errorDialog.show(manager, "ErrorDialog");
     }
 
     public static void startErrorDialog(Play play,Exception ex){
         FragmentManager manager = play.getSupportFragmentManager();
-        ErrorDialog errorDialog = new ErrorDialog(play,ex);
-        errorDialog.show(manager, "ErrorDialog");
+        Context context = new Play();
+
+        //ErrorDialog errorDialog = new ErrorDialog(play,ex);
+        //errorDialog.show(manager, "ErrorDialog");
     }
     public static void startErrorDialog(AboutContact aboutContact,Exception ex){
         FragmentManager manager = aboutContact.getSupportFragmentManager();
-        ErrorDialog errorDialog = new ErrorDialog(aboutContact,ex);
-        errorDialog.show(manager, "ErrorDialog");
+        //ErrorDialog errorDialog = new ErrorDialog(aboutContact,ex);
+        //errorDialog.show(manager, "ErrorDialog");
     }
     public static void startErrorDialog(WaitInEndPlay waitInEndPlay,Exception ex){
         FragmentManager manager = waitInEndPlay.getSupportFragmentManager();
-        ErrorDialog errorDialog = new ErrorDialog(waitInEndPlay,ex);
-        errorDialog.show(manager, "ErrorDialog");
+        //ErrorDialog errorDialog = new ErrorDialog(waitInEndPlay,ex);
+        //errorDialog.show(manager, "ErrorDialog");
     }
 
 

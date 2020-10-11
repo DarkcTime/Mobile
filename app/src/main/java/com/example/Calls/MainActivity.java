@@ -30,6 +30,7 @@ import com.example.Calls.BackEnd.Mail.Mailer;
 import com.example.Calls.BackEnd.Permissions.Permissions;
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
+import com.example.Calls.BackEnd.SharedClasses.Application;
 import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Dialog.MyDialogHelp;
 
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             //объект для работы с настройками
             SavedSettings savedSettings = new SavedSettings(mSettings);
 
+
             //если приложение запускается впервые выполняет данное условие
             if (!mSettings.getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false)) {
                 SharedPreferences.Editor e = mSettings.edit();
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
         } catch (Exception ex) {
+
             DebugMessages.ErrorMessage(ex, this, "MainActivity");
         }
 

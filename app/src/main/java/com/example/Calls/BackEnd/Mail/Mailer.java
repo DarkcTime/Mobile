@@ -1,5 +1,6 @@
 package com.example.Calls.BackEnd.Mail;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
@@ -23,6 +24,8 @@ import javax.mail.internet.MimeMessage;
 
 public class Mailer {
 
+    private Context context;
+
     final String to = "vlad_chekmarev_01@mail.ru";
     final String from = "sgk.inventories@gmail.com";
     final String host = "smtp.gmail.com";
@@ -30,8 +33,28 @@ public class Mailer {
     final String password = "wlad620!wlad620!";
     final String port = "587";
 
-    public  Mailer(){
+    public  Mailer(Context _context){
+        context = _context;
+    }
 
+    /**
+     * Send email message from mail user
+     * to mail developer
+     * @param title message subject
+     * @param message content in email
+     */
+    public void SendMail(String title, String message){
+        try {
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("message/rfc822");
+            i.putExtra(Intent.EXTRA_EMAIL, new String[]{to});
+            i.putExtra(Intent.EXTRA_SUBJECT, title);
+            i.putExtra(Intent.EXTRA_TEXT,message);
+
+            context.startActivity(Intent.createChooser(i, "Send mail - ".concat(to)));
+        } catch (android.content.ActivityNotFoundException e) {
+            Toast.makeText(context, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void SendMessageAboutError(Exception ex, MainActivity mainActivity){
