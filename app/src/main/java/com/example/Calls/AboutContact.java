@@ -17,6 +17,7 @@ import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Dialog.FilesDialog;
+import com.example.Calls.Dialog.MyDialogHelp;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,7 +81,7 @@ public class AboutContact extends AppCompatActivity {
     //открывает диалоговое окно со списком записей для контакта
     public void onClickButtonSelectRecord(View view){
         try{
-            new DialogMain().startFilesDialog(this);
+            new DialogMain(this, DialogMain.Activities.AboutContact).startFilesDialog();
         }
         catch (Exception ex){
             DebugMessages.ErrorMessage(ex, this, "ButtonSelectRecord");

@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import static com.example.Calls.Dialog.MyDialogHelp.Windows.API;
 
+@SuppressLint("ValidFragment")
 public class MyDialogHelp extends AppCompatDialogFragment{
 
     //TODO refactor getButton!
@@ -50,8 +51,10 @@ public class MyDialogHelp extends AppCompatDialogFragment{
         window = _window;
     }
 
-    public MyDialogHelp(){
 
+    @SuppressLint("ValidFragment")
+    public MyDialogHelp(Windows _window){
+        window = _window;
     }
 
     @NonNull

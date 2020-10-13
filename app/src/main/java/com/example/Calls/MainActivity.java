@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+            new DialogMain(this, DialogMain.Activities.MainActivity).startAlertDialog(MyDialogHelp.Windows.PLAY);
         } catch (Exception ex) {
 
             DebugMessages.ErrorMessage(ex, this, "MainActivity");

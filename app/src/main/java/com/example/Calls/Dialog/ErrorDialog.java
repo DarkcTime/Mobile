@@ -125,7 +125,6 @@ public class ErrorDialog extends AppCompatDialogFragment {
     public enum Activities {
         MainActivity, Play, Settings, AboutContact, WaitInEndPlay
     }
-
 }
 
 

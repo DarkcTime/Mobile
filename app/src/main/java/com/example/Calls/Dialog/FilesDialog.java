@@ -29,19 +29,15 @@ import java.util.List;
 @SuppressLint("ValidFragment")
 public class FilesDialog extends AppCompatDialogFragment {
 
-    public AboutContact context;
-
     private List<File> listFiles = new ArrayList<>();
 
     private String[] listRecords;
 
     /**
      * Заполняет список для вывода файлового диалога
-     * @param _context объект для вывода окна
      */
     @SuppressLint("ValidFragment")
-    public FilesDialog(AboutContact _context) throws IOException{
-        context = _context;
+    public FilesDialog() throws IOException{
         listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(Records.getPathForFindRecords(), ".mp3"));
         setRecordsForContact();
     }
@@ -104,7 +100,7 @@ public class FilesDialog extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         try{
 
@@ -112,6 +108,8 @@ public class FilesDialog extends AppCompatDialogFragment {
                     .setItems(listRecords, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            //show list record for contact
+                            AboutContact context = (AboutContact)builder.getContext();
                             context.startGame(listRecords[which]);
                         }
                     });
@@ -119,7 +117,7 @@ public class FilesDialog extends AppCompatDialogFragment {
             return builder.create();
         }
         catch (Exception ex){
-            DebugMessages.ErrorMessage(ex, context, "onCreateFilesDialog");
+            Log.d("FilesDialog", ex.getMessage());
             return builder.create();
         }
 
