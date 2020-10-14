@@ -32,90 +32,63 @@ public class ErrorDialog extends AppCompatDialogFragment {
 
    private String typeException;
    private String errorMessage;
-    /**
-     * Activity values
-     */
-    private Activities activity;
-    private MainActivity mainActivity;
-    private Play play;
-    private Settings settings;
-    private AboutContact aboutContact;
-    private WaitInEndPlay waitInEndPlay;
-
+   private String tag;
 
     /**
-     * defines the activity
-     * @param _context activity
-     * @param _activity explicitly specifying the activity name
+     * Create Parameters for error dialog
+     * @param _typeException example: NullPointException
+     * @param _errorMessage example: divide by zero
+     * @param _tag example: onCreateMainActivity
      */
-    @SuppressLint("ValidFragment")
-    public ErrorDialog(Context _context,Activities _activity){
+    public ErrorDialog(String _typeException, String _errorMessage, String _tag){
         try{
-
-            activity = _activity;
-
-            switch (activity){
-                case  MainActivity:
-                    mainActivity = (MainActivity)_context;
-                    break;
-                case Play:
-                    play = (Play)_context;
-                    break;
-                case Settings:
-                    settings = (Settings)_context;
-                    break;
-                case AboutContact:
-                    aboutContact = (AboutContact)_context;
-                    break;
-                case WaitInEndPlay:
-                    waitInEndPlay = (WaitInEndPlay) _context;
-                    break;
-                default:
-                    throw new NullPointerException("UnknownActivity");
-            }
-        }
-        catch (NullPointerException nullPointException){
-            Log.d("ErrorDialog", nullPointException.getMessage());
+            typeException = _typeException;
+            errorMessage = _errorMessage;
+            tag = _tag;
         }
         catch (Exception ex){
-            //TODO create catch for this Error
+            Log.d("ErrorDialog", ex.getMessage());
         }
-
     }
 
-    /**
-     *
-     * @param savedInstanceState
-     * @return
-     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        try{
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(typeException)
-                .setIcon(R.drawable.unavailable)
-                .setMessage(errorMessage)
-                .setPositiveButton("Отправить разработчику на мыло", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+            final String message = "Tag: ".concat(tag).concat("\n").concat("Description: ").concat(errorMessage);
 
-                        Mailer mailer = new Mailer(builder.getContext());
-                        mailer.SendMail(typeException, errorMessage);
+            builder.setTitle(typeException)
+                    .setIcon(R.drawable.unavailable)
+                    .setMessage(message)
+                    .setPositiveButton("Отправить разработчику на мыло", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
 
-                        //TODO debug test
-                        Log.d("Activity", builder.getContext().getPackageCodePath());
+                            Mailer mailer = new Mailer(builder.getContext());
+                            mailer.SendMail(typeException, message);
 
-                        dialog.cancel();
-                    }
-                })
-                .setNegativeButton("Не хочу помогать", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                            dialog.cancel();
+                        }
+                    })
+                    .setNegativeButton("Не хочу помогать", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
 
+            return builder.create();
+        }
+        catch (Exception ex){
+            Log.d("onCreateError", ex.getMessage());
+            final  AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        return builder.create();
+            builder.setTitle("Error on create dialog")
+            .setMessage(ex.getMessage());
+
+            return builder.create();
+        }
+
     }
 
 

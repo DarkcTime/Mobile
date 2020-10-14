@@ -15,6 +15,7 @@ import com.example.Calls.BackEnd.Debug.DebugMessages;
 import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.Files.FileSystemParameters;
 import com.example.Calls.BackEnd.Records.Records;
+import com.example.Calls.MainActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,9 +38,9 @@ public class FilesDialog extends AppCompatDialogFragment {
      * Заполняет список для вывода файлового диалога
      */
     @SuppressLint("ValidFragment")
-    public FilesDialog() throws IOException{
-        listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(Records.getPathForFindRecords(), ".mp3"));
-        setRecordsForContact();
+    public FilesDialog() throws Exception{
+            listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(Records.getPathForFindRecords(), ".mp3"));
+            setRecordsForContact();
     }
 
     /**
@@ -47,7 +48,7 @@ public class FilesDialog extends AppCompatDialogFragment {
      * файлами записей
      * @throws IOException ошибка может возникнуть при получении файлов
      */
-    public void setRecordsForContact() throws IOException {
+    public void setRecordsForContact() throws Exception {
 
         filteringByContact();
 
@@ -67,27 +68,26 @@ public class FilesDialog extends AppCompatDialogFragment {
     /**
      * фильтрует записи по выбранному контакту
      */
-    private void filteringByContact(){
+    private void filteringByContact() throws Exception{
         Records.getFilterRecords(listFiles, Contacts.getNameCurrentContact());
     }
 
-    private boolean isFilteringByHaveTranslating(File nameRecord) throws IOException{
+    private boolean isFilteringByHaveTranslating(File nameRecord) throws Exception{
         List<File> translatedRecords = FileSystem.getFiles(FileSystemParameters.getPathForSelectedContact());
 
         for(File nameFile : translatedRecords){
             if(isHaveRecord(nameRecord, nameFile)) return true;
         }
         return false;
-
     }
 
-    private boolean isHaveRecord(File nameRecord, File nameFile){
+    private boolean isHaveRecord(File nameRecord, File nameFile) throws Exception{
         return nameRecord.getName()
                 .replace(".mp3","")
                 .equals(nameFile.getName());
     }
 
-    private void setListRecords(List<String> bufferList){
+    private void setListRecords(List<String> bufferList) throws Exception{
         listRecords = new String[bufferList.size()];
 
         for (int i = 0; i < bufferList.size(); i++){
@@ -98,7 +98,7 @@ public class FilesDialog extends AppCompatDialogFragment {
 
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState){
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 

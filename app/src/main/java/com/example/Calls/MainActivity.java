@@ -51,9 +51,11 @@ public class MainActivity extends AppCompatActivity {
     //получает список файлов записей с расширениями mp.3
     private List<File> listFiles = new ArrayList<File>();
 
+    //window dialog
+    final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.MainActivity);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
@@ -64,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
             //объект для работы с настройками
             SavedSettings savedSettings = new SavedSettings(mSettings);
-
 
             //если приложение запускается впервые выполняет данное условие
             if (!mSettings.getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false)) {
@@ -83,8 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 //запрашивает разрения у пользователя
                 askPermission();
             } else {
-                //выводит справку если пользователь не эксперт
-                new DialogMain().startAlertDialog(this, MyDialogHelp.Windows.HELP);
+                dialogMain.showMyDialogHelp(MyDialogHelp.Windows.HELP);
             }
 
             //определяет выбранный контакт и переходит на следующую activity
@@ -98,10 +98,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            new DialogMain(this, DialogMain.Activities.MainActivity).startAlertDialog(MyDialogHelp.Windows.PLAY);
-        } catch (Exception ex) {
 
-            DebugMessages.ErrorMessage(ex, this, "MainActivity");
+        } catch (Exception ex) {
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreateMainActivity");
         }
 
     }
@@ -110,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
     //загрузка страницы, после запроса прав у пользователя
     private void loadMain() {
         try {
-
             //установка пути в настройках
             Records.setPathForFindRecords(mSettings.getString("path", Records.currentPathForRecordsXiomi));
 
@@ -122,8 +120,6 @@ public class MainActivity extends AppCompatActivity {
             //add list from selected path
             listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(Records.getPathForFindRecords(), ".mp3"));
 
-            Log.d("listFiles", String.valueOf(listFiles.size()));
-
             //вывод список контактов в list
             ArrayAdapter<String> adapter =
                     new ArrayAdapter<String>(this,
@@ -131,8 +127,9 @@ public class MainActivity extends AppCompatActivity {
                             Contacts.getListContacts(listFiles, this));
 
             listViewContactsMA.setAdapter(adapter);
+
         } catch (Exception ex) {
-            DebugMessages.ErrorMessage(ex, this, "loadMain");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "loadMain");
         }
 
     }
@@ -142,7 +139,12 @@ public class MainActivity extends AppCompatActivity {
 
     //открывает диалоговое окно с контекстной справкой для данной страницы
     public void onCLickButtonHelp(View view) {
-        new DialogMain().startAlertDialog(this, MyDialogHelp.Windows.HELP);
+        try{
+            dialogMain.showMyDialogHelp(MyDialogHelp.Windows.HELP);
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonHelp");
+        }
     }
 
     //открывает окно настроек
@@ -151,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             Intent settings = new Intent(MainActivity.this, Settings.class);
             startActivity(settings);
         } catch (Exception ex) {
-            DebugMessages.ErrorMessage(ex, this, "onClickSettings");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonSettings");
         }
     }
 
@@ -161,12 +163,11 @@ public class MainActivity extends AppCompatActivity {
     //запрос разрешений
     public void askPermission() {
         try {
-
             Permissions permissions = new Permissions();
             //если разрешения были получены, выводит список записей
             if (!permissions.EnablePermissions(this)) loadMain();
         } catch (Exception ex) {
-            DebugMessages.ErrorMessage(ex, this, "askPermission");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "askPermission");
         }
     }
 
@@ -174,18 +175,17 @@ public class MainActivity extends AppCompatActivity {
     //TODO добавить алгоритм действий при отрицательном ответе
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
         try {
             if (grantResults.length > 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // permission granted
                 loadMain();
             } else {
                 // permission denied
-                new DialogMain().startAlertDialog(this, MyDialogHelp.Windows.PERMISSIONS);
+                dialogMain.showMyDialogHelp(MyDialogHelp.Windows.PERMISSIONS);
             }
 
         } catch (Exception ex) {
-            DebugMessages.ErrorMessage(ex, this, "onRequestPermission");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onRequestPermissionsResult");
         }
 
     }

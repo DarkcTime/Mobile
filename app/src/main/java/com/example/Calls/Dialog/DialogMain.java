@@ -3,6 +3,7 @@ package com.example.Calls.Dialog;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 
 import com.example.Calls.AboutContact;
 import com.example.Calls.BackEnd.SharedClasses.Application;
@@ -29,58 +30,78 @@ public class DialogMain {
 
     }
 
-
     /**
      * create object for show dialog
      * @param context context current activity
      * @param _activity call current activity
      */
     public DialogMain(Context context, Activities _activity){
-        switch (_activity){
-            case MainActivity:
-                MainActivity mainActivity = (MainActivity)context;
-                manager = mainActivity.getSupportFragmentManager();
-                break;
-            case AboutContact:
-                AboutContact aboutContact = (AboutContact)context;
-                manager = aboutContact.getSupportFragmentManager();
-                break;
-            case Settings:
-                Settings settings = (Settings) context;
-                manager = settings.getSupportFragmentManager();
-                break;
-            case Play:
-                Play play = (Play) context;
-                manager = play.getSupportFragmentManager();
-                break;
-            case WaitInEndPlay:
-                WaitInEndPlay waitInEndPlay = (WaitInEndPlay)context;
-                manager = waitInEndPlay.getSupportFragmentManager();
-                break;
-            default:
-                //TODO make default use
-                break;
+        try{
+            switch (_activity){
+                case MainActivity:
+                    MainActivity mainActivity = (MainActivity)context;
+                    manager = mainActivity.getSupportFragmentManager();
+                    break;
+                case AboutContact:
+                    AboutContact aboutContact = (AboutContact)context;
+                    manager = aboutContact.getSupportFragmentManager();
+                    break;
+                case Settings:
+                    Settings settings = (Settings) context;
+                    manager = settings.getSupportFragmentManager();
+                    break;
+                case Play:
+                    Play play = (Play) context;
+                    manager = play.getSupportFragmentManager();
+                    break;
+                case WaitInEndPlay:
+                    WaitInEndPlay waitInEndPlay = (WaitInEndPlay)context;
+                    manager = waitInEndPlay.getSupportFragmentManager();
+                    break;
+                default:
+                    //TODO make default use
+                    break;
+            }
+
         }
-
-
+        catch (Exception ex){
+            showErrorDialogAndTheOutputLogs(ex, "DialogMain");
+        }
     }
 
 
     /**
-     * show MyDialogHel[
+     * show MyDialogHelp
      * @param window selected window with help
      */
-    public void startMyDialogHelp(MyDialogHelp.Windows window){
-        //create object dialog
-        MyDialogHelp myDialogHelp = new MyDialogHelp(window);
-        //whether the dialog - not.
-        myDialogHelp.setCancelable(false);
-        //show dialog
-        myDialogHelp.show(manager, "MainActivity");
+    public void showMyDialogHelp(MyDialogHelp.Windows window){
+        try{
+            //create object dialog
+            MyDialogHelp myDialogHelp = new MyDialogHelp(window);
+            //whether the dialog - not.
+            myDialogHelp.setCancelable(false);
+            //show dialog
+            myDialogHelp.show(manager, "MainActivity");
+        }
+        catch (Exception ex){
+            showErrorDialogAndTheOutputLogs(ex, "showDialogHelp");
+        }
     }
 
+    public void showFilesDialog() {
+        try{
+            FilesDialog filesDialog = new FilesDialog();
+            filesDialog.show(manager, "FilesDialog");
+        }
+        catch (Exception ex){
+            showErrorDialogAndTheOutputLogs(ex,"showFilesDialog");
+        }
+    }
+
+
     /**
-     * show MyDialogHel[
+     * //TODO remove method
+     * show MyDialogHelp
      * @param window selected window with help
      */
     public void startAlertDialog(MyDialogHelp.Windows window){
@@ -92,22 +113,30 @@ public class DialogMain {
         myDialogHelp.show(manager, "MainActivity");
     }
 
-    /**
-     *
-     */
-    public void startErrorDialog(){
 
+    /**
+     * show window for send email to developer
+     */
+    public void showErrorDialogAndTheOutputLogs(Exception ex, String tag){
+        try{
+
+            String typeException = ex.getClass().getSimpleName();
+            Log.d("typeEx", typeException);
+            String errorMessage = ex.getMessage();
+            Log.d("errorMessage", errorMessage);
+            Log.d("tag", tag);
+
+            ErrorDialog errorDialog = new ErrorDialog(typeException, errorMessage, tag);
+            errorDialog.show(manager, "startErrorDialog");
+
+        }
+        catch (Exception exception){
+            Log.d("showErrorDialog", exception.getMessage());
+        }
     }
 
 
-    /**
-     *
-     * @throws IOException
-     */
-    public void startFilesDialog() throws IOException {
-        FilesDialog filesDialog = new FilesDialog();
-        filesDialog.show(manager, "FilesDialog");
-    }
+
 
     public void startAlertDialog(MainActivity mainActivity, MyDialogHelp.Windows window){
         FragmentManager manager = mainActivity.getSupportFragmentManager();
@@ -138,9 +167,6 @@ public class DialogMain {
     }
 
     public static void startErrorDialog(Play play,Exception ex){
-        FragmentManager manager = play.getSupportFragmentManager();
-        Context context = new Play();
-
         //ErrorDialog errorDialog = new ErrorDialog(play,ex);
         //errorDialog.show(manager, "ErrorDialog");
     }

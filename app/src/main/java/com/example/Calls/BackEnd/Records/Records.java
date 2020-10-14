@@ -27,8 +27,8 @@ public class Records {
     //местонахождение записей
     private static String pathForFindRecords = "";
 
-    public static void setPathForFindRecords(String _pathForFindRecords){
-        pathForFindRecords = _pathForFindRecords;
+    public static void setPathForFindRecords(String _pathForFindRecords) throws Exception{
+            pathForFindRecords = _pathForFindRecords;
     }
 
     public static String getPathForFindRecords(){

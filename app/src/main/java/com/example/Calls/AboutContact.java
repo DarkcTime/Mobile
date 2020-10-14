@@ -81,7 +81,7 @@ public class AboutContact extends AppCompatActivity {
     //открывает диалоговое окно со списком записей для контакта
     public void onClickButtonSelectRecord(View view){
         try{
-            new DialogMain(this, DialogMain.Activities.AboutContact).startFilesDialog();
+            new DialogMain(this, DialogMain.Activities.AboutContact).showFilesDialog();
         }
         catch (Exception ex){
             DebugMessages.ErrorMessage(ex, this, "ButtonSelectRecord");
