@@ -30,6 +30,8 @@ public class DialogMain {
 
     }
 
+    private AboutContact aboutContact;
+
     /**
      * create object for show dialog
      * @param context context current activity
@@ -43,7 +45,7 @@ public class DialogMain {
                     manager = mainActivity.getSupportFragmentManager();
                     break;
                 case AboutContact:
-                    AboutContact aboutContact = (AboutContact)context;
+                    aboutContact = (AboutContact)context;
                     manager = aboutContact.getSupportFragmentManager();
                     break;
                 case Settings:
@@ -90,7 +92,7 @@ public class DialogMain {
 
     public void showFilesDialog() {
         try{
-            FilesDialog filesDialog = new FilesDialog();
+            FilesDialog filesDialog = new FilesDialog(aboutContact);
             filesDialog.show(manager, "FilesDialog");
         }
         catch (Exception ex){

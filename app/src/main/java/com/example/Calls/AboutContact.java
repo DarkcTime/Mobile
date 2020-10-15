@@ -31,6 +31,9 @@ public class AboutContact extends AppCompatActivity {
 
     private EditText editTextEditRec;
 
+    //dialog windows
+    final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.AboutContact);
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         try{
@@ -41,10 +44,9 @@ public class AboutContact extends AppCompatActivity {
 
             setEditTextRecToFileContact();
         }
-        catch (IOException ex){
-            DebugMessages.ErrorMessage(ex, this, "AboutContact");
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreateAboutContact");
         }
-
     }
 
     //объявление переменных для AboutContact
@@ -68,23 +70,29 @@ public class AboutContact extends AppCompatActivity {
             editTextEditRec = (EditText) findViewById(R.id.editTextEditRec);
         }
         catch (Exception ex){
-            DebugMessages.ErrorMessage(ex,this, "setParametersForView");
+           dialogMain.showErrorDialogAndTheOutputLogs(ex, "setParametersForView");
         }
     }
 
     //загрузка текста из общего файла пользователя в окно для изменения
-    private void setEditTextRecToFileContact() throws IOException{
-        editTextEditRec.setText(ApiMain.readFullFileSelectedContact());
+    private void setEditTextRecToFileContact(){
+        try{
+            editTextEditRec.setText(ApiMain.readFullFileSelectedContact());
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "AboutContact/setEditTextRecToFileContact");
+        }
+
     }
 
 
     //открывает диалоговое окно со списком записей для контакта
     public void onClickButtonSelectRecord(View view){
         try{
-            new DialogMain(this, DialogMain.Activities.AboutContact).showFilesDialog();
+            dialogMain.showFilesDialog();
         }
         catch (Exception ex){
-            DebugMessages.ErrorMessage(ex, this, "ButtonSelectRecord");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonSelectRecord");
         }
     }
 
@@ -94,7 +102,7 @@ public class AboutContact extends AppCompatActivity {
             startActivity(main);
         }
         catch (Exception ex){
-            DebugMessages.ErrorMessage(ex,this, "ButtonCancel");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonCancel");
         }
     }
 
@@ -106,11 +114,12 @@ public class AboutContact extends AppCompatActivity {
     public void startGame(String nameRecord){
         try{
             Intent play = new Intent(AboutContact.this, Play.class);
+            //set name Selected record for Application
             Records.setNameSelectedRecord(nameRecord);
             startActivity(play);
         }
         catch (Exception ex){
-            DebugMessages.ErrorMessage(ex,this,"startGame");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "AboutContact/startGame");
         }
     }
 

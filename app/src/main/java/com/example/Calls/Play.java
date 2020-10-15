@@ -35,6 +35,9 @@ import java.io.IOException;
 public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
 
+    //dialog windows
+    final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.Play);
+
     private TextView textViewSelectedRecPlay, textViewStartPositionPlay;
 
     private SeekBar seekBarPositionPlay;
@@ -105,13 +108,17 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
             buttonMyPlay.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
-                    {
-                        updateGame();
-                        setIntervalAdd();
+                    try{
+                        if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
+                        {
+                            updateGame();
+                            setIntervalAdd();
+                        }
+                    }
+                    catch (Exception ex){
+                        dialogMain.showErrorDialogAndTheOutputLogs(ex, "buttonMyPlay");
                     }
                     return false;
-
                 }
             });
 
@@ -119,11 +126,17 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
             buttonCompanion.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
-                    {
-                        updateGame();
-                        setIntervalStop();
+                    try {
+                        if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
+                        {
+                            updateGame();
+                            setIntervalStop();
+                        }
                     }
+                    catch (Exception ex){
+                        dialogMain.showErrorDialogAndTheOutputLogs(ex, "buttonCompanion");
+                    }
+
                     return false;
                 }
             });
@@ -138,45 +151,55 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
             //endregion
         }
         catch (Exception ex){
-            DebugMessages.ErrorMessage(ex, this, "Play");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreatePlay");
         }
 
     }
 
     //region loadPage
     private void setVariablesForPlay(){
-        //region first create variables
-        textViewSelectedRecPlay = (TextView) findViewById(R.id.textViewSelectedRecPlay);
-        textViewStartPositionPlay = (TextView) findViewById(R.id.textViewStartPositionPlay);
+        try{
+            //region first create variables
+            textViewSelectedRecPlay = (TextView) findViewById(R.id.textViewSelectedRecPlay);
+            textViewStartPositionPlay = (TextView) findViewById(R.id.textViewStartPositionPlay);
 
-        seekBarPositionPlay = (SeekBar) findViewById(R.id.seekBarPositionPlay);
+            seekBarPositionPlay = (SeekBar) findViewById(R.id.seekBarPositionPlay);
 
-        buttonStartPlay = (Button) findViewById(R.id.buttonStartPlay);
-        buttonMyPlay = (Button) findViewById(R.id.buttonMyPlay);
-        buttonExit = (Button) findViewById(R.id.buttonExit);
-        buttonCompanion = (Button) findViewById(R.id.buttonCompanion);
+            buttonStartPlay = (Button) findViewById(R.id.buttonStartPlay);
+            buttonMyPlay = (Button) findViewById(R.id.buttonMyPlay);
+            buttonExit = (Button) findViewById(R.id.buttonExit);
+            buttonCompanion = (Button) findViewById(R.id.buttonCompanion);
 
-        buttonBackRewind = (Button) findViewById(R.id.buttonBackRewind);
-        buttonFordRewind = (Button) findViewById(R.id.buttonFordRewind);
-
+            buttonBackRewind = (Button) findViewById(R.id.buttonBackRewind);
+            buttonFordRewind = (Button) findViewById(R.id.buttonFordRewind);
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "Play/setVariablesForPlay");
+        }
     }
 
     private void setSettingsForRewards(){
-        //region set Settings from file
-        mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
+        try{
+            //region set Settings from file
+            mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
 
-        SettingsForPlay.setSecRewind(mSettings.getInt("rewind_time", 5));
-        SettingsForPlay.setSecPause(mSettings.getInt("pause_time", 2));
+            SettingsForPlay.setSecRewind(mSettings.getInt("rewind_time", 5));
+            SettingsForPlay.setSecPause(mSettings.getInt("pause_time", 2));
 
-        secRewind = SettingsForPlay.getSecRewind();
-        secPause = SettingsForPlay.getSecPause();
+            secRewind = SettingsForPlay.getSecRewind();
+            secPause = SettingsForPlay.getSecPause();
 
-        checkPlaying = secPause + 1;
+            checkPlaying = secPause + 1;
 
-        buttonFordRewind.setText("вперёд ".concat(String.valueOf(secRewind)).concat(" сек"));
-        buttonBackRewind.setText("назад ".concat(String.valueOf(secRewind).concat(" сек")));
+            buttonFordRewind.setText("вперёд ".concat(String.valueOf(secRewind)).concat(" сек"));
+            buttonBackRewind.setText("назад ".concat(String.valueOf(secRewind).concat(" сек")));
 
-        //endregion
+            //endregion
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "Play/SettingsForRewards");
+        }
+
     }
 
     private void createMediaPlayer() {
@@ -216,7 +239,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 }
             });
         } catch (Exception ex) {
-            DebugMessages.ErrorMessage(ex, this, "createMediaPlayer");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "Play/createMediaPlayer");
         }
     }
 
@@ -229,7 +252,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
             RewardMedia(true);
         }
         catch (Exception ex){
-            DebugMessages.ErrorMessage(ex, this, "ButtonForRew");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonForwardSecond");
         }
     }
 
@@ -238,22 +261,28 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
             RewardMedia(false);
         }
         catch (Exception ex){
-            DebugMessages.ErrorMessage(ex, this, "ButtonBackRew");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonBackSecond");
         }
     }
 
     private void RewardMedia(boolean isForward){
-        if(isForward) ForwardReward();
-        else BackReward();
-        textViewStartPositionPlay.setText(MediaPlayerForRecords.setDurationStr(mp));
-        updateGame();
+        try{
+            if(isForward) ForwardReward();
+            else BackReward();
+            textViewStartPositionPlay.setText(MediaPlayerForRecords.setDurationStr(mp));
+            updateGame();
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "Play/RewardMedia");
+        }
+
     }
 
-    private void ForwardReward(){
+    private void ForwardReward() throws Exception{
         mp.seekTo(mp.getCurrentPosition() + secRewind*1000);
     }
 
-    private void BackReward(){
+    private void BackReward() throws Exception{
         mp.seekTo(mp.getCurrentPosition() - secRewind*1000);
     }
 
@@ -265,54 +294,69 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
             com.example.Calls.Dialog.PopupMenu.showPopupMenu(this, view);
         }
         catch (Exception ex){
-            DebugMessages.ErrorMessage(ex, this, "ButtonSettingsPlay");
+           dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonSettingsPlay");
         }
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.settings:
-                Intent settingsForPlay = new Intent(Play.this, SettingsForPlay.class);
-                startActivity(settingsForPlay);
-                return true;
-            case R.id.help:
-                new DialogMain().startAlertDialog(this, MyDialogHelp.Windows.TEST);
-                return true;
-            case  R.id.reset:
-                Intent reset = getIntent();
-                finish();
-                startActivity(reset);
-                return true;
-            case R.id.exit:
-                Intent aboutContacts = new Intent(Play.this, AboutContact.class);
-                startActivity(aboutContacts);
-                return true;
+        try{
+            switch (item.getItemId()){
+                case R.id.settings:
+                    Intent settingsForPlay = new Intent(Play.this, SettingsForPlay.class);
+                    startActivity(settingsForPlay);
+                    return true;
+                case R.id.help:
+                    new DialogMain().startAlertDialog(this, MyDialogHelp.Windows.TEST);
+                    return true;
+                case  R.id.reset:
+                    Intent reset = getIntent();
+                    finish();
+                    startActivity(reset);
+                    return true;
+                case R.id.exit:
+                    Intent aboutContacts = new Intent(Play.this, AboutContact.class);
+                    startActivity(aboutContacts);
+                    return true;
+            }
+            return false;
         }
-        return false;
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "Play/onMenuItemClick");
+            return false;
+        }
     }
     //endregion
 
     //region Start and Exit play
     public void onClickButtonStopGame(View view){
         try{
-
             startCutterAndTranslateRecord();
         }
         catch (Exception ex){
-           DebugMessages.ErrorMessage(ex, this, "StopGame");
+           dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonStopGame");
         }
     }
 
-    public void startCutterAndTranslateRecord(){
-        Intent WaitEndPlay = new Intent(Play.this, WaitInEndPlay.class);
-        startActivity(WaitEndPlay);
+    public void startCutterAndTranslateRecord() {
+        try{
+            Intent WaitEndPlay = new Intent(Play.this, WaitInEndPlay.class);
+            startActivity(WaitEndPlay);
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "startCutterAndTranslateRecord");
+        }
     }
 
 
     public void startAboutContact(){
-        Intent AboutContact = new Intent(Play.this, com.example.Calls.AboutContact.class);
-        startActivity(AboutContact);
+        try{
+            Intent AboutContact = new Intent(Play.this, com.example.Calls.AboutContact.class);
+            startActivity(AboutContact);
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "startAboutContact");
+        }
     }
 
     public void onClickStartPlay(View view){
@@ -327,7 +371,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
         }
         catch (Exception ex){
-            DebugMessages.ErrorMessage(ex, this, "StartPlay");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickStartPlay");
         }
 
     }
@@ -336,7 +380,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     //region Interval
 
-    private void setIntervalStop(){
+    private void setIntervalStop() throws Exception{
         //stop interval media
         if(hearing){
             cutter.StopInterval(MediaPlayerForRecords.getCurrentPositionSec(mp));
@@ -344,7 +388,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         }
     }
 
-    private void setIntervalAdd(){
+    private void setIntervalAdd() throws Exception{
         if(!hearing){
             cutter.AddInterval(MediaPlayerForRecords.getCurrentPositionSec(mp));
             hearing = true;
@@ -354,17 +398,23 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
 
     private void stopPlaying(){
-        checkPlaying--;
-        if(checkPlaying == 0)
-        {
-            modeWait(true);
+        try{
+            checkPlaying--;
+            if(checkPlaying == 0)
+            {
+                modeWait(true);
+            }
         }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "stopPlaying");
+        }
+
     }
 
-    private void updateGame(){
+    private void updateGame() throws Exception{
 
         if(endRecord) {
-            new DialogMain().startAlertDialog(this, MyDialogHelp.Windows.MEDIA);
+           dialogMain.showMyDialogHelp(MyDialogHelp.Windows.PLAY);
         }
         if(checkPlaying <= 0){
             modeWait(false);
@@ -372,40 +422,48 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         checkPlaying = secPause + 1;
     }
 
-    private void modeWait(boolean isSet){
-        if(isSet){
-            checkPlayCycle = false;
-            mp.pause();
-            buttonExit.setVisibility(View.VISIBLE);
-        }
-        else{
-            checkPlayCycle = true;
-            mp.start();
-            buttonExit.setVisibility(View.GONE);
-        }
+    private void modeWait(boolean isSet) throws Exception{
+        try{
+            if(isSet){
+                checkPlayCycle = false;
+                mp.pause();
+                buttonExit.setVisibility(View.VISIBLE);
+            }
+            else{
+                checkPlayCycle = true;
+                mp.start();
+                buttonExit.setVisibility(View.GONE);
+            }
 
-        playCycle();
-
+            playCycle();
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "modeWait");
+        }
     }
 
     private void playCycle(){
-        if(checkPlayCycle){
-            seekBarPositionPlay.setProgress(mp.getCurrentPosition());
-            textViewStartPositionPlay.setText(MediaPlayerForRecords.setDurationStr(mp));
+        try{
+            if(checkPlayCycle){
+                seekBarPositionPlay.setProgress(mp.getCurrentPosition());
+                textViewStartPositionPlay.setText(MediaPlayerForRecords.setDurationStr(mp));
 
-            if(mp.isPlaying()){
-                runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        stopPlaying();
-                        playCycle();
-                    }
-                };
+                if(mp.isPlaying()){
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            stopPlaying();
+                            playCycle();
+                        }
+                    };
+                }
+
+                handler.postDelayed(runnable, 1000);
             }
-
-            handler.postDelayed(runnable, 1000);
         }
-
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "playCycle");
+        }
     }
 
 

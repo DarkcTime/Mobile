@@ -57,114 +57,54 @@ public class Records {
     final public String EnglishLanguageFilter = "Call@";
     final public String RussiaLanguageFilter = "Вызов@";
 
-    final public static String pathFileFilterRecords = "/data/data/com.example.Calls/cache/trRecord";
-
     public static boolean checkPath(String str){
         File file = new File(str);
         return file.exists();
     }
 
-    public static void resetFile(String phone){
-        try{
-            String path = pathFileFilterRecords + phone + ".txt";
-            File file = new File(path);
-            PrintWriter pw = new PrintWriter(new FileWriter(file,false));
-            pw.println("");
-            pw.close();
-        }
-        catch (Exception ex){
-            ex.toString();
-        }
+    /**
+     * filter record for selected contact
+     * @param list list records
+     */
+    public static void getFilterRecords(List<File> list){
 
-    }
-
-    public static void writeRecord(String nameRecord) throws Exception{
-        String path = pathFileFilterRecords + ".txt";
-        File file = new File(path);
-        PrintWriter pw = new PrintWriter(new FileWriter(file,true));
-        pw.println(nameRecord);
-        pw.close();
-    }
-
-    //TODO Влад: разобраться с фильтрацией записей
-    public static void getFilterRecords(List<File> list, String filter){
+        String nameContact = Contacts.getNameCurrentContact();
+        //create object iterator
         Iterator<File> iterator = list.iterator();
-        Log.d("list", String.valueOf(list.size()));
-        String nameRecord = "";
+        int i = 0;
         while (iterator.hasNext())
         {
-            nameRecord = getNameContactInRecord(iterator.next().getName());
-            Log.d("nameRecord", nameRecord);
-            Log.d("filter", filter);
+            try{
 
+                String nameRecord = getNameContactInRecord(iterator.next().getName());
 
-            if (isConstrainNameRecord(nameRecord, filter)){
-                Log.d("isConstrain", "true");
+                //check contact for this record
+                if (isConstrainNameRecord(nameContact,nameRecord))
+                {
+                    i += 1;
+                    Log.d("getFilter", String.valueOf(i));
+                    continue;
+                }
+                if(!nameRecord.equals(nameContact))
+                    iterator.remove();
             }
-            else if(!nameRecord.equals(filter)){
-                Log.d("nameRec", "true");
-                iterator.remove();
+            catch (NullPointerException nullPointEx){
+                //check next iterator
             }
-
         }
 
     }
 
 
     /**
-     * Определяет включает ли имя контакта, в свой состав имя записи
+     * Определяет включает ли имя контакта!!!, в свой состав имя записи!!!
      * @param nameRecord имя записи
-     * @param nameContact имя конктас
+     * @param nameContact имя контакта
      * @return true если вклюает
      */
 
-    public static boolean isConstrainNameRecord(String nameRecord, String nameContact){
+    public static boolean isConstrainNameRecord(String nameContact, String nameRecord){
         return nameContact.contains(nameRecord);
-    }
-
-    public static boolean isFileExists(String path){
-        File file = new File(path);
-        return file.exists();
-    }
-
-    public static boolean isRecordExist(String nameRecord) throws Exception{
-        List<String> listRecords = new ArrayList<String>();
-        listRecords = Records.readRecord();
-        boolean check = false;
-        for(String record : listRecords){
-            check = record.equals(nameRecord);
-            if(check)
-                break;
-        }
-        return check;
-    }
-
-
-    public static List<String> readRecord() throws IOException {
-        String path = pathFileFilterRecords + ".txt";
-        List<String> result = new ArrayList<>();
-        String str;
-        try{
-            File file = new File(path);
-            boolean create = file.createNewFile();
-            BufferedReader br = new BufferedReader(new FileReader(path));
-            while ((str = br.readLine()) != null){
-                result.add(str);
-            }
-            br.close();
-            return result;
-        }
-        catch (Exception ex){
-
-            return result;
-        }
-
-    }
-
-    public ListView createListView(Context context) {
-        ListView listView = new ListView(context);
-
-        return listView;
     }
 
     /**
@@ -174,23 +114,17 @@ public class Records {
      */
     public static String getNameContactInRecord(String fullPath){
         String fileName = new File(fullPath).getName();
-        return fileName.substring(fileName.indexOf("@") + 1,fileName.lastIndexOf("("));
-    }
+        if(fileName.contains("@")){
+            String name = fileName.substring(fileName.indexOf("@") + 1,fileName.lastIndexOf("("));
+            Log.d("@", name);
+            return name;
+        }
+        else {
+            String name = fileName.substring(0,fileName.lastIndexOf("("));
+            Log.d("not", name);
+            return name;
+        }
 
-
-
-    public String getPhoneNumberSelectedRecord(String path){
-        return path.substring(path.lastIndexOf("(") + 1, path.lastIndexOf(")"));
-    }
-
-    public String getDateSelectedRecord(String path){
-        String resultStr = path.substring(path.indexOf(")") + 1);
-        return resultStr;
-    }
-
-    public String getFileName(String path){
-        String resultStr = path.substring(path.indexOf("@") - 3);
-        return resultStr;
     }
 
 
@@ -207,8 +141,6 @@ public class Records {
             return name.toLowerCase().endsWith(ext);
         }
     }
-
-
 
 
 }

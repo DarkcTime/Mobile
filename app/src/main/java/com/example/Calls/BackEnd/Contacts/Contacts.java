@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import com.example.Calls.BackEnd.Files.FileSystemParameters;
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.MainActivity;
 
@@ -117,6 +118,15 @@ public class Contacts {
     }
 
 
+    public static boolean isHaveDirectoryForCurrentContact() throws Exception{
+        try {
+            File dirForSelectedContact = new File(FileSystemParameters.getPathForSelectedContact());
+            return dirForSelectedContact.exists();
+        }
+        catch (Exception ex){
+            throw new Exception("Contacts/isHaveDir - ".concat(ex.getMessage()));
+        }
+    }
 
     /**
      * Получает уникальный список имен которые содержаться в записи

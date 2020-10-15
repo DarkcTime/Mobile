@@ -22,6 +22,9 @@ import java.io.IOException;
 
 public class WaitInEndPlay extends AppCompatActivity {
 
+    //dialog windows
+    final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.WaitInEndPlay);
+
     TextView textViewProgress;
 
     ProgressBar progressBarTranslate;
@@ -44,8 +47,7 @@ public class WaitInEndPlay extends AppCompatActivity {
 
             recordProcessing = new RecordProcessing(this);
 
-            try{
-                //get cutter obj
+
                 Cutter cutter = Play.getCutter();
 
                 //create dirs
@@ -58,17 +60,9 @@ public class WaitInEndPlay extends AppCompatActivity {
                 //cut files in intervals
                 cutter.startCutFileIntervals(this);
 
-            }
-            catch (NullPointerException ex){
-                Log.d("NullPointWait", ex.getMessage());
-            }
-            catch (Exception ex){
-                Log.d("ExceptionStartCut", ex.getMessage());
-            }
-
         }
         catch (Exception ex){
-            DebugMessages.ErrorMessage(ex,this, "WaitEndPlay");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreateWaitEndPlay");
         }
 
     }
@@ -79,15 +73,20 @@ public class WaitInEndPlay extends AppCompatActivity {
             startActivityAboutContact();
         }
         catch (Exception ex){
-            DebugMessages.ErrorMessage(ex,this, "dialogAddResult");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "dialogResultAdd");
         }
     }
 
     public void dialogResultCancel(){
-        startActivityAboutContact();
+        try{
+            startActivityAboutContact();
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "dialogResultCancel");
+        }
     }
 
-    private void startActivityAboutContact(){
+    private void startActivityAboutContact() throws Exception{
         Intent WaitEndPlay = new Intent(WaitInEndPlay.this, AboutContact.class);
         startActivity(WaitEndPlay);
     }

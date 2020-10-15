@@ -34,13 +34,21 @@ public class FilesDialog extends AppCompatDialogFragment {
 
     private String[] listRecords;
 
+    private AboutContact aboutContact;
+
     /**
      * Заполняет список для вывода файлового диалога
      */
     @SuppressLint("ValidFragment")
-    public FilesDialog() throws Exception{
+    public FilesDialog(AboutContact _aboutContact) throws Exception{
+        try{
+            aboutContact = _aboutContact;
             listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(Records.getPathForFindRecords(), ".mp3"));
             setRecordsForContact();
+        }
+        catch (Exception ex){
+            throw new Exception("FilesDialog - ".concat(ex.getMessage()));
+        }
     }
 
     /**
@@ -50,18 +58,34 @@ public class FilesDialog extends AppCompatDialogFragment {
      */
     public void setRecordsForContact() throws Exception {
 
-        filteringByContact();
+        try{
+            filteringByContact();
 
-        List<String> bufferList = new ArrayList<String>();
+            List<String> bufferList = new ArrayList<String>();
 
-        for(File nameRecord : listFiles){
+            for(File nameRecord : listFiles){
+                try{
 
-            if(isFilteringByHaveTranslating(nameRecord)) continue;
+                    //check dir for records at the user
+                    if(Contacts.isHaveDirectoryForCurrentContact()){
+                        if(isFilteringByHaveTranslating(nameRecord)) continue;
+                    }
 
-            bufferList.add(nameRecord.getName());
+                    bufferList.add(nameRecord.getName());
+                }
+                catch (NullPointerException nullPointException){
+                    //check next record
+                }
+            }
+
+            setListRecords(bufferList);
         }
-
-        setListRecords(bufferList);
+        catch (NullPointerException nulEx){
+            throw new Exception("FilesDialog/setRecordsForContactNullPointException - 0".concat(nulEx.getMessage()));
+        }
+        catch (Exception ex){
+            throw new Exception("FilesDialog/setRecordsForContact - ".concat(ex.getMessage()));
+        }
 
     }
 
@@ -69,61 +93,107 @@ public class FilesDialog extends AppCompatDialogFragment {
      * фильтрует записи по выбранному контакту
      */
     private void filteringByContact() throws Exception{
-        Records.getFilterRecords(listFiles, Contacts.getNameCurrentContact());
-    }
-
-    private boolean isFilteringByHaveTranslating(File nameRecord) throws Exception{
-        List<File> translatedRecords = FileSystem.getFiles(FileSystemParameters.getPathForSelectedContact());
-
-        for(File nameFile : translatedRecords){
-            if(isHaveRecord(nameRecord, nameFile)) return true;
+        try{
+            Records.getFilterRecords(listFiles);
         }
-        return false;
+        catch (Exception ex){
+            throw new Exception("FilesDialog/filteringByContact - ".concat(ex.getMessage()));
+        }
+
     }
+
+    /**
+     *
+     * @param nameRecord
+     * @return
+     * @throws Exception
+     */
+    private boolean isFilteringByHaveTranslating(File nameRecord) throws Exception{
+        try{
+            List<File> listFilesForContact = FileSystem
+                    .getFiles(FileSystemParameters
+                            .getPathForSelectedContact());
+
+            Log.d("listFilesSize", String.valueOf(listFilesForContact.size()));
+
+            //TODO test
+            for(File nameFile : listFilesForContact){
+                Log.d("nameFileisFilter", nameFile.getName());
+            }
+
+            for(File nameFile : listFilesForContact){
+                try{
+                    if(nameFile.equals("")) continue;
+
+                    if(isHaveRecord(nameRecord, nameFile)) return true;
+                }
+                catch (NullPointerException nullPoint){
+                    //filter next file
+                }
+            }
+
+            return false;
+        }
+        catch (Exception ex){
+            throw new Exception("FilesDialog/isFilteringByHaveTranslating - ".concat(ex.getMessage()));
+        }
+    }
+
 
     private boolean isHaveRecord(File nameRecord, File nameFile) throws Exception{
-        return nameRecord.getName()
-                .replace(".mp3","")
-                .equals(nameFile.getName());
+        try{
+            return nameRecord.getName()
+                    .replace(".mp3","")
+                    .equals(nameFile.getName());
+        }
+        catch (Exception ex){
+            throw new Exception("FilesDialog/isHaveRecord - ".concat(ex.getMessage()));
+        }
     }
 
     private void setListRecords(List<String> bufferList) throws Exception{
-        listRecords = new String[bufferList.size()];
+        try{
+            listRecords = new String[bufferList.size()];
 
-        for (int i = 0; i < bufferList.size(); i++){
-            listRecords[i] = bufferList.get(i);
+            for (int i = 0; i < bufferList.size(); i++){
+                listRecords[i] = bufferList.get(i);
+            }
         }
+        catch (Exception ex){
+            throw new Exception("FilesDialog/setListRecords".concat(ex.getMessage()));
+        }
+
     }
 
 
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState){
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        try{
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        try {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
             builder.setTitle("Количество записей: " + listRecords.length)
                     .setItems(listRecords, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //show list record for contact
-                            AboutContact context = (AboutContact)builder.getContext();
-                            context.startGame(listRecords[which]);
+                            Log.d("startGame", "startGame");
+                            aboutContact.startGame(listRecords[which]);
                         }
                     });
 
             return builder.create();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             Log.d("FilesDialog", ex.getMessage());
-            return builder.create();
-        }
 
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setTitle("Exception").setMessage(ex.getMessage());
+
+            return builder.create();
+
+        }
 
     }
-
-
 
 }

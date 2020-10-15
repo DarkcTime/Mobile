@@ -62,7 +62,7 @@ public class MyDialogHelp extends AppCompatDialogFragment{
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
+        try{
             switch (window){
                 case HELP:
                     builder.setTitle("Справка")
@@ -176,7 +176,12 @@ public class MyDialogHelp extends AppCompatDialogFragment{
 
             }
 
-            return builder.create();
+        }
+        catch (Exception ex){
+
+        }
+
+        return builder.create();
     }
 
     public enum Windows{
