@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.ListView;
 
 import com.example.Calls.BackEnd.Contacts.Contacts;
+import com.example.Calls.BackEnd.SharedClasses.SharedMethods;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,14 +25,20 @@ import java.util.List;
 //работа с записями звонков
 public class Records {
 
-    //местонахождение записей
+
     private static String pathForFindRecords = "";
 
     public static void setPathForFindRecords(String _pathForFindRecords) throws Exception{
-            pathForFindRecords = _pathForFindRecords;
+        if(SharedMethods.isNullOrWhiteSpace(_pathForFindRecords)){
+            throw new Exception("setPathForFindRecords == null");
+        }
+        pathForFindRecords = _pathForFindRecords;
     }
 
-    public static String getPathForFindRecords(){
+    public static String getPathForFindRecords() throws Exception{
+        if(SharedMethods.isNullOrWhiteSpace(pathForFindRecords)){
+            throw new Exception("getPathForFindRecords == null");
+        }
         return pathForFindRecords;
     }
 
@@ -47,7 +54,13 @@ public class Records {
     }
 
     public static String getFullPathSelectedRecord(){
-        return getPathForFindRecords().concat(getNameSelectedRecord());
+        try{
+            return getPathForFindRecords().concat(getNameSelectedRecord());
+        }
+        catch (Exception ex){
+            //TODO make catcher
+            return "";
+        }
     }
 
 
@@ -68,30 +81,34 @@ public class Records {
      */
     public static void getFilterRecords(List<File> list){
 
-        String nameContact = Contacts.getNameCurrentContact();
-        //create object iterator
-        Iterator<File> iterator = list.iterator();
-        int i = 0;
-        while (iterator.hasNext())
-        {
-            try{
+        try{
+            String nameContact = Contacts.getNameCurrentContact();
+            //create object iterator
+            Iterator<File> iterator = list.iterator();
+            int i = 0;
+            while (iterator.hasNext())
+            {
+                try{
 
-                String nameRecord = getNameContactInRecord(iterator.next().getName());
+                    String nameRecord = getNameContactInRecord(iterator.next().getName());
 
-                //check contact for this record
-                if (isConstrainNameRecord(nameContact,nameRecord))
-                {
-                    i += 1;
-                    Log.d("getFilter", String.valueOf(i));
-                    continue;
+                    //check contact for this record
+                    if (isConstrainNameRecord(nameContact,nameRecord))
+                    {
+                        continue;
+                    }
+                    if(!nameRecord.equals(nameContact))
+                        iterator.remove();
                 }
-                if(!nameRecord.equals(nameContact))
-                    iterator.remove();
-            }
-            catch (NullPointerException nullPointEx){
-                //check next iterator
+                catch (NullPointerException nullPointEx){
+                    //check next iterator
+                }
             }
         }
+        catch (Exception ex){
+            //TODO make catcher
+        }
+
 
     }
 

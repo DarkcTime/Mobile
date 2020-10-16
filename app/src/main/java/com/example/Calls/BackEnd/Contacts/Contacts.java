@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.example.Calls.BackEnd.Files.FileSystemParameters;
 import com.example.Calls.BackEnd.Records.Records;
+import com.example.Calls.BackEnd.SharedClasses.SharedMethods;
 import com.example.Calls.MainActivity;
 
 import java.io.File;
@@ -25,7 +26,10 @@ public class Contacts {
 
     private static String informationAboutUser = "";
 
-    public static void setInformationAboutUser(String _informationAboutUser){
+    public static void setInformationAboutUser(String _informationAboutUser) throws Exception{
+        if(SharedMethods.isNullOrWhiteSpace(_informationAboutUser)){
+            throw new Exception("setInformationAboutUser == null");
+        }
         informationAboutUser = _informationAboutUser;
     }
 
@@ -33,13 +37,18 @@ public class Contacts {
         return informationAboutUser;
     }
 
-    public static String getNameCurrentContact() {
-        int startName = 0, endName = getInformationAboutUser().indexOf("|") - 1;
-        return getInformationAboutUser().substring(startName, endName);
+
+    public static String getNameCurrentContact() throws Exception{
+        try{
+            int startName = 0, endName = getInformationAboutUser().indexOf("|") - 1;
+            return getInformationAboutUser().substring(startName, endName);
+        }
+        catch (Exception ex){
+            throw new Exception("getNameCurrentContact - ".concat(ex.getMessage()));
+        }
     }
 
-    public static String getPhoneNumberCurrentContact() {
-
+    public static String getPhoneNumberCurrentContact() throws Exception{
         int startPhone = getInformationAboutUser().indexOf("|") + 1;
         int endPhone = getInformationAboutUser().indexOf("\n");
         return getInformationAboutUser().substring(startPhone, endPhone);

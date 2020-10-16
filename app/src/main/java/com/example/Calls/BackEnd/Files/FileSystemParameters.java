@@ -18,9 +18,15 @@ public class FileSystemParameters {
 
     //example: storage/emulated/0/Android/data/com.Calls/Миха/
     public static String getPathForSelectedContact(){
-        return getPathApplicationFileSystem()
-                .concat(new Contacts().getNameCurrentContact())
-                .concat("/");
+        try{
+            return getPathApplicationFileSystem()
+                    .concat(Contacts.getNameCurrentContact())
+                    .concat("/");
+        }
+        catch (Exception ex){
+            //TODO make catch
+            return "";
+        }
     }
 
     //example: storage/emulated/0/Android/data/com.Calls/Миха/Call@4321432/

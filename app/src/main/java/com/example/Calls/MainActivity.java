@@ -91,10 +91,15 @@ public class MainActivity extends AppCompatActivity {
             listViewContactsMA.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    TextView text = (TextView) view;
-                    Contacts.setInformationAboutUser(text.getText().toString());
-                    Intent aboutContact = new Intent(MainActivity.this, AboutContact.class);
-                    startActivity(aboutContact);
+                    try{
+                        TextView text = (TextView) view;
+                        Contacts.setInformationAboutUser(text.getText().toString());
+                        Intent aboutContact = new Intent(MainActivity.this, AboutContact.class);
+                        startActivity(aboutContact);
+                    }
+                    catch (Exception ex){
+                        dialogMain.showErrorDialogAndTheOutputLogs(ex, "listViewContactsMA");
+                    }
                 }
             });
 

@@ -30,7 +30,7 @@ import java.util.List;
 @SuppressLint("ValidFragment")
 public class FilesDialog extends AppCompatDialogFragment {
 
-    private List<File> listFiles = new ArrayList<>();
+    private List<File> listFiles = new ArrayList<File>();
 
     private String[] listRecords;
 
@@ -43,8 +43,7 @@ public class FilesDialog extends AppCompatDialogFragment {
     public FilesDialog(AboutContact _aboutContact) throws Exception{
         try{
             aboutContact = _aboutContact;
-            listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(Records.getPathForFindRecords(), ".mp3"));
-            setRecordsForContact();
+            generateListRecords();
         }
         catch (Exception ex){
             throw new Exception("FilesDialog - ".concat(ex.getMessage()));
@@ -52,14 +51,45 @@ public class FilesDialog extends AppCompatDialogFragment {
     }
 
     /**
+     * set list for Records
+     * @throws Exception all type errors
+     */
+    private void generateListRecords() throws Exception{
+        try{
+            setListFiles();
+            List<String> filteredArray =  getFilteredArrayFiles();
+            //TODO make logic for exit algorithm
+            if(filteredArray != null) setListRecords(filteredArray);
+        }
+        catch (Exception ex){
+            throw new Exception("fillRecFilDialog - ".concat(ex.getMessage()));
+        }
+    }
+
+
+    /**
+     * get all records
+     */
+    private void setListFiles() throws Exception{
+        try{
+            listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(Records.getPathForFindRecords(), ".mp3"));
+        }
+        catch (Exception ex){
+            throw new Exception();
+        }
+
+    }
+
+    /**
      * Фильтруте по контакту и наличию переведенной записи
      * файлами записей
      * @throws IOException ошибка может возникнуть при получении файлов
      */
-    public void setRecordsForContact() throws Exception {
+    public List<String> getFilteredArrayFiles() throws Exception {
 
         try{
-            filteringByContact();
+            //filter by Contact
+            Records.getFilterRecords(listFiles);
 
             List<String> bufferList = new ArrayList<String>();
 
@@ -78,7 +108,7 @@ public class FilesDialog extends AppCompatDialogFragment {
                 }
             }
 
-            setListRecords(bufferList);
+            return bufferList;
         }
         catch (NullPointerException nulEx){
             throw new Exception("FilesDialog/setRecordsForContactNullPointException - 0".concat(nulEx.getMessage()));
@@ -89,18 +119,6 @@ public class FilesDialog extends AppCompatDialogFragment {
 
     }
 
-    /**
-     * фильтрует записи по выбранному контакту
-     */
-    private void filteringByContact() throws Exception{
-        try{
-            Records.getFilterRecords(listFiles);
-        }
-        catch (Exception ex){
-            throw new Exception("FilesDialog/filteringByContact - ".concat(ex.getMessage()));
-        }
-
-    }
 
     /**
      *
@@ -151,6 +169,11 @@ public class FilesDialog extends AppCompatDialogFragment {
         }
     }
 
+    /**
+     * re-creating an array - listRecords
+     * @param bufferList list Records
+     * @throws Exception all type Exceptions
+     */
     private void setListRecords(List<String> bufferList) throws Exception{
         try{
             listRecords = new String[bufferList.size()];
@@ -164,7 +187,6 @@ public class FilesDialog extends AppCompatDialogFragment {
         }
 
     }
-
 
 
     @Override
