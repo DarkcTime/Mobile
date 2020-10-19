@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.Files.FileSystemParameters;
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.BackEnd.SharedClasses.SharedMethods;
@@ -57,11 +58,10 @@ public class Contacts {
 
     /**
      * Возвращает отфильтрованный список контактов
-     * @param listFiles список файлов записей для фильтрации
      * @param mainActivity окно для взаимодействия с Cursor
      * @return список контактов у которых есть записи разговоров
      */
-    public static ArrayList<String> getListContacts(List<File> listFiles, MainActivity mainActivity) throws NullPointerException{
+    public static ArrayList<String> getFilteredListContacts(MainActivity mainActivity) throws Exception{
 
         /*
         1) получает список контактов у которых есть записи
@@ -69,7 +69,13 @@ public class Contacts {
         3) Проверяем и отсеиваем контакты у которых нет записей разговоров
         4) Для оставшихся контактов получаем номер телефона
          */
-            String[] listNames = getUniqueList(listFiles);
+        try{
+
+            //add list from selected path
+
+            List<File> listRecords = new ArrayList<File>(FileSystem.getFilesWithSelectedExtWithFilter(Records.getPathForFindRecords(), ".mp3"));
+
+            String[] listNames = getUniqueList(listRecords);
 
             ArrayList<String> listContacts = new ArrayList<String>();
 
@@ -123,7 +129,10 @@ public class Contacts {
             }
 
             return listContacts;
-
+        }
+        catch (Exception ex){
+            throw new Exception("getListContacts - ".concat(ex.getMessage()));
+        }
     }
 
 

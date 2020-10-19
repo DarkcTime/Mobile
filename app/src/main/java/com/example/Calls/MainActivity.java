@@ -114,24 +114,23 @@ public class MainActivity extends AppCompatActivity {
     //загрузка страницы, после запроса прав у пользователя
     private void loadMain() {
         try {
+            //TODO?
             //установка пути в настройках
             Records.setPathForFindRecords(mSettings.getString("path", Records.currentPathForRecordsXiomi));
 
             if (!Records.checkPath(Records.getPathForFindRecords())) {
+                //TODO show dialog window
                 Toast.makeText(this, Records.getPathForFindRecords(), Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            //add list from selected path
-            listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(Records.getPathForFindRecords(), ".mp3"));
-
-            //вывод список контактов в list
-            ArrayAdapter<String> adapter =
+            //make adapter
+            ArrayAdapter<String> adapterContact =
                     new ArrayAdapter<String>(this,
                             android.R.layout.simple_list_item_1,
-                            Contacts.getListContacts(listFiles, this));
+                            Contacts.getFilteredListContacts(this));
 
-            listViewContactsMA.setAdapter(adapter);
+            listViewContactsMA.setAdapter(adapterContact);
 
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "loadMain");
@@ -177,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //обработка ответа разрешений
-    //TODO добавить алгоритм действий при отрицательном ответе
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         try {

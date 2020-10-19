@@ -28,15 +28,15 @@ public class Records {
 
     private static String pathForFindRecords = "";
 
-    public static void setPathForFindRecords(String _pathForFindRecords) throws Exception{
-        if(SharedMethods.isNullOrWhiteSpace(_pathForFindRecords)){
+    public static void setPathForFindRecords(String _pathForFindRecords) throws Exception {
+        if (SharedMethods.isNullOrWhiteSpace(_pathForFindRecords)) {
             throw new Exception("setPathForFindRecords == null");
         }
         pathForFindRecords = _pathForFindRecords;
     }
 
-    public static String getPathForFindRecords() throws Exception{
-        if(SharedMethods.isNullOrWhiteSpace(pathForFindRecords)){
+    public static String getPathForFindRecords() throws Exception {
+        if (SharedMethods.isNullOrWhiteSpace(pathForFindRecords)) {
             throw new Exception("getPathForFindRecords == null");
         }
         return pathForFindRecords;
@@ -45,19 +45,18 @@ public class Records {
     //данные о выбранной записи
     private static String NameSelectedRecord;
 
-    public static String getNameSelectedRecord(){
+    public static String getNameSelectedRecord() {
         return NameSelectedRecord;
     }
 
-    public static void setNameSelectedRecord(String _nameRecord){
+    public static void setNameSelectedRecord(String _nameRecord) {
         NameSelectedRecord = _nameRecord;
     }
 
-    public static String getFullPathSelectedRecord(){
-        try{
+    public static String getFullPathSelectedRecord() {
+        try {
             return getPathForFindRecords().concat(getNameSelectedRecord());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             //TODO make catcher
             return "";
         }
@@ -70,42 +69,39 @@ public class Records {
     final public String EnglishLanguageFilter = "Call@";
     final public String RussiaLanguageFilter = "Вызов@";
 
-    public static boolean checkPath(String str){
+    public static boolean checkPath(String str) {
         File file = new File(str);
         return file.exists();
     }
 
     /**
      * filter record for selected contact
+     *
      * @param list list records
      */
-    public static void getFilterRecords(List<File> list){
+    public static void getFilterRecords(List<File> list) {
 
-        try{
+        try {
             String nameContact = Contacts.getNameCurrentContact();
             //create object iterator
             Iterator<File> iterator = list.iterator();
             int i = 0;
-            while (iterator.hasNext())
-            {
-                try{
+            while (iterator.hasNext()) {
+                try {
 
                     String nameRecord = getNameContactInRecord(iterator.next().getName());
 
                     //check contact for this record
-                    if (isConstrainNameRecord(nameContact,nameRecord))
-                    {
+                    if (isConstrainNameRecord(nameContact, nameRecord)) {
                         continue;
                     }
-                    if(!nameRecord.equals(nameContact))
+                    if (!nameRecord.equals(nameContact))
                         iterator.remove();
-                }
-                catch (NullPointerException nullPointEx){
+                } catch (NullPointerException nullPointEx) {
                     //check next iterator
                 }
             }
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             //TODO make catcher
         }
 
@@ -115,29 +111,30 @@ public class Records {
 
     /**
      * Определяет включает ли имя контакта!!!, в свой состав имя записи!!!
-     * @param nameRecord имя записи
+     *
+     * @param nameRecord  имя записи
      * @param nameContact имя контакта
      * @return true если вклюает
      */
 
-    public static boolean isConstrainNameRecord(String nameContact, String nameRecord){
+    public static boolean isConstrainNameRecord(String nameContact, String nameRecord) {
         return nameContact.contains(nameRecord);
     }
 
     /**
      * Выделяет имя контакта из записи
+     *
      * @param fullPath путь к записи
      * @return имя контакта
      */
-    public static String getNameContactInRecord(String fullPath){
+    public static String getNameContactInRecord(String fullPath) {
         String fileName = new File(fullPath).getName();
-        if(fileName.contains("@")){
-            String name = fileName.substring(fileName.indexOf("@") + 1,fileName.lastIndexOf("("));
+        if (fileName.contains("@")) {
+            String name = fileName.substring(fileName.indexOf("@") + 1, fileName.lastIndexOf("("));
             Log.d("@", name);
             return name;
-        }
-        else {
-            String name = fileName.substring(0,fileName.lastIndexOf("("));
+        } else {
+            String name = fileName.substring(0, fileName.lastIndexOf("("));
             Log.d("not", name);
             return name;
         }
@@ -149,7 +146,7 @@ public class Records {
 
         private String ext;
 
-        public MyFileNameFilter(String ext){
+        public MyFileNameFilter(String ext) {
             this.ext = ext.toLowerCase();
         }
 
