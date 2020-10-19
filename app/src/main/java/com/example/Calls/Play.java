@@ -369,6 +369,9 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
             buttonStartPlay.setVisibility(View.GONE);
 
+            //Add start Interval
+            cutter.AddInterval(0);
+
         }
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickStartPlay");
@@ -390,7 +393,6 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     private void setIntervalAdd() throws Exception{
         if(!hearing){
-            cutter.AddInterval(MediaPlayerForRecords.getCurrentPositionSec(mp));
             hearing = true;
         }
     }

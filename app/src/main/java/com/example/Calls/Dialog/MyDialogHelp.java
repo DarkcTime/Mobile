@@ -51,20 +51,23 @@ public class MyDialogHelp extends AppCompatDialogFragment{
         window = _window;
     }
 
-
     @SuppressLint("ValidFragment")
     public MyDialogHelp(Windows _window){
         window = _window;
     }
+
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
         try{
             switch (window){
                 case HELP:
+                    //help First Start Application for user
+                    //press button, start permission
                     builder.setTitle("Справка")
                             .setIcon(R.drawable.que)
                             .setMessage("1) Ознакомьтесь со справкой\n2) Выберите распложение записей разговоров в настройках\n(если марка телефона Xiaomi," +

@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 //запрашивает разрения у пользователя
                 askPermission();
             } else {
-                dialogMain.showMyDialogHelp(MyDialogHelp.Windows.HELP);
+                dialogMain.showHelpDialogFirstLaunch();
             }
 
             //определяет выбранный контакт и переходит на следующую activity
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
     //открывает диалоговое окно с контекстной справкой для данной страницы
     public void onCLickButtonHelp(View view) {
         try{
-            dialogMain.showMyDialogHelp(MyDialogHelp.Windows.HELP);
+            dialogMain.showHelpDialogFirstLaunch();
         }
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonHelp");
@@ -164,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
     //endregion
 
     //region permissions
-    //запрос разрешений
     public void askPermission() {
         try {
             Permissions permissions = new Permissions();

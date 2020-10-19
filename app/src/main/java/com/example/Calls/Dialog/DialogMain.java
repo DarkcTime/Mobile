@@ -31,6 +31,7 @@ public class DialogMain {
     }
 
     private AboutContact aboutContact;
+    private MainActivity mainActivity;
 
     /**
      * create object for show dialog
@@ -41,7 +42,7 @@ public class DialogMain {
         try{
             switch (_activity){
                 case MainActivity:
-                    MainActivity mainActivity = (MainActivity)context;
+                    mainActivity = (MainActivity)context;
                     manager = mainActivity.getSupportFragmentManager();
                     break;
                 case AboutContact:
@@ -78,15 +79,24 @@ public class DialogMain {
      */
     public void showMyDialogHelp(MyDialogHelp.Windows window){
         try{
-            //create object dialog
-            MyDialogHelp myDialogHelp = new MyDialogHelp(window);
-            //whether the dialog - not.
-            myDialogHelp.setCancelable(false);
-            //show dialog
-            myDialogHelp.show(manager, "MainActivity");
+            HelpDialogFirstLaunch helpDialogFirstLaunch = new HelpDialogFirstLaunch();
+            //myDialogHelp.show(manager, "MainActivity");
         }
         catch (Exception ex){
             showErrorDialogAndTheOutputLogs(ex, "showDialogHelp");
+        }
+    }
+
+
+    public void showHelpDialogFirstLaunch(){
+        try{
+            HelpDialogFirstLaunch helpDialogFirstLaunch = new HelpDialogFirstLaunch();
+            if(mainActivity == null || manager == null) throw new Exception("MainActivity || manager == null");
+            helpDialogFirstLaunch.setMainActivity(mainActivity);
+            helpDialogFirstLaunch.show(manager, "MainActivity");
+        }
+        catch (Exception ex){
+            showErrorDialogAndTheOutputLogs(ex, "showHelpDialogFirstLaunch");
         }
     }
 
@@ -108,7 +118,7 @@ public class DialogMain {
      */
     public void startAlertDialog(MyDialogHelp.Windows window){
         //create object dialog
-        MyDialogHelp myDialogHelp = new MyDialogHelp(window);
+        MyDialogHelp myDialogHelp = new MyDialogHelp(MyDialogHelp.Windows.HELP);
         //whether the dialog - not.
         myDialogHelp.setCancelable(false);
         //show dialog

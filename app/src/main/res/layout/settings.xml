@@ -154,7 +154,7 @@
                 android:layout_weight="1">
                 <Button
                     style="@style/StyleButtonIconBig2"
-                    android:background="@drawable/cancel"
+                    android:background="@drawable/home"
                     android:onClick="onClickCancelSaveSettings"
                     android:layout_centerHorizontal="true"/>
             </RelativeLayout>

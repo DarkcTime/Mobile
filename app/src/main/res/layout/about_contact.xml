@@ -80,24 +80,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5">
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <Button
-                            style="@style/StyleButtonIconBig"
-                            android:layout_centerHorizontal="true"
-                            android:background="@drawable/que"
-                            android:onClick="onClickButtonHelpAboutContact">
-
-                        </Button>
-                    </RelativeLayout>
-                </LinearLayout>
-
-
             </LinearLayout>
 
             <EditText android:layout_width="match_parent"
@@ -135,7 +117,7 @@
                 android:layout_weight="1">
                 <Button
                     style="@style/StyleButtonIconBig2"
-                    android:background="@drawable/cancel"
+                    android:background="@drawable/home"
                     android:onClick="onClickButtonCancel"
                     android:layout_centerHorizontal="true"/>
             </RelativeLayout>

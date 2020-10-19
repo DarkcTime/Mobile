@@ -24,12 +24,11 @@ public class Cutter {
 
     private CutterInterval interval;
 
-    //записи длиной более 19 секунд
-    //не обработываются api
+    //record have duration > 19 sec
+    //don't work with Api
     private final int MAX_DURATION = 19;
 
     public void AddInterval(int start){
-
         Log.d("start", String.valueOf(start));
         interval = new CutterInterval(start);
     }
@@ -44,6 +43,7 @@ public class Cutter {
         else{
             interval.setEnd(end);
             intervalList.add(interval);
+            AddInterval(end);
         }
     }
 
