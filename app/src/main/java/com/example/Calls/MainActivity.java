@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
             mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
 
-            //объект для работы с настройками
             SavedSettings savedSettings = new SavedSettings(mSettings);
 
             //если приложение запускается впервые выполняет данное условие
@@ -62,13 +61,13 @@ public class MainActivity extends AppCompatActivity {
                 e.putBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, true);
                 e.apply();
 
-                //открывает окно с выбором уровня для пользователя
                 Intent help = new Intent(MainActivity.this, Help.class);
                 startActivity(help);
                 return;
             }
 
 
+            //TODO refactor help for UI
             if (SavedSettings.isExpert()) {
                 //запрашивает разрения у пользователя
                 askPermission();
@@ -76,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
                 dialogMain.showHelpDialogFirstLaunch();
             }
 
-            //определяет выбранный контакт и переходит на следующую activity
             listViewContactsMA.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -103,8 +101,7 @@ public class MainActivity extends AppCompatActivity {
     //загрузка страницы, после запроса прав у пользователя
     private void loadMain() {
         try {
-            //TODO?
-            //установка пути в настройках
+            //set path for find records
             Records.setPathForFindRecords(mSettings.getString("path", Records.currentPathForRecordsXiomi));
 
             if (!Records.checkPath(Records.getPathForFindRecords())) {

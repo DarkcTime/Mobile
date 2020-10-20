@@ -75,7 +75,7 @@ public class Contacts {
 
             List<File> listRecords = new ArrayList<File>(FileSystem.getFilesWithSelectedExtWithFilter(Records.getPathForFindRecords(), ".mp3"));
 
-            String[] listNames = getUniqueList(listRecords);
+            String[] listNameRecords = getUniqueList(listRecords);
 
             ArrayList<String> listContacts = new ArrayList<String>();
 
@@ -90,15 +90,14 @@ public class Contacts {
                 boolean check = false;
 
                 String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-                String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                String nameContact = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                 String phone = "";
 
-                if(name == null) continue;
+                if(nameContact == null) continue;
 
                 //отсеивает контакты у которых нет записей разговоров
-                for (String listName : listNames) {
-
-                    if(Records.isConstrainNameRecord(listName, name)){
+                for (String nameRecord : listNameRecords) {
+                    if(Records.isConstrainNameRecord(nameContact, nameRecord)){
                         check = true;
                         break;
                     }
@@ -125,7 +124,7 @@ public class Contacts {
 
                 }
 
-                listContacts.add(name + " | " + phone + "\nГотовность: " + "20%");
+                listContacts.add(nameContact + " | " + phone + "\nГотовность: " + "20%");
             }
 
             return listContacts;

@@ -31,40 +31,35 @@ import java.io.IOException;
 
 public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
-
     //dialog windows
     final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.Play);
 
     private TextView textViewSelectedRecPlay, textViewStartPositionPlay;
-
     private SeekBar seekBarPositionPlay;
-
     private MediaPlayer mp;
 
     private Handler handler;
-
     private Runnable runnable;
 
     private Button buttonStartPlay,buttonMyPlay, buttonExit, buttonCompanion;
 
     private static boolean checkPlayCycle = false;
 
+    private boolean endRecord = false;
+
+    private boolean hearing;
+
     private static int checkPlaying;
 
     //значение паузы и перемотки
     private int secRewind, secPause;
-
     private SharedPreferences mSettings;
-
-    private boolean hearing;
 
     private static Cutter cutter;
 
     public static Cutter getCutter(){
         return cutter;
     }
-
-    private boolean endRecord = false;
 
     private Button buttonBackRewind, buttonFordRewind;
 
@@ -111,7 +106,8 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                         if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
                         {
                             updateGame();
-                            setIntervalAdd();
+
+                            setIntervalStop();
                         }
                     }
                     catch (Exception ex){
@@ -128,7 +124,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                         if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
                         {
                             updateGame();
-                            setIntervalStop();
+                            setIntervalAdd();
                         }
                     }
                     catch (Exception ex){
