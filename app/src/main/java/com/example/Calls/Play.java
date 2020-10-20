@@ -8,9 +8,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,12 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.Calls.BackEnd.CutterFiles.Cutter;
-import com.example.Calls.BackEnd.Debug.DebugMessages;
 import com.example.Calls.BackEnd.Media.MediaPlayerForRecords;
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
 import com.example.Calls.Dialog.DialogMain;
-import com.example.Calls.Dialog.MyDialogHelp;
+import com.example.Calls.Dialog.HelpDialog;
 
 import java.io.IOException;
 
@@ -100,11 +97,13 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
             //endregion
 
+            if(!SavedSettings.isExpert()){
+                dialogMain.showHelpDialog(HelpDialog.Helps.PlayHelp);
+            }
+
 
             //region button I and Other
 
-
-            //логика при нажатии кнопки Я
             buttonMyPlay.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -122,7 +121,6 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 }
             });
 
-            //логика при нажатии кнопки Собеседник
             buttonCompanion.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -149,6 +147,10 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 }
             });
             //endregion
+
+
+
+
         }
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreatePlay");
@@ -170,7 +172,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
             buttonExit = (Button) findViewById(R.id.buttonExit);
             buttonCompanion = (Button) findViewById(R.id.buttonCompanion);
 
-            buttonBackRewind = (Button) findViewById(R.id.buttonBackRewind);
+            //buttonBackRewind = (Button) findViewById(R.id.buttonBackRewind);
             buttonFordRewind = (Button) findViewById(R.id.buttonFordRewind);
         }
         catch (Exception ex){
@@ -183,8 +185,9 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
             //region set Settings from file
             mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
 
-            SettingsForPlay.setSecRewind(mSettings.getInt("rewind_time", 5));
-            SettingsForPlay.setSecPause(mSettings.getInt("pause_time", 2));
+            //default values
+            SettingsForPlay.setSecRewind(mSettings.getInt("rewind_time", 3));
+            SettingsForPlay.setSecPause(mSettings.getInt("pause_time", 1));
 
             secRewind = SettingsForPlay.getSecRewind();
             secPause = SettingsForPlay.getSecPause();
@@ -192,7 +195,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
             checkPlaying = secPause + 1;
 
             buttonFordRewind.setText("вперёд ".concat(String.valueOf(secRewind)).concat(" сек"));
-            buttonBackRewind.setText("назад ".concat(String.valueOf(secRewind).concat(" сек")));
+            //buttonBackRewind.setText("назад ".concat(String.valueOf(secRewind).concat(" сек")));
 
             //endregion
         }
@@ -202,6 +205,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     }
 
+    //TODO move the entity to a separate class
     private void createMediaPlayer() {
         try {
             mp = new MediaPlayer();
@@ -298,6 +302,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         }
     }
 
+    //actions for click in menu settings
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         try{
@@ -305,33 +310,33 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 case R.id.settings:
                     Intent settingsForPlay = new Intent(Play.this, SettingsForPlay.class);
                     startActivity(settingsForPlay);
-                    return true;
+                    break;
                 case R.id.help:
-                    new DialogMain().startAlertDialog(this, MyDialogHelp.Windows.TEST);
-                    return true;
+                    dialogMain.showHelpDialog(HelpDialog.Helps.PlayHelp);
+                    break;
                 case  R.id.reset:
                     Intent reset = getIntent();
                     finish();
                     startActivity(reset);
-                    return true;
+                    break;
                 case R.id.exit:
                     Intent aboutContacts = new Intent(Play.this, AboutContact.class);
                     startActivity(aboutContacts);
-                    return true;
+                    break;
             }
-            return false;
         }
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "Play/onMenuItemClick");
-            return false;
         }
+
+        return true;
     }
     //endregion
 
     //region Start and Exit play
     public void onClickButtonStopGame(View view){
         try{
-            startCutterAndTranslateRecord();
+            StopGame();
         }
         catch (Exception ex){
            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonStopGame");
@@ -369,14 +374,16 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
             buttonStartPlay.setVisibility(View.GONE);
 
-            //Add start Interval
-            cutter.AddInterval(0);
 
         }
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickStartPlay");
         }
 
+    }
+
+    public void StopGame(){
+        startCutterAndTranslateRecord();
     }
 
     //endregion
@@ -393,6 +400,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     private void setIntervalAdd() throws Exception{
         if(!hearing){
+            cutter.AddInterval(MediaPlayerForRecords.getCurrentPositionSec(mp));
             hearing = true;
         }
     }
@@ -416,8 +424,11 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     private void updateGame() throws Exception{
 
         if(endRecord) {
-           dialogMain.showMyDialogHelp(MyDialogHelp.Windows.PLAY);
+           dialogMain.showMediaEnd();
+           return;
         }
+
+
         if(checkPlaying <= 0){
             modeWait(false);
         }

@@ -4,22 +4,18 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
 
 import com.example.Calls.AboutContact;
 import com.example.Calls.BackEnd.Contacts.Contacts;
-import com.example.Calls.BackEnd.Debug.DebugMessages;
 import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.Files.FileSystemParameters;
 import com.example.Calls.BackEnd.Records.Records;
-import com.example.Calls.MainActivity;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 

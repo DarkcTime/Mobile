@@ -7,13 +7,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.Calls.BackEnd.Debug.DebugMessages;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
+import com.example.Calls.Dialog.DialogMain;
 
 public class Help extends AppCompatActivity {
 
+
+    DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.Help);
 
     private SharedPreferences mSettings;
 
@@ -27,7 +28,7 @@ public class Help extends AppCompatActivity {
 
         }
         catch (Exception ex){
-            DebugMessages.ErrorMessage(ex, this, "Help");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "OnCreateHelp");
         }
 
     }
@@ -47,7 +48,7 @@ public class Help extends AppCompatActivity {
             startMainActivity();
         }
         catch (Exception ex){
-            DebugMessages.ErrorMessage(ex, this, "SetBegin");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "OnClickButtonSetBegin");
         }
 
     }
@@ -59,7 +60,7 @@ public class Help extends AppCompatActivity {
             startMainActivity();
         }
         catch (Exception ex){
-            DebugMessages.ErrorMessage(ex, this, "SetExpert");
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "OnClickButtonSetExpert");
         }
 
     }

@@ -2,24 +2,15 @@ package com.example.Calls.Dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import android.support.v7.app.AppCompatDialogFragment;
 
-import com.example.Calls.AboutContact;
-import com.example.Calls.BackEnd.Debug.DebugMessages;
 import com.example.Calls.BackEnd.Mail.Mailer;
-import com.example.Calls.MainActivity;
-import com.example.Calls.Play;
 import com.example.Calls.R;
-import com.example.Calls.Settings;
-import com.example.Calls.WaitInEndPlay;
 
 /**
  * Show user exception

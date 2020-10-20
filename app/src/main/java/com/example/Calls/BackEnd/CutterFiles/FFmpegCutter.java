@@ -10,9 +10,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.Calls.BackEnd.Debug.DebugMessages;
 import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.Files.FileSystemParameters;
 import com.example.Calls.BackEnd.Records.RecordProcessing;
@@ -24,7 +22,6 @@ import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunnin
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 //TODO do listener FFmpegProgress
@@ -108,7 +105,7 @@ public class FFmpegCutter {
             }
         }
         catch (Exception ex){
-            DebugMessages.ErrorMessage(ex, (WaitInEndPlay)context, "executeCommand");
+            //TODO Error
         }
     }
 
@@ -157,7 +154,7 @@ public class FFmpegCutter {
                     throw new Exception(message);
                 }
                 catch (Exception ex){
-                    DebugMessages.ErrorMessage(ex,waitInEndPlay, "executeFFMpegCommand");
+                    //
                 }
 
             }
@@ -173,7 +170,7 @@ public class FFmpegCutter {
                     RecordProcessing.changeDurationProcessingAndStartApi();
 
                 } catch (Exception ex) {
-                    DebugMessages.ErrorMessage(ex, waitInEndPlay, "ExceptionFFMpeg");
+                    //TODO
                 }
 
             }

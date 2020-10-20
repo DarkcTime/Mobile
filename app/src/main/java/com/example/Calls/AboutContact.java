@@ -3,26 +3,15 @@ package com.example.Calls;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.Calls.BackEnd.Api.ApiMain;
 import com.example.Calls.BackEnd.Contacts.Contacts;
-import com.example.Calls.BackEnd.Debug.DebugMessages;
-import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.Dialog.DialogMain;
-import com.example.Calls.Dialog.FilesDialog;
-import com.example.Calls.Dialog.MyDialogHelp;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AboutContact extends AppCompatActivity {
 

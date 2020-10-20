@@ -85,11 +85,12 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/buttonBackRewind"
-                android:layout_width="match_parent"
+                android:id="@+id/buttonFordRewind"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@color/blue"
-                android:onClick="onClickButtonBackSecond"
+                android:onClick="onClickButtonForwardSecond"
                 android:textSize="45dp"></Button>
 
 
@@ -118,23 +119,6 @@
                 android:textSize="25dp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/buttonFordRewind"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/blue"
-                android:onClick="onClickButtonForwardSecond"
-                android:textSize="45dp"></Button>
-
-
-        </LinearLayout>
 
         <Button
             android:id="@+id/buttonStartPlay"

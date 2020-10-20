@@ -43,7 +43,6 @@ public class Cutter {
         else{
             interval.setEnd(end);
             intervalList.add(interval);
-            AddInterval(end);
         }
     }
 

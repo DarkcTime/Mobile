@@ -2,19 +2,13 @@ package com.example.Calls;
 
 //region import
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Debug;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,16 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.Calls.BackEnd.Contacts.Contacts;
-import com.example.Calls.BackEnd.Debug.DebugMessages;
-import com.example.Calls.BackEnd.Files.FileSystem;
-import com.example.Calls.BackEnd.Files.FileSystemParameters;
-import com.example.Calls.BackEnd.Mail.Mailer;
 import com.example.Calls.BackEnd.Permissions.Permissions;
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
-import com.example.Calls.BackEnd.SharedClasses.Application;
 import com.example.Calls.Dialog.DialogMain;
-import com.example.Calls.Dialog.MyDialogHelp;
+import com.example.Calls.Dialog.HelpDialog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -144,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     //открывает диалоговое окно с контекстной справкой для данной страницы
     public void onCLickButtonHelp(View view) {
         try{
-            dialogMain.showHelpDialogFirstLaunch();
+            dialogMain.showHelpDialog(HelpDialog.Helps.FirstHelp);
         }
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonHelp");
@@ -183,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                 loadMain();
             } else {
                 // permission denied
-                dialogMain.showMyDialogHelp(MyDialogHelp.Windows.PERMISSIONS);
+                dialogMain.showPermissionDialog();
             }
 
         } catch (Exception ex) {
