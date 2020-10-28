@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.Calls.BackEnd.CutterFiles.Cutter;
-import com.example.Calls.BackEnd.Media.MediaPlayerForRecords;
+import com.example.Calls.BackEnd.Media.MediaPlayerClass;
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
 import com.example.Calls.Dialog.DialogMain;
@@ -103,6 +103,8 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     try{
+                        if(!mp.isPlaying()) return false;
+
                         if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
                         {
                             updateGame();
@@ -121,6 +123,8 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     try {
+                        if(!mp.isPlaying()) return false;
+
                         if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
                         {
                             updateGame();
@@ -215,7 +219,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
             mp.setLooping(false);
 
-            textViewStartPositionPlay.setText(MediaPlayerForRecords.setDurationStr(mp));
+            textViewStartPositionPlay.setText(MediaPlayerClass.setDurationStr(mp));
 
             seekBarPositionPlay.setMax(mp.getDuration());
 
@@ -224,7 +228,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     if(fromUser){
                         mp.seekTo(progress);
-                        textViewStartPositionPlay.setText(MediaPlayerForRecords.setDurationStr(mp));
+                        textViewStartPositionPlay.setText(MediaPlayerClass.setDurationStr(mp));
                     }
                 }
 
@@ -249,6 +253,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     public void onClickButtonForwardSecond(View view){
         try{
+            if(!mp.isPlaying()) return;
             RewardMedia(true);
         }
         catch (Exception ex){
@@ -269,7 +274,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         try{
             if(isForward) ForwardReward();
             else BackReward();
-            textViewStartPositionPlay.setText(MediaPlayerForRecords.setDurationStr(mp));
+            textViewStartPositionPlay.setText(MediaPlayerClass.setDurationStr(mp));
             updateGame();
         }
         catch (Exception ex){
@@ -389,18 +394,17 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     private void setIntervalStop() throws Exception{
         //stop interval media
         if(hearing){
-            cutter.StopInterval(MediaPlayerForRecords.getCurrentPositionSec(mp));
+            cutter.StopInterval(MediaPlayerClass.getCurrentPositionSec(mp));
             hearing = false;
         }
     }
 
     private void setIntervalAdd() throws Exception{
         if(!hearing){
-            cutter.AddInterval(MediaPlayerForRecords.getCurrentPositionSec(mp));
+            cutter.AddInterval(MediaPlayerClass.getCurrentPositionSec(mp));
             hearing = true;
         }
     }
-
 
 
     private void stopPlaying(){
@@ -455,7 +459,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         try{
             if(checkPlayCycle){
                 seekBarPositionPlay.setProgress(mp.getCurrentPosition());
-                textViewStartPositionPlay.setText(MediaPlayerForRecords.setDurationStr(mp));
+                textViewStartPositionPlay.setText(MediaPlayerClass.setDurationStr(mp));
 
                 if(mp.isPlaying()){
                     runnable = new Runnable() {

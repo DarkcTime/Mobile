@@ -9,10 +9,14 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Visibility;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +28,7 @@ import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Dialog.HelpDialog;
 
 import java.io.File;
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 //endregion
@@ -35,7 +40,10 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences mSettings;
 
     //выводит список контактов пользователю
+    private LinearLayout linerLayoutNoRecords;
+    private LinearLayout linerLayoutListRecords;
     private ListView listViewContactsMA;
+
 
     //получает список файлов записей с расширениями mp.3
     private List<File> listFiles = new ArrayList<File>();
@@ -49,14 +57,19 @@ public class MainActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
+            linerLayoutNoRecords = (LinearLayout) (findViewById(R.id.linerLayoutNoRecords));
+            linerLayoutListRecords = (LinearLayout) (findViewById(R.id.linerLayoutListRecords));
             listViewContactsMA = (ListView) (findViewById(R.id.listViewContactsMA));
-
             mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
 
-            SavedSettings savedSettings = new SavedSettings(mSettings);
 
-            //если приложение запускается впервые выполняет данное условие
+            //relativeLayoutNoRecords.setVisibility(View.VISIBLE);
+
+            /*
             if (!mSettings.getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false)) {
+
+
+
                 SharedPreferences.Editor e = mSettings.edit();
                 e.putBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, true);
                 e.apply();
@@ -65,6 +78,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(help);
                 return;
             }
+
+
+
+            SavedSettings savedSettings = new SavedSettings(mSettings);
+
+
+
 
 
             //TODO refactor help for UI
@@ -90,13 +110,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-
+        */
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreateMainActivity");
         }
-
     }
-
 
     //загрузка страницы, после запроса прав у пользователя
     private void loadMain() {
@@ -127,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
 
     //region ButtonsClick
 
+
+
     //открывает диалоговое окно с контекстной справкой для данной страницы
     public void onCLickButtonHelp(View view) {
         try{
@@ -152,15 +172,15 @@ public class MainActivity extends AppCompatActivity {
     //region permissions
     public void askPermission() {
         try {
-            Permissions permissions = new Permissions();
+            Permissions permissions = new Permissions(MainActivity.this);
             //если разрешения были получены, выводит список записей
-            if (!permissions.EnablePermissions(this)) loadMain();
+            if (permissions.isEnablePermissions()) loadMain();
+
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "askPermission");
         }
     }
 
-    //обработка ответа разрешений
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         try {

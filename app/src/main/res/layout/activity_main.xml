@@ -3,62 +3,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginHorizontal="@dimen/mini">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/linerLayoutNoRecords"
+        android:visibility="gone">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <Button
+                style="@style/ButtonStyle.LongBlue"
+                android:layout_centerInParent="true"
+                android:text="@string/I_know_where_records_rus"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <Button
+                style="@style/ButtonStyle.LongBlue"
+                android:layout_centerInParent="true"
+                android:text="@string/I_have_not_records_rus"
+                />
+        </RelativeLayout>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linerLayoutListRecords"
+        android:orientation="vertical"
+        android:visibility="visible">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5">
+
+        </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_alignParentTop="true"
-            android:orientation="horizontal">
-
-            <RelativeLayout
+            android:layout_height="35dp"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/standard">
+            <EditText
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <Button
-                    style="@style/StyleButtonIconBig"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/que"
-                    android:onClick="onCLickButtonHelp">
-
-                </Button>
-
-            </RelativeLayout>
-
-            <RelativeLayout
+                android:layout_weight="90"
+                style="@style/EditTextStyle.Search"
+                android:drawableLeft=
+                    "@drawable/ic_search_black_32dp"
+                android:background="@drawable/routed_edittext"
+                />
+            <Button
                 android:layout_width="0dp"
+                android:layout_weight="10"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <Button
-                    style="@style/StyleButtonIconBig"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/ser"
-                    android:onClick="onCLickButtonSettings">
-
-                </Button>
-            </RelativeLayout>
+                android:background="@drawable/ic_more_vert_black_24dp"
+                />
         </LinearLayout>
-
-        <LinearLayout
+        <ListView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="90dp">
-
-            <ListView
-                android:id="@+id/listViewContactsMA"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </ListView>
-        </LinearLayout>
-
-    </RelativeLayout>
+            android:layout_height="0dp"
+            android:layout_weight="95"
+            android:id="@+id/listViewContactsMA"/>
+    </LinearLayout>
 
 </LinearLayout>

@@ -1,9 +1,6 @@
 package com.example.Calls.BackEnd.Permissions;
 
-
-
 import android.Manifest;
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -12,65 +9,58 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.Calls.Dialog.DialogMain;
+import com.example.Calls.Dialog.HelpDialog;
 import com.example.Calls.MainActivity;
 
+import java.security.Permission;
 import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
 
 public class Permissions {
 
-    ArrayList<String> permissions;
+    private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.READ_CONTACTS,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_NETWORK_STATE};
+    private String callPhone = Manifest.permission.CALL_PHONE;
 
-    public static boolean checkPermission = false;
+    private MainActivity mainActivity;
+    public Permissions(MainActivity mainActivity){
+        this.mainActivity = mainActivity;
+    }
 
-    public boolean EnablePermissions(MainActivity activity) throws Exception{
+    /**
+     * check permissions, if don't have - ask
+     * @return true - if have all request for work with Application
+     * @throws Exception unexpected error
+     */
+    public boolean isEnablePermissions() throws Exception{
         try{
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-                int accessStorage = ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
-                int accessContact = ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_CONTACTS);
-                int accessWriteStorage = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                int accessCall = ContextCompat.checkSelfPermission(activity, Manifest.permission.CALL_PHONE);
-                int accessAudio = ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO);
-                int internet = ContextCompat.checkSelfPermission(activity, Manifest.permission.INTERNET);
-                int accessInternet = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_NETWORK_STATE);
+            ArrayList<String> requestPermissionsList = new ArrayList<>();
 
-                permissions = new ArrayList();
-
-                if (accessStorage == PackageManager.PERMISSION_DENIED) {
-                    permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            for (String permission : permissions){
+                if(isCheckPermission(permission)){
+                    requestPermissionsList.add(permission);
                 }
-                if (accessWriteStorage == PackageManager.PERMISSION_DENIED) {
-                    permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                }
-                if (accessContact == PackageManager.PERMISSION_DENIED) {
-                    permissions.add(Manifest.permission.READ_CONTACTS);
-                }
-                if (accessCall == PackageManager.PERMISSION_DENIED) {
-                    permissions.add(Manifest.permission.CALL_PHONE);
-                }
-                if (accessAudio == PackageManager.PERMISSION_DENIED) {
-                    permissions.add(Manifest.permission.RECORD_AUDIO);
-                }
-                if (internet == PackageManager.PERMISSION_DENIED){
-                    permissions.add(Manifest.permission.INTERNET);
-                }
-                if (accessInternet == PackageManager.PERMISSION_DENIED){
-                    permissions.add(Manifest.permission.ACCESS_NETWORK_STATE);
-                }
-
-                if(permissions.size() > 1) {
-                    ActivityCompat.requestPermissions(activity, permissions.toArray(new String[permissions.size()]), 1);
-                    return true;
-                }
-                else{
-                    return false;
-                }
-
             }
 
-            return false;
+            int sizeRequestList = requestPermissionsList.size();
+
+            if(sizeRequestList > 1)
+            {
+                //ask permissions
+                ActivityCompat.requestPermissions(mainActivity,
+                        requestPermissionsList.toArray(new String[sizeRequestList]), 1);
+                return false;
+            }
+            else {
+                return true;
+            }
 
         }
         catch (Exception ex){
@@ -78,5 +68,14 @@ public class Permissions {
         }
 
     }
+    /**
+     * @param permission string permission
+     * @return true - if permission don't give
+     */
+    private boolean isCheckPermission(String permission){
+        return ContextCompat.checkSelfPermission(mainActivity, permission) == PackageManager.PERMISSION_DENIED;
+    }
+
+
 
 }

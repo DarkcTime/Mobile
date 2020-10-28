@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Психологический портрет</string>
+    <string name="I_know_where_records_rus">Я знаю где находятся записи</string>
+    <string name="I_have_not_records_rus">У меня нет записей</string>
+
     <string name="title_activity_about_selected_contact">About_selected_contact</string>
     <string name="help">Справка пользователя</string>
     <string name="about_us">About us</string>

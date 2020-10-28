@@ -6,9 +6,9 @@ import android.media.MediaPlayer;
 import com.example.Calls.BackEnd.Analysis.AnalyzeCall;
 
 //TODO включить код логики media в данный класс
-public class MediaPlayerForRecords {
+public class MediaPlayerClass {
 
-    public MediaPlayerForRecords(){
+    public MediaPlayerClass(){
 
     }
 
