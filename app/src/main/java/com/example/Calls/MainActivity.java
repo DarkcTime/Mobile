@@ -9,11 +9,14 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.transition.Visibility;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -24,6 +27,7 @@ import com.example.Calls.BackEnd.Contacts.Contacts;
 import com.example.Calls.BackEnd.Permissions.Permissions;
 import com.example.Calls.BackEnd.Records.Records;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
+import com.example.Calls.BackEnd.SharedClasses.SharedMethods;
 import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Dialog.HelpDialog;
 
@@ -42,9 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
     private LinearLayout linerLayoutNoRecords;
     private LinearLayout linerLayoutListRecords;
+    private EditText editTextSearch;
     private ListView listViewContactsMA;
-
-    private List<File> listFiles = new ArrayList<File>();
+    private ArrayAdapter<String> adapterContacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
             linerLayoutNoRecords = (LinearLayout) (findViewById(R.id.linerLayoutNoRecords));
             linerLayoutListRecords = (LinearLayout) (findViewById(R.id.linerLayoutListRecords));
+            editTextSearch = (EditText) findViewById(R.id.editTextSearch);
             listViewContactsMA = (ListView) (findViewById(R.id.listViewContactsMA));
 
             savedSettings.setmSettings(getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE));
@@ -68,17 +73,25 @@ public class MainActivity extends AppCompatActivity {
                 askPermission();
             }
 
-            /*
+            editTextSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                }
 
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if(count != 0)
+                        adapterContacts.getFilter().filter(s);
+                    else
+                        adapterContacts.getFilter().filter("");
+                }
 
-            //TODO refactor help for UI
-            if (SavedSettings.isExpert()) {
-                //запрашивает разрения у пользователя
-                askPermission();
-            } else {
-                dialogMain.showHelpDialogFirstLaunch();
-            }
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
 
             listViewContactsMA.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -95,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-        */
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreateMainActivity");
         }
@@ -156,14 +168,14 @@ public class MainActivity extends AppCompatActivity {
     private void loadListRecords() {
         try {
             linerLayoutListRecords.setVisibility(View.VISIBLE);
-            
+
             //make adapter
-            ArrayAdapter<String> adapterContact =
-                    new ArrayAdapter<String>(this,
+
+             adapterContacts = new ArrayAdapter<String>(this,
                             android.R.layout.simple_list_item_1,
                             Contacts.getFilteredListContacts(this));
 
-            listViewContactsMA.setAdapter(adapterContact);
+            listViewContactsMA.setAdapter(adapterContacts);
 
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "loadMain");
@@ -172,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //endregion
-
 
     //region ButtonsClick
 

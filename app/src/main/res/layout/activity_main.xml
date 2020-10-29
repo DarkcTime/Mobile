@@ -53,6 +53,7 @@
                 android:drawableLeft=
                     "@drawable/ic_search_black_32dp"
                 android:background="@drawable/routed_edittext"
+                android:id="@+id/editTextSearch"
                 />
             <Button
                 android:layout_width="0dp"
