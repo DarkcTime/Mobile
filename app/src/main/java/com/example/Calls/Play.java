@@ -92,9 +92,12 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
             //endregion
 
+            /*
             if(!SavedSettings.isExpert()){
                 dialogMain.showHelpDialog(HelpDialog.Helps.PlayHelp);
             }
+
+             */
 
 
             //region button I and Other

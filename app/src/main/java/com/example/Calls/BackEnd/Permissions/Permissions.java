@@ -20,6 +20,8 @@ import static android.content.ContentValues.TAG;
 
 public class Permissions {
 
+    private ArrayList<String> requestPermissionsList = new ArrayList<>();
+
     private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -41,8 +43,6 @@ public class Permissions {
     public boolean isEnablePermissions() throws Exception{
         try{
 
-            ArrayList<String> requestPermissionsList = new ArrayList<>();
-
             for (String permission : permissions){
                 if(isCheckPermission(permission)){
                     requestPermissionsList.add(permission);
@@ -53,7 +53,6 @@ public class Permissions {
 
             if(sizeRequestList > 1)
             {
-                //ask permissions
                 ActivityCompat.requestPermissions(mainActivity,
                         requestPermissionsList.toArray(new String[sizeRequestList]), 1);
                 return false;

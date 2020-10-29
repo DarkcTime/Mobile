@@ -81,7 +81,7 @@ public class Contacts {
 
             @SuppressLint("Recycle") Cursor cursor= mainActivity.getContentResolver().query(
                     ContactsContract.Contacts.CONTENT_URI,
-                    null, null, null, null);
+                    null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+" ASC");
 
             if(cursor == null) throw new NullPointerException("Список контактов пуст");
 

@@ -44,8 +44,11 @@ public class Help extends AppCompatActivity {
     //утанавлиеает пользователю уровень начинающего
     public void onClickButtonSetBegin(View view){
         try{
+            /*
             SavedSettings.setTypeUser(false);
             startMainActivity();
+
+             */
         }
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "OnClickButtonSetBegin");
@@ -56,8 +59,11 @@ public class Help extends AppCompatActivity {
     //устанавливает пользователю уровень эксперта
     public void onClickButtonSetExpert(View view){
         try{
+            /*
             SavedSettings.setTypeUser(true);
             startMainActivity();
+
+             */
         }
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "OnClickButtonSetExpert");

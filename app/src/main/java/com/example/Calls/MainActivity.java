@@ -36,20 +36,15 @@ import java.util.List;
 //логика для главного окна в приложении
 public class MainActivity extends AppCompatActivity {
 
-    //объект работы с настройками
-    private SharedPreferences mSettings;
+    final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.MainActivity);
+    final Permissions permissions = new Permissions(MainActivity.this);
+    final SavedSettings savedSettings = new SavedSettings();
 
-    //выводит список контактов пользователю
     private LinearLayout linerLayoutNoRecords;
     private LinearLayout linerLayoutListRecords;
     private ListView listViewContactsMA;
 
-
-    //получает список файлов записей с расширениями mp.3
     private List<File> listFiles = new ArrayList<File>();
-
-    //window dialog
-    final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.MainActivity);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,30 +55,20 @@ public class MainActivity extends AppCompatActivity {
             linerLayoutNoRecords = (LinearLayout) (findViewById(R.id.linerLayoutNoRecords));
             linerLayoutListRecords = (LinearLayout) (findViewById(R.id.linerLayoutListRecords));
             listViewContactsMA = (ListView) (findViewById(R.id.listViewContactsMA));
-            mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
 
+            savedSettings.setmSettings(getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE));
+            Records.setPathForFindRecords(savedSettings.getmSettings().getString("path", Records.currentPathForRecordsXiomi));
 
-            //relativeLayoutNoRecords.setVisibility(View.VISIBLE);
-
-            /*
-            if (!mSettings.getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false)) {
-
-
-
-                SharedPreferences.Editor e = mSettings.edit();
-                e.putBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, true);
-                e.apply();
-
-                Intent help = new Intent(MainActivity.this, Help.class);
-                startActivity(help);
-                return;
+            boolean isVisited = savedSettings.getmSettings().getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false);
+            if (!isVisited) {
+                savedSettings.setVisited(savedSettings.getmSettings());
+                dialogMain.showHelpDialogFirstLaunch();
+            }
+            else{
+                askPermission();
             }
 
-
-
-            SavedSettings savedSettings = new SavedSettings(mSettings);
-
-
+            /*
 
 
 
@@ -115,19 +100,63 @@ public class MainActivity extends AppCompatActivity {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreateMainActivity");
         }
     }
-
-    //загрузка страницы, после запроса прав у пользователя
-    private void loadMain() {
+    //region permissions
+    public void askPermission() {
         try {
-            //set path for find records
-            Records.setPathForFindRecords(mSettings.getString("path", Records.currentPathForRecordsXiomi));
+            Log.d("per", "no");
+            if (permissions.isEnablePermissions()){
+                LoadActivity();
+                Log.d("per", "true");
+            }
+        } catch (Exception ex) {
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "askPermission");
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        try {
+            if (grantResults.length > 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                LoadActivity();
 
-            if (!Records.checkPath(Records.getPathForFindRecords())) {
-                //TODO show dialog window
-                Toast.makeText(this, Records.getPathForFindRecords(), Toast.LENGTH_SHORT).show();
-                return;
+            } else {
+                // permission denied
+                dialogMain.showPermissionDialog();
             }
 
+        } catch (Exception ex) {
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onRequestPermissionsResult");
+        }
+
+    }
+    //endregion
+
+    //region loadPage
+    private void LoadActivity(){
+        try{
+
+            if(!Records.isExistingPathRecord()){
+                noExistingPathForRecords();
+            }
+            else{
+                if(Records.isHavingRecords()) loadListRecords();
+                else loadNoRecordsPage();
+            }
+        }
+        catch (Exception ex){
+            Log.d("LoadActivityEx", ex.getMessage());
+        }
+    }
+    private void noExistingPathForRecords(){
+        loadNoRecordsPage();
+        Toast.makeText(this, "Данная директория не найдена", Toast.LENGTH_LONG).show();
+    }
+    private void loadNoRecordsPage(){
+        linerLayoutNoRecords.setVisibility(View.VISIBLE);
+    }
+    private void loadListRecords() {
+        try {
+            linerLayoutListRecords.setVisibility(View.VISIBLE);
+            
             //make adapter
             ArrayAdapter<String> adapterContact =
                     new ArrayAdapter<String>(this,
@@ -142,20 +171,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //endregion
+
 
     //region ButtonsClick
-
-
-
-    //открывает диалоговое окно с контекстной справкой для данной страницы
-    public void onCLickButtonHelp(View view) {
-        try{
-            dialogMain.showHelpDialog(HelpDialog.Helps.FirstHelp);
-        }
-        catch (Exception ex){
-            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonHelp");
-        }
-    }
 
     //открывает окно настроек
     public void onCLickButtonSettings(View view) {
@@ -169,34 +188,6 @@ public class MainActivity extends AppCompatActivity {
 
     //endregion
 
-    //region permissions
-    public void askPermission() {
-        try {
-            Permissions permissions = new Permissions(MainActivity.this);
-            //если разрешения были получены, выводит список записей
-            if (permissions.isEnablePermissions()) loadMain();
-
-        } catch (Exception ex) {
-            dialogMain.showErrorDialogAndTheOutputLogs(ex, "askPermission");
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        try {
-            if (grantResults.length > 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // permission granted
-                loadMain();
-            } else {
-                // permission denied
-                dialogMain.showPermissionDialog();
-            }
-
-        } catch (Exception ex) {
-            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onRequestPermissionsResult");
-        }
-
-    }
 
     //endregion
 

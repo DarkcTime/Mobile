@@ -55,9 +55,12 @@ public class SettingsForPlay extends AppCompatActivity {
 
 
     public void onClickButtonSaveSettingsForPlay(View view){
+        /*
         SavedSettings.setSettingsTime(secRewindPrivate, secPausePrivate);
         Intent play = new Intent(SettingsForPlay.this, Play.class);
         startActivity(play);
+
+         */
     }
 
     public void onClickCancelSaveSettingsForPlay(View view){

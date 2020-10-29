@@ -3,8 +3,10 @@ package com.example.Calls.BackEnd.Records;
 import android.content.Context;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.Calls.BackEnd.Contacts.Contacts;
+import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.SharedClasses.SharedMethods;
 
 import java.io.BufferedReader;
@@ -14,6 +16,7 @@ import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,6 +44,16 @@ public class Records {
         }
         return pathForFindRecords;
     }
+
+    public static boolean isExistingPathRecord() throws Exception{
+        return new File(getPathForFindRecords()).exists();
+    }
+
+    public static boolean isHavingRecords() throws Exception{
+        List<File> files = FileSystem.getFilesWithSelectedExtWithFilter(getPathForFindRecords(), ".mp3");
+        return files.size() != 0;
+    }
+
 
     //данные о выбранной записи
     private static String NameSelectedRecord;

@@ -46,6 +46,7 @@ public class Settings extends AppCompatActivity {
 
         editTextPath.setText(mSettings.getString("path", Records.currentPathForRecordsXiomi));
 
+        /*
         typeUser = SavedSettings.isExpert();
 
         if(SavedSettings.isExpert()){
@@ -54,6 +55,8 @@ public class Settings extends AppCompatActivity {
         else{
             buttonChangeRole.setBackgroundResource(R.drawable.begin);
         }
+
+         */
 
     }
 
@@ -64,7 +67,7 @@ public class Settings extends AppCompatActivity {
             SharedPreferences.Editor editor = mSettings.edit();
             editor.putString(SavedSettings.APP_PREFERENCES_PATH , editTextPath.getText().toString());
             editor.apply();
-            SavedSettings.setTypeUser(typeUser);
+            //SavedSettings.setTypeUser(typeUser);
             Intent main = new Intent(Settings.this, MainActivity.class);
             startActivity(main);
         }
@@ -106,6 +109,7 @@ public class Settings extends AppCompatActivity {
     }
 
     public void onClickButtonChangeRoleSetting(View view){
+        /*
         if(SavedSettings.isExpert()){
             typeUser = false;
             buttonChangeRole.setBackgroundResource(R.drawable.begin);
@@ -114,6 +118,8 @@ public class Settings extends AppCompatActivity {
             typeUser = true;
             buttonChangeRole.setBackgroundResource(R.drawable.expert);
         }
+
+         */
     }
 
     public void setTextPath(String path){

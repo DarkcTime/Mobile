@@ -9,7 +9,17 @@ import com.example.Calls.Settings;
 
 public class SavedSettings {
 
-    private static SharedPreferences mSettings;
+    private SharedPreferences mSettings;
+
+    public void setmSettings(SharedPreferences mSettings){
+        this.mSettings = mSettings;
+    }
+
+    public SharedPreferences getmSettings(){
+        return mSettings;
+    }
+
+    public SavedSettings(){}
 
     public static final String APP_PREFERENCES = "mysettings";
 
@@ -24,11 +34,8 @@ public class SavedSettings {
     //уровень выбранный пользователем
     public static final String APP_PREFERENCES_ISEXPERT = "is_expert";
 
-    public static  final String APP_PREFERENCES_HASVISITED = "has_visited";
+    public static final String APP_PREFERENCES_HASVISITED = "has_visited";
 
-    public SavedSettings(SharedPreferences set){
-        mSettings = set;
-    }
 
     public boolean isNull(String type){
         try{
@@ -43,23 +50,30 @@ public class SavedSettings {
 
     }
 
-    public static boolean isExpert(){
+    public  boolean isExpert(){
         return mSettings.getBoolean(APP_PREFERENCES_ISEXPERT, false);
     }
 
-    public static void setTypeUser(boolean isExpert){
+    public  void setTypeUser(boolean isExpert){
         SharedPreferences.Editor editor = mSettings.edit();
         editor.putBoolean(APP_PREFERENCES_ISEXPERT, isExpert);
         editor.apply();
 
     }
 
-    public static void setSettingsTime(int rewind, int pause){
+    public  void setSettingsTime(int rewind, int pause){
         SharedPreferences.Editor editor = mSettings.edit();
         editor.putInt(APP_PREFERENCES_REWIND_TIME, rewind);
         editor.putInt(APP_PREFERENCES_PAUSE_TIME, pause);
         editor.apply();
 
     }
+
+    public  void setVisited(SharedPreferences sharedPreferences){
+        SharedPreferences.Editor e = mSettings.edit();
+        e.putBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, true);
+        e.apply();
+    }
+
 
 }
