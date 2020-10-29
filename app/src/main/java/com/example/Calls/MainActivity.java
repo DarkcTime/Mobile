@@ -99,8 +99,8 @@ public class MainActivity extends AppCompatActivity {
                     try{
                         TextView text = (TextView) view;
                         Contacts.setInformationAboutUser(text.getText().toString());
-                        Intent aboutContact = new Intent(MainActivity.this, AboutContact.class);
-                        startActivity(aboutContact);
+                        Intent selectRecord = new Intent(MainActivity.this, SelectRecord.class);
+                        startActivity(selectRecord);
                     }
                     catch (Exception ex){
                         dialogMain.showErrorDialogAndTheOutputLogs(ex, "listViewContactsMA");
