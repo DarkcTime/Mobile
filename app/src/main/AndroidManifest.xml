@@ -32,9 +32,6 @@
 
         <activity android:name=".SettingsForPlay" android:theme="@style/AppTheme.NoActionBar"></activity>
 
-        <activity android:name=".AboutContact" android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
         <activity android:name=".Settings" android:label="@string/settings" android:theme="@style/AppTheme.NoActionBar">
 
         </activity>

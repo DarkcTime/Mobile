@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.example.Calls.BackEnd.Contacts.Contacts;
 import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.SharedClasses.SharedMethods;
+import com.example.Calls.Model.Record;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,17 +28,13 @@ import java.util.List;
 
 //работа с записями звонков
 public class Records {
-
-
     private static String pathForFindRecords = "";
-
     public static void setPathForFindRecords(String _pathForFindRecords) throws Exception {
         if (SharedMethods.isNullOrWhiteSpace(_pathForFindRecords)) {
             throw new Exception("setPathForFindRecords == null");
         }
         pathForFindRecords = _pathForFindRecords;
     }
-
     public static String getPathForFindRecords() throws Exception {
         if (SharedMethods.isNullOrWhiteSpace(pathForFindRecords)) {
             throw new Exception("getPathForFindRecords == null");
@@ -45,23 +42,35 @@ public class Records {
         return pathForFindRecords;
     }
 
-    public static boolean isExistingPathRecord() throws Exception{
+    private ArrayList<File> listFiles;
+    public boolean isExistingPathRecord() throws Exception{
         return new File(getPathForFindRecords()).exists();
     }
+    public void create() throws Exception{
+        listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(getPathForFindRecords(), ".mp3"));
+    }
+    public boolean isHavingRecords() throws Exception{
+        return listFiles.size() > 0;
+    }
+    public void generateListRecords(){
+        ArrayList<Record> bufferListRecords = new ArrayList<Record>();
+        for(File file : listFiles){
+            Record newRecord = new Record();
+            newRecord.Path = file.getAbsolutePath();
+            newRecord.FullName = file.getName();
+            newRecord.Contact = getNameContactInRecord(newRecord.Path);
+            newRecord.NumberPhone =
 
-    public static boolean isHavingRecords() throws Exception{
-        List<File> files = FileSystem.getFilesWithSelectedExtWithFilter(getPathForFindRecords(), ".mp3");
-        return files.size() != 0;
+        }
     }
 
 
-    //данные о выбранной записи
-    private static String NameSelectedRecord;
 
+
+    private static String NameSelectedRecord;
     public static String getNameSelectedRecord() {
         return NameSelectedRecord;
     }
-
     public static void setNameSelectedRecord(String _nameRecord) {
         NameSelectedRecord = _nameRecord;
     }
@@ -134,25 +143,24 @@ public class Records {
         return nameContact.contains(nameRecord);
     }
 
-    /**
-     * Выделяет имя контакта из записи
-     *
-     * @param fullPath путь к записи
-     * @return имя контакта
-     */
-    public static String getNameContactInRecord(String fullPath) {
-        String fileName = new File(fullPath).getName();
-        if (fileName.contains("@")) {
-            String name = fileName.substring(fileName.indexOf("@") + 1, fileName.lastIndexOf("("));
-            Log.d("@", name);
-            return name;
-        } else {
-            String name = fileName.substring(0, fileName.lastIndexOf("("));
-            Log.d("not", name);
-            return name;
-        }
+    private String getNameContactInRecord(String nameRecord) {
+        if (nameRecord.contains("@"))
+            return nameRecord.substring(nameRecord.indexOf("@") + 1, nameRecord.lastIndexOf("("));
+        else
+            return nameRecord.substring(0, nameRecord.lastIndexOf("("));
 
     }
+    private String getPhoneContactInRecord(String nameRecord){
+        return nameRecord.substring(nameRecord.lastIndexOf("(") + 1, nameRecord.lastIndexOf(")"));
+    }
+    private String getDateInRecord(String nameRecord){
+        String date = nameRecord.substring(nameRecord.lastIndexOf("_") + 1, nameRecord.lastIndexOf("."));
+        return date.substring(0,2) + "." + date.substring(3,4) + date.substring(5,6);
+    }
+
+
+
+
 
 
     public static class MyFileNameFilter implements FilenameFilter {

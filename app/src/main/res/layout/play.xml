@@ -3,15 +3,65 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/startLayoutPage">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="50"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="50">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/standard">
+                        <TextView
+                            style="@style/TextViewStyle.Big"
+                            android:layout_centerInParent="true"
+                            android:text="@string/help_play_rus"/>
+                    </RelativeLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="50"/>
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="50">
+                <Button
+                    style="@style/ButtonStyle.LongBlue"
+                    android:layout_centerInParent="true"
+                    android:text="@string/begin_rus"
+                    android:onClick="onClickStartPlay"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/playLinerLayout"
+            android:visibility="gone">
+
+
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <Button
                 style="@style/StyleButtonIconBig"
@@ -126,9 +176,11 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:background="@color/green"
-            android:onClick="onClickStartPlay"
             android:text="Начать"
             android:textSize="45dp"></Button>
+
+
+        </LinearLayout>
 
 
     </LinearLayout>

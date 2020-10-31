@@ -1,20 +1,14 @@
 package com.example.Calls.Dialog;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
 
-import com.example.Calls.AboutContact;
-import com.example.Calls.BackEnd.SharedClasses.Application;
 import com.example.Calls.Help;
 import com.example.Calls.MainActivity;
 import com.example.Calls.Play;
-import com.example.Calls.R;
 import com.example.Calls.Settings;
 import com.example.Calls.WaitInEndPlay;
 
@@ -31,7 +25,6 @@ public class DialogMain extends AppCompatDialogFragment {
 
     }
 
-    private AboutContact aboutContact;
     private MainActivity mainActivity;
     private WaitInEndPlay waitInEndPlay;
     private Play play;
@@ -51,8 +44,7 @@ public class DialogMain extends AppCompatDialogFragment {
                     manager = mainActivity.getSupportFragmentManager();
                     break;
                 case AboutContact:
-                    aboutContact = (AboutContact)context;
-                    manager = aboutContact.getSupportFragmentManager();
+
                     break;
                 case Settings:
                     Settings settings = (Settings) context;
@@ -92,8 +84,7 @@ public class DialogMain extends AppCompatDialogFragment {
 
     public void showFilesDialog() {
         try{
-            FilesDialog filesDialog = new FilesDialog(aboutContact);
-            filesDialog.show(manager, "FilesDialog");
+
         }
         catch (Exception ex){
             showErrorDialogAndTheOutputLogs(ex,"showFilesDialog");

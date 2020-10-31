@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -34,6 +35,9 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     //dialog windows
     final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.Play);
 
+    private LinearLayout startLayoutPage;
+
+    private LinearLayout playLinerLayout;
     private TextView textViewSelectedRecPlay, textViewStartPositionPlay;
     private SeekBar seekBarPositionPlay;
     private MediaPlayer mp;
@@ -72,6 +76,12 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
             super.onCreate(savedInstanceState);
             setContentView(R.layout.play);
 
+            startLayoutPage = (LinearLayout) (findViewById(R.id.startLayoutPage));
+
+            playLinerLayout = (LinearLayout) (findViewById(R.id.playLinerLayout));
+
+            /*
+
             setVariablesForPlay();
 
             setSettingsForRewards();
@@ -97,7 +107,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 dialogMain.showHelpDialog(HelpDialog.Helps.PlayHelp);
             }
 
-             */
+
 
 
             //region button I and Other
@@ -153,6 +163,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
 
 
+             */
 
         }
         catch (Exception ex){
@@ -160,6 +171,35 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         }
 
     }
+
+    public void onClickStartPlay(View view){
+        try{
+            //TODO test code
+            cutter = new Cutter();
+            cutter.AddInterval(0);
+            cutter.StopInterval(2);
+            cutter.AddInterval(4);
+            cutter.StopInterval(6);
+
+            Intent intent = new Intent(Play.this, WaitInEndPlay.class);
+            startActivity(intent);
+
+            /* region LastCode
+            checkPlayCycle = true;
+            mp.start();
+
+            playCycle();
+
+            buttonStartPlay.setVisibility(View.GONE);
+            */
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickStartPlay");
+        }
+
+    }
+
+
 
     //region loadPage
     private void setVariablesForPlay(){
@@ -324,8 +364,8 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                     startActivity(reset);
                     break;
                 case R.id.exit:
-                    Intent aboutContacts = new Intent(Play.this, AboutContact.class);
-                    startActivity(aboutContacts);
+                    //Intent aboutContacts = new Intent(Play.this, AboutContact.class);
+                    //startActivity(aboutContacts);
                     break;
             }
         }
@@ -360,31 +400,15 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
     public void startAboutContact(){
         try{
-            Intent AboutContact = new Intent(Play.this, com.example.Calls.AboutContact.class);
-            startActivity(AboutContact);
+            //Intent AboutContact = new Intent(Play.this, com.example.Calls.AboutContact.class);
+            //startActivity(AboutContact);
         }
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "startAboutContact");
         }
     }
 
-    public void onClickStartPlay(View view){
-        try{
 
-            checkPlayCycle = true;
-            mp.start();
-
-            playCycle();
-
-            buttonStartPlay.setVisibility(View.GONE);
-
-
-        }
-        catch (Exception ex){
-            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickStartPlay");
-        }
-
-    }
 
     public void StopGame(){
         startCutterAndTranslateRecord();

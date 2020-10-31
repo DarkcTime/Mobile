@@ -23,11 +23,8 @@ public class WaitInEndPlay extends AppCompatActivity {
     final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.WaitInEndPlay);
 
     TextView textViewProgress;
-
     ProgressBar progressBarTranslate;
-
     private ApiMain apiMain;
-
     private RecordProcessing recordProcessing;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -39,23 +36,21 @@ public class WaitInEndPlay extends AppCompatActivity {
 
             //textViewProgress = findViewById(R.id.textViewProgress);
             progressBarTranslate = findViewById(R.id.progressBarTranslate);
-
             textViewProgress = findViewById(R.id.textViewProgress);
-
             recordProcessing = new RecordProcessing(this);
 
+            //get list intervals
+            Cutter cutter = Play.getCutter();
 
-                Cutter cutter = Play.getCutter();
-
-                //create dirs
-                Directories.createDirectories();
-
-
-                apiMain = new ApiMain();
+            //create dirs
+            Directories.createDirectories();
 
 
-                //cut files in intervals
-                cutter.startCutFileIntervals(this);
+            apiMain = new ApiMain();
+
+
+            //cut files in intervals
+            cutter.startCutFileIntervals(this);
 
         }
         catch (Exception ex){
@@ -84,8 +79,7 @@ public class WaitInEndPlay extends AppCompatActivity {
     }
 
     private void startActivityAboutContact() throws Exception{
-        Intent WaitEndPlay = new Intent(WaitInEndPlay.this, AboutContact.class);
-        startActivity(WaitEndPlay);
+
     }
 
 

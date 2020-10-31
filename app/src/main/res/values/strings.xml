@@ -3,6 +3,13 @@
     <string name="I_know_where_records_rus">Я знаю где находятся записи</string>
     <string name="I_have_not_records_rus">У меня нет записей</string>
     <string name="select_record_rus">Выберите запись разговора...</string>
+    <string name="help_play_rus">
+        Выделите речь собеседника\n
+        2 клик вправо + 3 сек\n
+        2 клик слева  - 3 сек\n
+        Если отпустить кнопки, открывается меню
+    </string>
+    <string name="begin_rus">Начать</string>
     <string name="title_activity_about_selected_contact">About_selected_contact</string>
     <string name="help">Справка пользователя</string>
     <string name="about_us">About us</string>

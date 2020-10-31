@@ -1,13 +1,7 @@
 package com.example.Calls.BackEnd.Records;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-import com.example.Calls.AboutContact;
 import com.example.Calls.BackEnd.Contacts.Contacts;
 import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.Files.FileSystemParameters;
@@ -19,10 +13,7 @@ import java.util.List;
 
 public class ListRecords {
 
-    private ArrayList<String> listRecords;
-    public ArrayList<String> getListRecords() {
-        return listRecords;
-    }
+    private ArrayList<Records> listRecords;
 
     //buffer list for generating
     private List<File> listFiles = new ArrayList<File>();
@@ -32,7 +23,6 @@ public class ListRecords {
     }
 
 
-
     /**
      * set list for Records
      * @throws Exception all type errors
@@ -40,6 +30,8 @@ public class ListRecords {
     private void generateListRecords() throws Exception{
         try{
             listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(Records.getPathForFindRecords(), ".mp3"));
+
+
             listRecords = getFilteredArrayFiles();
         }
         catch (Exception ex){
