@@ -26,7 +26,7 @@ public class SelectRecord extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        try{
+        try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.select_record);
 
@@ -34,7 +34,7 @@ public class SelectRecord extends AppCompatActivity {
 
             RecordRepository recordRepository = new RecordRepository();
 
-            ArrayList<Record> listRecords = recordRepository.getListFilteredByContact();
+            ArrayList<Record> listRecords = recordRepository.getDisplayList();
             RecordAdapter recordAdapter = new RecordAdapter(this, R.layout.list_records, listRecords);
 
             listViewRecords.setAdapter(recordAdapter);
@@ -50,8 +50,7 @@ public class SelectRecord extends AppCompatActivity {
                 }
             });
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "SelectRecordOnCreate");
         }
     }

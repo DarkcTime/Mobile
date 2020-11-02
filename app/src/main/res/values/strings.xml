@@ -9,6 +9,12 @@
         2 клик слева  - 3 сек\n
         Если отпустить кнопки, открывается меню
     </string>
+    <string name="help_if_have_not_records_rus">
+        Записи переговоров с Персонами
+        не были найдены на вашем устройстве.
+        \nУкажите путь вручную - Я знаю где находятся записи
+        \nИли ознакомьтесь с инструкцией для получения первой записи
+    </string>
     <string name="begin_rus">Начать</string>
     <string name="title_activity_about_selected_contact">About_selected_contact</string>
     <string name="help">Справка пользователя</string>

@@ -62,6 +62,7 @@ public class SelectFileDialog extends AlertDialog.Builder {
                 .setPositiveButton("выбрать", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //TODO refactore save settings
                         Settings settings = (Settings)context;
                         settings.setTextPath(currentPath);
                         Toast.makeText(context, currentPath, Toast.LENGTH_SHORT).show();

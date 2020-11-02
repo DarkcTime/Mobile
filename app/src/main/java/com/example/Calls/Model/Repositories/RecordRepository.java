@@ -4,7 +4,10 @@ import com.example.Calls.BackEnd.Services.RecordsService;
 import com.example.Calls.Model.Contact;
 import com.example.Calls.Model.Record;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class RecordRepository {
     private static ArrayList<Record> ListRecords;
@@ -23,20 +26,19 @@ public class RecordRepository {
         selectedRecord = record;
     }
 
-    public ArrayList<Record> getListFilteredByContact(){
+    public ArrayList<Record> getDisplayList(){
+        ArrayList<Record> list = getListFilteredByContact();
+        orderByDateTime(list);
+        return list;
+    }
+    private ArrayList<Record> getListFilteredByContact(){
         ArrayList<Record> list = new ArrayList<Record>();
         for(Record record : getListRecords()){
             if(RecordsService.isConstrainNameRecord(ContactRepository.getSelectedContact().Name,record.Contact)) list.add(record);
         }
         return list;
     }
-
-    public ArrayList<String> getDisplayRecords(ArrayList<Record> records){
-        ArrayList<String> list = new ArrayList<String >();
-        for(Record record : records){
-            list.add(record.FullName);
-        }
-        return list;
+    private void orderByDateTime(ArrayList<Record> records){
+        Collections.sort(records);
     }
-
 }

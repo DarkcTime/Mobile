@@ -25,12 +25,16 @@ import com.example.Calls.BackEnd.Permissions.Permissions;
 import com.example.Calls.BackEnd.Services.RecordsService;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
 import com.example.Calls.Dialog.DialogMain;
+import com.example.Calls.Dialog.PopupMenu;
+import com.example.Calls.Dialog.SelectFileDialog;
 import com.example.Calls.Model.Contact;
 import com.example.Calls.Model.Repositories.ContactRepository;
 import com.example.Calls.Model.Repositories.RecordRepository;
 import com.example.Calls.Views.ContactAdapter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 //endregion
 
 //логика для главного окна в приложении
@@ -46,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout linerLayoutListRecords;
     private EditText editTextSearch;
     private ListView listViewContactsMA;
-    private ArrayAdapter<String> adapterContacts;
+    private ArrayAdapter<Contact> contactAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,12 @@ public class MainActivity extends AppCompatActivity {
             savedSettings.setmSettings(getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE));
             RecordsService.setPathForFindRecords(savedSettings.getmSettings()
                     .getString("path", RecordsService.currentPathForRecordsXiomi));
+
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String str = "10-06-2020 13:15:16";
+            Date parsingDate = simpleDateFormat.parse(str);
+            Log.d("date", parsingDate.toString());
 
 
             boolean isVisited = savedSettings.getmSettings().getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false);
@@ -83,9 +93,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if(count != 0)
-                        adapterContacts.getFilter().filter(s);
+                        contactAdapter.getFilter().filter(s);
                     else
-                        adapterContacts.getFilter().filter("");
+                        contactAdapter.getFilter().filter("");
                 }
 
                 @Override
@@ -166,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
             ContactsService.generateFilteredListContacts(this);
 
-            ContactAdapter contactAdapter = new ContactAdapter(this, R.layout.list_contacts, ContactRepository.getListContacts());
+            contactAdapter = new ContactAdapter(this, R.layout.list_contacts, ContactRepository.getListContacts());
 
             listViewContactsMA.setAdapter(contactAdapter);
 
@@ -178,17 +188,27 @@ public class MainActivity extends AppCompatActivity {
 
     //endregion
 
-    //region ButtonsClick
+    //region UIActions
+
+    public void onClickSelectPath(View view){
+        try{
+            SelectFileDialog selectFileDialog = new SelectFileDialog(this);
+            selectFileDialog.show();
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickSelectPath");
+        }
+    }
 
     //открывает окно настроек
-    public void onCLickButtonSettings(View view) {
+    public void onClickButtonMainWindowMenu(View view) {
         try {
-            Intent settings = new Intent(MainActivity.this, Settings.class);
-            startActivity(settings);
+            PopupMenu.showPopupMenu(this, view, R.menu.popupmenu_mainwindow);
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonSettings");
         }
     }
+
 
     //endregion
 

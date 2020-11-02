@@ -338,7 +338,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     //region PopupMenu
     public void onClickButtonSettingsPlay(View view){
         try{
-            com.example.Calls.Dialog.PopupMenu.showPopupMenu(this, view);
+            com.example.Calls.Dialog.PopupMenu.showPopupMenu(this, view,R.menu.menu_settings);
         }
         catch (Exception ex){
            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonSettingsPlay");
