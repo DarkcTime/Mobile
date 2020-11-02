@@ -14,6 +14,7 @@ import com.example.Calls.BackEnd.Services.ListRecords;
 import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Model.Record;
 import com.example.Calls.Model.Repositories.RecordRepository;
+import com.example.Calls.Views.RecordAdapter;
 
 import java.util.ArrayList;
 
@@ -34,16 +35,15 @@ public class SelectRecord extends AppCompatActivity {
             RecordRepository recordRepository = new RecordRepository();
 
             ArrayList<Record> listRecords = recordRepository.getListFilteredByContact();
-            ArrayAdapter<String> displayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
-                    recordRepository.getDisplayRecords(listRecords));
+            RecordAdapter recordAdapter = new RecordAdapter(this, R.layout.list_records, listRecords);
 
-            listViewRecords.setAdapter(displayAdapter);
+            listViewRecords.setAdapter(recordAdapter);
 
             listViewRecords.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    TextView text = (TextView) view;
-
+                    Record selectedRecord = (Record) parent.getItemAtPosition(position);
+                    RecordRepository.setSelectedRecord(selectedRecord);
                     Intent intent = new Intent(SelectRecord.this, Play.class);
                     startActivity(intent);
 

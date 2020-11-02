@@ -16,10 +16,10 @@ public class RecordRepository {
     }
 
     private static Record selectedRecord;
-    public Record getSelectedRecord(){
+    public static Record getSelectedRecord(){
         return selectedRecord;
     }
-    public void setSelectedRecord(Record record){
+    public static void setSelectedRecord(Record record){
         selectedRecord = record;
     }
 
@@ -38,7 +38,5 @@ public class RecordRepository {
         }
         return list;
     }
-
-
 
 }
