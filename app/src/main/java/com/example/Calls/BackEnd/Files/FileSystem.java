@@ -1,12 +1,10 @@
 package com.example.Calls.BackEnd.Files;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.example.Calls.BackEnd.CutterFiles.CutterInterval;
 import com.example.Calls.BackEnd.CutterFiles.FileForCutter;
-import com.example.Calls.BackEnd.Records.Records;
+import com.example.Calls.BackEnd.Services.RecordsService;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,7 +14,6 @@ import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -73,7 +70,7 @@ public class FileSystem {
      */
     public static List<File> getFilesWithSelectedExtWithFilter(String path, String ext){
         File directory = new File(path);
-        List<File> fileList = Arrays.asList(directory.listFiles(new Records.MyFileNameFilter(ext)));
+        List<File> fileList = Arrays.asList(directory.listFiles(new RecordsService.MyFileNameFilter(ext)));
         Collections.sort(fileList, new Comparator<File>() {
             @Override
             public int compare(File file, File file2) {
@@ -102,7 +99,7 @@ public class FileSystem {
             // генерация параметров
             int duration = interval.getEnd() - interval.getStart();
             File targetFile = new File(FileSystemParameters.getPathForSelectedRecordsForCutter().concat(String.valueOf(i)).concat(".mp3"));
-            File sourceFile = new File(Records.getFullPathSelectedRecord());
+            File sourceFile = new File(RecordsService.getFullPathSelectedRecord());
 
             //генерация объекта
             FileForCutter fileForCutter = new FileForCutter(interval.getStart(),

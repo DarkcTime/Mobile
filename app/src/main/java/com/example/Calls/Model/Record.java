@@ -7,6 +7,7 @@ public class Record {
     public String FullName;
     public String Contact;
     public String NumberPhone;
-    public String DateTime;
-    public String duration;
+    public String Date;
+    public String Time;
+    //public String duration;
 }

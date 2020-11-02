@@ -1,23 +1,42 @@
 package com.example.Calls.Model.Repositories;
 
-import com.example.Calls.BackEnd.Records.ListRecords;
+import com.example.Calls.BackEnd.Services.RecordsService;
+import com.example.Calls.Model.Contact;
 import com.example.Calls.Model.Record;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class RecordRepository {
     private static ArrayList<Record> ListRecords;
-    public static ArrayList<Record> getListRecords() {
+    public ArrayList<Record> getListRecords() {
         return ListRecords;
     }
     public static void setListRecords(ArrayList<Record> records) {
         ListRecords = records;
     }
 
-    //TODO method on work
-    public static Record findRecord(String dateTime) {
-        return new Record();
+    private static Record selectedRecord;
+    public static Record getSelectedRecord(){
+        return selectedRecord;
+    }
+    public static void setSelectedRecord(Record record){
+        selectedRecord = record;
+    }
+
+    public ArrayList<Record> getListFilteredByContact(){
+        ArrayList<Record> list = new ArrayList<Record>();
+        for(Record record : getListRecords()){
+            if(RecordsService.isConstrainNameRecord(ContactRepository.getSelectedContact().Name,record.Contact)) list.add(record);
+        }
+        return list;
+    }
+
+    public ArrayList<String> getDisplayRecords(ArrayList<Record> records){
+        ArrayList<String> list = new ArrayList<String >();
+        for(Record record : records){
+            list.add(record.FullName);
+        }
+        return list;
     }
 
 }

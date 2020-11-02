@@ -1,33 +1,21 @@
-package com.example.Calls.BackEnd.Records;
+package com.example.Calls.BackEnd.Services;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.example.Calls.BackEnd.Contacts.Contacts;
 import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.SharedClasses.SharedMethods;
+import com.example.Calls.MainActivity;
 import com.example.Calls.Model.Record;
+import com.example.Calls.Model.Repositories.RecordRepository;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-//работа с записями звонков
-public class Records {
+
+public class RecordsService {
     private static String pathForFindRecords = "";
     public static void setPathForFindRecords(String _pathForFindRecords) throws Exception {
         if (SharedMethods.isNullOrWhiteSpace(_pathForFindRecords)) {
@@ -42,29 +30,83 @@ public class Records {
         return pathForFindRecords;
     }
 
-    private ArrayList<File> listFiles;
-    public boolean isExistingPathRecord() throws Exception{
+    private MainActivity mainActivity;
+    public RecordsService(MainActivity mainActivity){
+        this.mainActivity = mainActivity;
+    }
+
+    private ArrayList<File> listFiles = new ArrayList<File>();
+    public void create() throws Exception{
+
+        Log.d("pathFindRec", getPathForFindRecords());
+        listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(getPathForFindRecords(), ".mp3"));
+        /*
+        if(!isExistingPathRecord()){
+            //TODO if not exist
+            return;
+        }
+        if(!isHavingRecords()){
+                //TODO if not records
+        }
+
+         */
+
+    }
+    private boolean isExistingPathRecord() throws Exception{
         return new File(getPathForFindRecords()).exists();
     }
-    public void create() throws Exception{
-        listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(getPathForFindRecords(), ".mp3"));
-    }
-    public boolean isHavingRecords() throws Exception{
+    private boolean isHavingRecords() throws Exception{
         return listFiles.size() > 0;
     }
+
     public void generateListRecords(){
         ArrayList<Record> bufferListRecords = new ArrayList<Record>();
         for(File file : listFiles){
             Record newRecord = new Record();
             newRecord.Path = file.getAbsolutePath();
             newRecord.FullName = file.getName();
-            newRecord.Contact = getNameContactInRecord(newRecord.Path);
-            newRecord.NumberPhone =
-
+            newRecord.Contact = getNameContactInRecord(newRecord.FullName);
+            //no add record, if only number phone
+            if(Character.isDigit(newRecord.Contact.charAt(0))) continue;
+            newRecord.NumberPhone = getPhoneContactInRecord(newRecord.FullName);
+            newRecord.Date = getDateInRecord(newRecord.FullName);
+            newRecord.Time = getTimeInRecord(newRecord.FullName);
+            bufferListRecords.add(newRecord);
         }
+        RecordRepository.setListRecords(bufferListRecords);
     }
+    //get information from list files
+    private String getNameContactInRecord(String nameRecord) {
+        if (nameRecord.contains("@"))
+            return nameRecord.substring(nameRecord.indexOf("@") + 1, nameRecord.lastIndexOf("("));
+        else
+            return nameRecord.substring(0, nameRecord.lastIndexOf("("));
 
+    }
+    private String getPhoneContactInRecord(String nameRecord){
+        return nameRecord.substring(nameRecord.lastIndexOf("(") + 1, nameRecord.lastIndexOf(")"));
+    }
+    private String getDateInRecord(String nameRecord){
+        //example 20200810
+        int start = nameRecord.lastIndexOf("_") + 1;
+        int end = start + 8;
+        String date = nameRecord.substring(start, end);
+        //number + month + year
+        String res = date.substring(6,8) + "." + date.substring(4,6) + "." + date.substring(0,4);
+        Log.d("date", res);
+        return res;
 
+    }
+    private String getTimeInRecord(String nameRecord){
+        int start = nameRecord.lastIndexOf("_") + 9;
+        int end = start + 6;
+        //example 233616
+        String time = nameRecord.substring(start, end);
+        //hours + minutes + seconds
+        String res = time.substring(0,2) + ":" + time.substring(2,4) + ":" + time.substring(4,6);
+        Log.d("time", time);
+        return  res;
+    }
 
 
     private static String NameSelectedRecord;
@@ -101,10 +143,10 @@ public class Records {
      *
      * @param list list records
      */
-    public static void getFilterRecords(List<File> list) {
+    public  void getFilterRecords(List<File> list) {
 
         try {
-            String nameContact = Contacts.getNameCurrentContact();
+            String nameContact = ContactsService.getNameCurrentContact();
             //create object iterator
             Iterator<File> iterator = list.iterator();
             int i = 0;
@@ -142,26 +184,6 @@ public class Records {
     public static boolean isConstrainNameRecord(String nameContact, String nameRecord) {
         return nameContact.contains(nameRecord);
     }
-
-    private String getNameContactInRecord(String nameRecord) {
-        if (nameRecord.contains("@"))
-            return nameRecord.substring(nameRecord.indexOf("@") + 1, nameRecord.lastIndexOf("("));
-        else
-            return nameRecord.substring(0, nameRecord.lastIndexOf("("));
-
-    }
-    private String getPhoneContactInRecord(String nameRecord){
-        return nameRecord.substring(nameRecord.lastIndexOf("(") + 1, nameRecord.lastIndexOf(")"));
-    }
-    private String getDateInRecord(String nameRecord){
-        String date = nameRecord.substring(nameRecord.lastIndexOf("_") + 1, nameRecord.lastIndexOf("."));
-        return date.substring(0,2) + "." + date.substring(3,4) + date.substring(5,6);
-    }
-
-
-
-
-
 
     public static class MyFileNameFilter implements FilenameFilter {
 
