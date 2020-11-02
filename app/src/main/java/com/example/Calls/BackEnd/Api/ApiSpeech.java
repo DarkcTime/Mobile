@@ -1,14 +1,12 @@
 package com.example.Calls.BackEnd.Api;
 
-import android.annotation.SuppressLint;
 import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
 
 import com.example.Calls.BackEnd.Files.FileSystem;
-import com.example.Calls.BackEnd.Files.FileSystemParameters;
-import com.example.Calls.BackEnd.Records.RecordProcessing;
+import com.example.Calls.BackEnd.Services.RecordProcessing;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
@@ -17,7 +15,6 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
-import java.util.logging.Logger;
 
 //class work with Api
 public class ApiSpeech{

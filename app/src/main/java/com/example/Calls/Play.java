@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -21,7 +20,7 @@ import android.widget.Toast;
 
 import com.example.Calls.BackEnd.CutterFiles.Cutter;
 import com.example.Calls.BackEnd.Media.MediaPlayerClass;
-import com.example.Calls.BackEnd.Records.Records;
+import com.example.Calls.BackEnd.Services.RecordsService;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
 import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Dialog.HelpDialog;
@@ -253,7 +252,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         try {
             mp = new MediaPlayer();
             try{
-                mp.setDataSource(Records.getFullPathSelectedRecord());
+                mp.setDataSource(RecordsService.getFullPathSelectedRecord());
                 mp.prepare();
             }
             catch (IOException ioEx){

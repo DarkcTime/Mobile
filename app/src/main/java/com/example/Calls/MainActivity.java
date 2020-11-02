@@ -4,14 +4,12 @@ package com.example.Calls;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.transition.Visibility;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,22 +17,20 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.Calls.BackEnd.Contacts.Contacts;
+import com.example.Calls.BackEnd.Services.ContactsService;
 import com.example.Calls.BackEnd.Permissions.Permissions;
-import com.example.Calls.BackEnd.Records.Records;
+import com.example.Calls.BackEnd.Services.RecordsService;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
-import com.example.Calls.BackEnd.SharedClasses.SharedMethods;
 import com.example.Calls.Dialog.DialogMain;
-import com.example.Calls.Dialog.HelpDialog;
+import com.example.Calls.Model.Contact;
+import com.example.Calls.Model.Repositories.ContactRepository;
+import com.example.Calls.Model.Repositories.RecordRepository;
+import com.example.Calls.Views.ContactAdapter;
 
-import java.io.File;
-import java.security.Permission;
 import java.util.ArrayList;
-import java.util.List;
 //endregion
 
 //логика для главного окна в приложении
@@ -43,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.MainActivity);
     final Permissions permissions = new Permissions(MainActivity.this);
     final SavedSettings savedSettings = new SavedSettings();
+    final RecordRepository recordRepository = new RecordRepository();
+    final ContactRepository contactRepository = new ContactRepository();
 
     private LinearLayout linerLayoutNoRecords;
     private LinearLayout linerLayoutListRecords;
@@ -62,7 +60,9 @@ public class MainActivity extends AppCompatActivity {
             listViewContactsMA = (ListView) (findViewById(R.id.listViewContactsMA));
 
             savedSettings.setmSettings(getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE));
-            Records.setPathForFindRecords(savedSettings.getmSettings().getString("path", Records.currentPathForRecordsXiomi));
+            RecordsService.setPathForFindRecords(savedSettings.getmSettings()
+                    .getString("path", RecordsService.currentPathForRecordsXiomi));
+
 
             boolean isVisited = savedSettings.getmSettings().getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false);
             if (!isVisited) {
@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             else{
                 askPermission();
             }
+
 
             editTextSearch.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -97,8 +98,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try{
-                        TextView text = (TextView) view;
-                        Contacts.setInformationAboutUser(text.getText().toString());
+                        Contact selectedContact = (Contact) parent.getItemAtPosition(position);
+                        ContactRepository.setSelectedContact(selectedContact);
+
                         Intent selectRecord = new Intent(MainActivity.this, SelectRecord.class);
                         startActivity(selectRecord);
                     }
@@ -107,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
+
+
 
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreateMainActivity");
@@ -117,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             Log.d("per", "no");
             if (permissions.isEnablePermissions()){
-                LoadActivity();
+                loadListRecords();
                 Log.d("per", "true");
             }
         } catch (Exception ex) {
@@ -128,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         try {
             if (grantResults.length > 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                LoadActivity();
+                loadListRecords();
 
             } else {
                 // permission denied
@@ -143,21 +147,7 @@ public class MainActivity extends AppCompatActivity {
     //endregion
 
     //region loadPage
-    private void LoadActivity(){
-        try{
 
-            if(!Records.isExistingPathRecord()){
-                noExistingPathForRecords();
-            }
-            else{
-                if(Records.isHavingRecords()) loadListRecords();
-                else loadNoRecordsPage();
-            }
-        }
-        catch (Exception ex){
-            Log.d("LoadActivityEx", ex.getMessage());
-        }
-    }
     private void noExistingPathForRecords(){
         loadNoRecordsPage();
         Toast.makeText(this, "Данная директория не найдена", Toast.LENGTH_LONG).show();
@@ -167,15 +157,18 @@ public class MainActivity extends AppCompatActivity {
     }
     private void loadListRecords() {
         try {
+            //fill records to RecordRepository
+            RecordsService recordService = new RecordsService(this);
+            recordService.create();
+            recordService.generateListRecords();
+
             linerLayoutListRecords.setVisibility(View.VISIBLE);
 
-            //make adapter
+            ContactsService.generateFilteredListContacts(this);
 
-             adapterContacts = new ArrayAdapter<String>(this,
-                            android.R.layout.simple_list_item_1,
-                            Contacts.getFilteredListContacts(this));
+            ContactAdapter contactAdapter = new ContactAdapter(this, R.layout.list_contacts, ContactRepository.getListContacts());
 
-            listViewContactsMA.setAdapter(adapterContacts);
+            listViewContactsMA.setAdapter(contactAdapter);
 
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "loadMain");

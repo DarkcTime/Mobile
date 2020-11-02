@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.Calls.BackEnd.Records.Records;
+import com.example.Calls.BackEnd.Services.RecordsService;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
 import com.example.Calls.Dialog.SelectFileDialog;
 
@@ -44,7 +44,7 @@ public class Settings extends AppCompatActivity {
 
         mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
 
-        editTextPath.setText(mSettings.getString("path", Records.currentPathForRecordsXiomi));
+        editTextPath.setText(mSettings.getString("path", RecordsService.currentPathForRecordsXiomi));
 
         /*
         typeUser = SavedSettings.isExpert();
@@ -89,10 +89,10 @@ public class Settings extends AppCompatActivity {
 
     private String AutoGeneratePathForRecords(){
         //Xiaomi
-        File xiaomi = new File(Records.currentPathForRecordsXiomi);
+        File xiaomi = new File(RecordsService.currentPathForRecordsXiomi);
         if(xiaomi.exists()){
             Toast.makeText(this, "Марка вашего устройства - Xiaomi", Toast.LENGTH_SHORT).show();
-            return Records.currentPathForRecordsXiomi;
+            return RecordsService.currentPathForRecordsXiomi;
         }
         return "";
     }

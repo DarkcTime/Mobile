@@ -2,7 +2,7 @@ package com.example.Calls.BackEnd.Analysis;
 
 import android.media.MediaPlayer;
 
-import com.example.Calls.BackEnd.Records.Records;
+import com.example.Calls.BackEnd.Services.RecordsService;
 
 import java.io.File;
 
@@ -67,7 +67,7 @@ public class AnalyzeCall{
     public static int getDurationRecord(File file) throws Exception{
         int result = 0;
         MediaPlayer mp = new MediaPlayer();
-        mp.setDataSource(Records.getPathForFindRecords() + file.getName());
+        mp.setDataSource(RecordsService.getPathForFindRecords() + file.getName());
         mp.prepare();
         result += AnalyzeCall.countSecond(mp.getDuration());
         return result;
