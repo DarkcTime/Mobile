@@ -22,7 +22,7 @@ public class MediaPlayerClass {
         return createTimeLabel(mp.getCurrentPosition()).concat(" - ").concat(AnalyzeCall.createTimeLabel(mp.getDuration()));
     }
 
-    private static String createTimeLabel(int currentPosition){
+    public static String createTimeLabel(int currentPosition){
         //создание пустой строки
         String timeLabel = "";
         //выделяет кол-во минут и секунд

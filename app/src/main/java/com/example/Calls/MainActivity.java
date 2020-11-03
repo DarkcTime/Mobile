@@ -67,13 +67,6 @@ public class MainActivity extends AppCompatActivity {
             RecordsService.setPathForFindRecords(savedSettings.getmSettings()
                     .getString("path", RecordsService.currentPathForRecordsXiomi));
 
-
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            String str = "10-06-2020 13:15:16";
-            Date parsingDate = simpleDateFormat.parse(str);
-            Log.d("date", parsingDate.toString());
-
-
             boolean isVisited = savedSettings.getmSettings().getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false);
             if (!isVisited) {
                 savedSettings.setVisited(savedSettings.getmSettings());

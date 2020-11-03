@@ -24,6 +24,7 @@ import com.example.Calls.BackEnd.Services.RecordsService;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
 import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Dialog.HelpDialog;
+import com.example.Calls.Model.Repositories.RecordRepository;
 
 import java.io.IOException;
 
@@ -252,7 +253,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         try {
             mp = new MediaPlayer();
             try{
-                mp.setDataSource(RecordsService.getFullPathSelectedRecord());
+                mp.setDataSource(RecordRepository.getSelectedRecord().Path);
                 mp.prepare();
             }
             catch (IOException ioEx){

@@ -16,6 +16,17 @@ import java.util.List;
 
 
 public class RecordsService {
+    final public static String currentPathForRecordsXiomi = "/storage/emulated/0/MIUI/sound_recorder/call_rec/";
+    final public static String currentPathForZTE = "/sdcard/PhoneRecord/";
+
+    final public String EnglishLanguageFilter = "Call@";
+    final public String RussiaLanguageFilter = "Вызов@";
+
+    public static boolean checkPath(String str) {
+        File file = new File(str);
+        return file.exists();
+    }
+
     private static String pathForFindRecords = "";
     public static void setPathForFindRecords(String _pathForFindRecords) throws Exception {
         if (SharedMethods.isNullOrWhiteSpace(_pathForFindRecords)) {
@@ -71,6 +82,7 @@ public class RecordsService {
             newRecord.NumberPhone = getPhoneContactInRecord(newRecord.FullName);
             newRecord.Date = getDateInRecord(newRecord.FullName);
             newRecord.Time = getTimeInRecord(newRecord.FullName);
+            //newRecord.mp();
             bufferListRecords.add(newRecord);
         }
         RecordRepository.setListRecords(bufferListRecords);
@@ -107,71 +119,6 @@ public class RecordsService {
         Log.d("time", time);
         return  res;
     }
-
-
-    private static String NameSelectedRecord;
-    public static String getNameSelectedRecord() {
-        return NameSelectedRecord;
-    }
-    public static void setNameSelectedRecord(String _nameRecord) {
-        NameSelectedRecord = _nameRecord;
-    }
-
-    public static String getFullPathSelectedRecord() {
-        try {
-            return getPathForFindRecords().concat(getNameSelectedRecord());
-        } catch (Exception ex) {
-            //TODO make catcher
-            return "";
-        }
-    }
-
-
-    final public static String currentPathForRecordsXiomi = "/storage/emulated/0/MIUI/sound_recorder/call_rec/";
-    final public static String currentPathForZTE = "/sdcard/PhoneRecord/";
-
-    final public String EnglishLanguageFilter = "Call@";
-    final public String RussiaLanguageFilter = "Вызов@";
-
-    public static boolean checkPath(String str) {
-        File file = new File(str);
-        return file.exists();
-    }
-
-    /**
-     * filter record for selected contact
-     *
-     * @param list list records
-     */
-    public  void getFilterRecords(List<File> list) {
-
-        try {
-            String nameContact = ContactsService.getNameCurrentContact();
-            //create object iterator
-            Iterator<File> iterator = list.iterator();
-            int i = 0;
-            while (iterator.hasNext()) {
-                try {
-
-                    String nameRecord = getNameContactInRecord(iterator.next().getName());
-
-                    //check contact for this record
-                    if (isConstrainNameRecord(nameContact, nameRecord)) {
-                        continue;
-                    }
-                    if (!nameRecord.equals(nameContact))
-                        iterator.remove();
-                } catch (NullPointerException nullPointEx) {
-                    //check next iterator
-                }
-            }
-        } catch (Exception ex) {
-            //TODO make catcher
-        }
-
-
-    }
-
 
     /**
      * Определяет включает ли имя контакта!!!, в свой состав имя записи!!!
