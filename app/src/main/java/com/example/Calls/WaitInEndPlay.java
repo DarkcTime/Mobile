@@ -94,4 +94,8 @@ public class WaitInEndPlay extends AppCompatActivity {
                 .concat(String.valueOf(RecordProcessing.getMaxDurationTranslation()));
     }
 
+    @Override
+    public void onBackPressed() {
+        //No actions
+    }
 }

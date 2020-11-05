@@ -4,4 +4,5 @@ public class Contact {
     public String Name;
     public String NumberPhone;
     //public String Company
+
 }

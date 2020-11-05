@@ -16,7 +16,7 @@ import com.example.Calls.Dialog.DialogMain;
 public class EditTextRecord extends AppCompatActivity {
 
     //dialog windows
-    final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.WaitInEndPlay);
+    final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.EditTextRecord);
 
     private EditText editTextTranslatedResult;
     private ApiMain apiMain;
@@ -34,6 +34,7 @@ public class EditTextRecord extends AppCompatActivity {
             if (SharedMethods.isNullOrWhiteSpace(result))
                 result = "текст не получен для данной записи";
             editTextTranslatedResult.setText(result);
+         
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreateEditText");
         }
@@ -58,4 +59,10 @@ public class EditTextRecord extends AppCompatActivity {
     //endregion
 
 
+    @Override
+    public void onBackPressed() {
+        dialogMain.showQuestionDialog();
+        //Intent mainActivity = new Intent(EditTextRecord.this, MainActivity.class);
+        //startActivity(mainActivity);
+    }
 }

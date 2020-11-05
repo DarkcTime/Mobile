@@ -5,9 +5,12 @@ package com.example.Calls;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.system.Os;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
             RecordsService.setPathForFindRecords(savedSettings.getmSettings()
                     .getString("path", RecordsService.currentPathForRecordsXiomi));
 
+
             boolean isVisited = savedSettings.getmSettings().getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false);
             if (!isVisited) {
                 savedSettings.setVisited(savedSettings.getmSettings());
@@ -85,10 +89,12 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+
                     if(count != 0)
-                        contactAdapter.getFilter().filter(s);
+                        contactAdapter.getFilter().filter(s.toString());
                     else
                         contactAdapter.getFilter().filter("");
+
                 }
 
                 @Override

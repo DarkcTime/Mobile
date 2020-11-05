@@ -512,8 +512,8 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mp.release();
-        handler.removeCallbacks(runnable);
+        //mp.release();
+        //handler.removeCallbacks(runnable);
     }
 
 

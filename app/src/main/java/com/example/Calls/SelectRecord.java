@@ -55,5 +55,11 @@ public class SelectRecord extends AppCompatActivity {
         }
     }
 
+    //Button back
+    @Override
+    public void onBackPressed() {
+        Intent mainActivity = new Intent(SelectRecord.this, MainActivity.class);
+        startActivity(mainActivity);
+    }
 
 }
