@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.Calls.BackEnd.CutterFiles.Cutter;
 import com.example.Calls.BackEnd.Media.MediaPlayerClass;
+import com.example.Calls.BackEnd.Services.HistoryTranslateService;
 import com.example.Calls.BackEnd.Services.RecordsService;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
 import com.example.Calls.Dialog.DialogMain;
@@ -27,6 +28,7 @@ import com.example.Calls.Dialog.HelpDialog;
 import com.example.Calls.Model.Repositories.RecordRepository;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 //TODO декомпозировать код после определения интерфейса и планов на переработку
 

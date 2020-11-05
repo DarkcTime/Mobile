@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.Calls.BackEnd.Services.HistoryTranslateService;
 import com.example.Calls.BackEnd.Services.ListRecords;
 import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Model.Record;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 
 public class SelectRecord extends AppCompatActivity {
 
-    final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.MainActivity);
+    final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.SelectRecord);
 
     private ListView listViewRecords;
 

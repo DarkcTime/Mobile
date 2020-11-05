@@ -39,7 +39,7 @@ public class FileSystem {
             FileInputStream in = new FileInputStream(file);
             try {
                 in.read(bytes);
-            } catch (IOException e) {
+            } catch (IOException e){
                 e.printStackTrace();
             } finally {
                 in.close();

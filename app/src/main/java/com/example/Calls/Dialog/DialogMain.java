@@ -10,6 +10,7 @@ import com.example.Calls.EditTextRecord;
 import com.example.Calls.Help;
 import com.example.Calls.MainActivity;
 import com.example.Calls.Play;
+import com.example.Calls.SelectRecord;
 import com.example.Calls.Settings;
 import com.example.Calls.WaitInEndPlay;
 
@@ -31,6 +32,7 @@ public class DialogMain extends AppCompatDialogFragment {
     private Play play;
     private Help help;
     private EditTextRecord editTextRecord;
+    private SelectRecord selectRecord;
 
     /**
      * create object for show dialog
@@ -66,6 +68,10 @@ public class DialogMain extends AppCompatDialogFragment {
                 case EditTextRecord:
                     editTextRecord = (EditTextRecord) context;
                     manager = editTextRecord.getSupportFragmentManager();
+                    break;
+                case SelectRecord:
+                    selectRecord = (SelectRecord) context;
+                    manager = selectRecord.getSupportFragmentManager();
                     break;
             }
 
@@ -169,7 +175,7 @@ public class DialogMain extends AppCompatDialogFragment {
      * enum for select type Activity
      */
     public enum Activities {
-        MainActivity, Play, Settings, AboutContact, WaitInEndPlay, Help, EditTextRecord
+        MainActivity, Play, Settings, AboutContact, WaitInEndPlay, Help, EditTextRecord, SelectRecord
     }
 
 

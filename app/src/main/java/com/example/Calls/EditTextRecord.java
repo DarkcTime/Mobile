@@ -9,8 +9,10 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.Calls.BackEnd.Api.ApiMain;
+import com.example.Calls.BackEnd.Services.HistoryTranslateService;
 import com.example.Calls.BackEnd.SharedClasses.SharedMethods;
 import com.example.Calls.Dialog.DialogMain;
+import com.example.Calls.Model.Repositories.RecordRepository;
 
 @SuppressLint("Registered")
 public class EditTextRecord extends AppCompatActivity {
@@ -34,7 +36,7 @@ public class EditTextRecord extends AppCompatActivity {
             if (SharedMethods.isNullOrWhiteSpace(result))
                 result = "текст не получен для данной записи";
             editTextTranslatedResult.setText(result);
-         
+
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreateEditText");
         }
@@ -45,6 +47,8 @@ public class EditTextRecord extends AppCompatActivity {
         try {
             String message = editTextTranslatedResult.getText().toString();
             apiMain.addTextInFullFileSelectedContact(message);
+            //add record in history
+            HistoryTranslateService.writeRecord(RecordRepository.getSelectedRecord());
 
             Intent selectRecord = new Intent(EditTextRecord.this, com.example.Calls.SelectRecord.class);
             startActivity(selectRecord);
