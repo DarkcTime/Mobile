@@ -27,35 +27,6 @@ import java.util.List;
 
 public class ContactsService {
 
-    private static String informationAboutUser = "";
-
-    public static void setInformationAboutUser(String _informationAboutUser) throws Exception {
-        if (SharedMethods.isNullOrWhiteSpace(_informationAboutUser)) {
-            throw new Exception("setInformationAboutUser == null");
-        }
-        informationAboutUser = _informationAboutUser;
-    }
-
-    private static String getInformationAboutUser() {
-        return informationAboutUser;
-    }
-
-    public static String getNameCurrentContact() throws Exception {
-        try {
-            int startName = 0, endName = getInformationAboutUser().indexOf("|") - 1;
-            return getInformationAboutUser().substring(startName, endName);
-        } catch (Exception ex) {
-            throw new Exception("getNameCurrentContact - ".concat(ex.getMessage()));
-        }
-    }
-
-    public static String getPhoneNumberCurrentContact() throws Exception {
-        int startPhone = getInformationAboutUser().indexOf("|") + 1;
-        int endPhone = getInformationAboutUser().indexOf("\n");
-        return getInformationAboutUser().substring(startPhone, endPhone);
-
-    }
-
     /**
      * Возвращает отфильтрованный список контактов
      *

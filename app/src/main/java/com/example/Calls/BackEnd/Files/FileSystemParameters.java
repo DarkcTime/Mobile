@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 
 import com.example.Calls.BackEnd.Services.ContactsService;
 import com.example.Calls.BackEnd.Services.RecordsService;
+import com.example.Calls.Model.Repositories.ContactRepository;
+import com.example.Calls.Model.Repositories.RecordRepository;
 
 public class FileSystemParameters {
 
@@ -20,7 +22,7 @@ public class FileSystemParameters {
     public static String getPathForSelectedContact(){
         try{
             return getPathApplicationFileSystem()
-                    .concat(ContactsService.getNameCurrentContact())
+                    .concat(ContactRepository.getSelectedContact().Name)
                     .concat("/");
         }
         catch (Exception ex){
@@ -32,21 +34,21 @@ public class FileSystemParameters {
     //example: storage/emulated/0/Android/data/com.Calls/Миха/Call@4321432/
     public static String getPathForSelectedRecord(){
         return getPathForSelectedContact()
-                .concat(RecordsService.getNameSelectedRecord()
+                .concat(RecordRepository.getSelectedRecord().FullName
                         .replace(".mp3", "").concat("/"));
     }
 
     //example: storage/emulated/0/Android/data/com.Calls/Миха/Call@4321432/records
     public static String getPathForSelectedRecordsForCutter(){
         return getPathForSelectedContact()
-                .concat(RecordsService.getNameSelectedRecord()
+                .concat(RecordRepository.getSelectedRecord().FullName
                         .replace(".mp3", "")
                 .concat("/records/"));
     }
 
     public static String getPathForSelectedRecordApi(){
-        return getPathForSelectedContact().concat(RecordsService
-                .getNameSelectedRecord()
+        return getPathForSelectedContact().concat(
+                RecordRepository.getSelectedRecord().FullName
                 .replace(".mp3", "")
                 .concat("/api/"));
     }

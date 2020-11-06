@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.Files.FileSystemParameters;
+import com.example.Calls.Model.Record;
+import com.example.Calls.Model.Repositories.RecordRepository;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,18 +31,18 @@ public class ApiMain{
     }
 
     //добавляет данные в общий результат пользователя
-    public void addTextInFullFileSelectedContact() throws IOException{
-        FileSystem.WriteFile(FileSystemParameters.getPathFileResultForSelectedContact(),
-                readFullFileSelectedRecord(),true);
+    public void addTextInFullFileSelectedContact(String message) throws IOException{
+        FileSystem.WriteFile(RecordRepository.getSelectedRecord().Path,
+                message,true);
     }
 
     //читает полный файл пользователя
-    public static String readFullFileSelectedContact() throws IOException{
+    public String readFullFileSelectedContact() throws IOException{
         return FileSystem.ReadFile(FileSystemParameters.getPathFileResultForSelectedContact());
     }
 
     //читает полный файл записи
-    public static String readFullFileSelectedRecord() throws IOException{
+    public String readFullFileSelectedRecord() throws IOException{
         return FileSystem.ReadFile(FileSystemParameters.getPathFileResultForRecord());
     }
 

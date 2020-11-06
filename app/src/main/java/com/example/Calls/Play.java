@@ -20,12 +20,15 @@ import android.widget.Toast;
 
 import com.example.Calls.BackEnd.CutterFiles.Cutter;
 import com.example.Calls.BackEnd.Media.MediaPlayerClass;
+import com.example.Calls.BackEnd.Services.HistoryTranslateService;
 import com.example.Calls.BackEnd.Services.RecordsService;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
 import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Dialog.HelpDialog;
+import com.example.Calls.Model.Repositories.RecordRepository;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 //TODO декомпозировать код после определения интерфейса и планов на переработку
 
@@ -252,7 +255,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         try {
             mp = new MediaPlayer();
             try{
-                mp.setDataSource(RecordsService.getFullPathSelectedRecord());
+                mp.setDataSource(RecordRepository.getSelectedRecord().Path);
                 mp.prepare();
             }
             catch (IOException ioEx){
@@ -338,7 +341,7 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     //region PopupMenu
     public void onClickButtonSettingsPlay(View view){
         try{
-            com.example.Calls.Dialog.PopupMenu.showPopupMenu(this, view);
+            com.example.Calls.Dialog.PopupMenu.showPopupMenu(this, view,R.menu.menu_settings);
         }
         catch (Exception ex){
            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonSettingsPlay");
@@ -511,8 +514,8 @@ public class Play extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mp.release();
-        handler.removeCallbacks(runnable);
+        //mp.release();
+        //handler.removeCallbacks(runnable);
     }
 
 

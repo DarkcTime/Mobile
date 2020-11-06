@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.Calls.BackEnd.Services.HistoryTranslateService;
 import com.example.Calls.BackEnd.Services.ListRecords;
 import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Model.Record;
@@ -20,13 +21,13 @@ import java.util.ArrayList;
 
 public class SelectRecord extends AppCompatActivity {
 
-    final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.MainActivity);
+    final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.SelectRecord);
 
     private ListView listViewRecords;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        try{
+        try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.select_record);
 
@@ -34,7 +35,7 @@ public class SelectRecord extends AppCompatActivity {
 
             RecordRepository recordRepository = new RecordRepository();
 
-            ArrayList<Record> listRecords = recordRepository.getListFilteredByContact();
+            ArrayList<Record> listRecords = recordRepository.getDisplayList();
             RecordAdapter recordAdapter = new RecordAdapter(this, R.layout.list_records, listRecords);
 
             listViewRecords.setAdapter(recordAdapter);
@@ -50,11 +51,16 @@ public class SelectRecord extends AppCompatActivity {
                 }
             });
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "SelectRecordOnCreate");
         }
     }
 
+    //Button back
+    @Override
+    public void onBackPressed() {
+        Intent mainActivity = new Intent(SelectRecord.this, MainActivity.class);
+        startActivity(mainActivity);
+    }
 
 }

@@ -7,10 +7,12 @@ import com.example.Calls.R;
 
 public class PopupMenu {
 
-    public static void showPopupMenu(Context context, View view){
+    public static void showPopupMenu(Context context, View view, int resource){
         android.widget.PopupMenu popup = new android.widget.PopupMenu(context, view);
-        popup.setOnMenuItemClickListener((android.widget.PopupMenu.OnMenuItemClickListener) context);
-        popup.inflate(R.menu.menu_settings);
+        //popup.setOnMenuItemClickListener((android.widget.PopupMenu.OnMenuItemClickListener) context);
+        popup.inflate(resource);
         popup.show();
     }
+
+
 }

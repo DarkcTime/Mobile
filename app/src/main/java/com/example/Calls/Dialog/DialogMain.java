@@ -6,9 +6,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
 
+import com.example.Calls.EditTextRecord;
 import com.example.Calls.Help;
 import com.example.Calls.MainActivity;
 import com.example.Calls.Play;
+import com.example.Calls.SelectRecord;
 import com.example.Calls.Settings;
 import com.example.Calls.WaitInEndPlay;
 
@@ -29,6 +31,8 @@ public class DialogMain extends AppCompatDialogFragment {
     private WaitInEndPlay waitInEndPlay;
     private Play play;
     private Help help;
+    private EditTextRecord editTextRecord;
+    private SelectRecord selectRecord;
 
     /**
      * create object for show dialog
@@ -44,7 +48,6 @@ public class DialogMain extends AppCompatDialogFragment {
                     manager = mainActivity.getSupportFragmentManager();
                     break;
                 case AboutContact:
-
                     break;
                 case Settings:
                     Settings settings = (Settings) context;
@@ -61,6 +64,14 @@ public class DialogMain extends AppCompatDialogFragment {
                 case Help:
                     help = (Help)context;
                     manager = help.getSupportFragmentManager();
+                    break;
+                case EditTextRecord:
+                    editTextRecord = (EditTextRecord) context;
+                    manager = editTextRecord.getSupportFragmentManager();
+                    break;
+                case SelectRecord:
+                    selectRecord = (SelectRecord) context;
+                    manager = selectRecord.getSupportFragmentManager();
                     break;
             }
 
@@ -82,12 +93,13 @@ public class DialogMain extends AppCompatDialogFragment {
         }
     }
 
-    public void showFilesDialog() {
+    public void showQuestionDialog(){
         try{
-
+            QuestionDialog questionDialog = new QuestionDialog(editTextRecord);
+            questionDialog.show(manager, "showQuestionDialog");
         }
         catch (Exception ex){
-            showErrorDialogAndTheOutputLogs(ex,"showFilesDialog");
+            showErrorDialogAndTheOutputLogs(ex, "showQuestionDialog");
         }
     }
 
@@ -163,7 +175,7 @@ public class DialogMain extends AppCompatDialogFragment {
      * enum for select type Activity
      */
     public enum Activities {
-        MainActivity, Play, Settings, AboutContact, WaitInEndPlay, Help
+        MainActivity, Play, Settings, AboutContact, WaitInEndPlay, Help, EditTextRecord, SelectRecord
     }
 
 

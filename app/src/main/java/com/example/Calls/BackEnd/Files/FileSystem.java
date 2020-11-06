@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.Calls.BackEnd.CutterFiles.CutterInterval;
 import com.example.Calls.BackEnd.CutterFiles.FileForCutter;
 import com.example.Calls.BackEnd.Services.RecordsService;
+import com.example.Calls.Model.Repositories.RecordRepository;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -38,7 +39,7 @@ public class FileSystem {
             FileInputStream in = new FileInputStream(file);
             try {
                 in.read(bytes);
-            } catch (IOException e) {
+            } catch (IOException e){
                 e.printStackTrace();
             } finally {
                 in.close();
@@ -99,7 +100,7 @@ public class FileSystem {
             // генерация параметров
             int duration = interval.getEnd() - interval.getStart();
             File targetFile = new File(FileSystemParameters.getPathForSelectedRecordsForCutter().concat(String.valueOf(i)).concat(".mp3"));
-            File sourceFile = new File(RecordsService.getFullPathSelectedRecord());
+            File sourceFile = new File(RecordRepository.getSelectedRecord().Path);
 
             //генерация объекта
             FileForCutter fileForCutter = new FileForCutter(interval.getStart(),

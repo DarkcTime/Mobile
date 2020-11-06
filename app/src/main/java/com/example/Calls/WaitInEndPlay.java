@@ -1,5 +1,6 @@
 package com.example.Calls;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import com.example.Calls.BackEnd.CutterFiles.Cutter;
 import com.example.Calls.BackEnd.Files.Directories;
 import com.example.Calls.BackEnd.Services.RecordProcessing;
 import com.example.Calls.Dialog.DialogMain;
+import com.example.Calls.Model.Repositories.RecordRepository;
 
 import java.io.IOException;
 
@@ -38,17 +40,13 @@ public class WaitInEndPlay extends AppCompatActivity {
             textViewProgress = findViewById(R.id.textViewProgress);
             recordProcessing = new RecordProcessing(this);
 
-            //get list intervals
-            Cutter cutter = Play.getCutter();
-
-            //create dirs
-            Directories.createDirectories();
-
+            Directories directories = new Directories(RecordRepository.getSelectedRecord());
+            directories.createDirectories();
 
             apiMain = new ApiMain();
 
-
-            //cut files in intervals
+            //get list intervals
+            Cutter cutter = Play.getCutter();
             cutter.startCutFileIntervals(this);
 
         }
@@ -56,25 +54,6 @@ public class WaitInEndPlay extends AppCompatActivity {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreateWaitEndPlay");
         }
 
-    }
-
-    public void dialogResultAdd(){
-        try{
-            apiMain.addTextInFullFileSelectedContact();
-            startActivityAboutContact();
-        }
-        catch (Exception ex){
-            dialogMain.showErrorDialogAndTheOutputLogs(ex, "dialogResultAdd");
-        }
-    }
-
-    public void dialogResultCancel(){
-        try{
-            startActivityAboutContact();
-        }
-        catch (Exception ex){
-            dialogMain.showErrorDialogAndTheOutputLogs(ex, "dialogResultCancel");
-        }
     }
 
     private void startActivityAboutContact() throws Exception{
@@ -85,7 +64,8 @@ public class WaitInEndPlay extends AppCompatActivity {
     public void finishProcessingAndTranslating(){
         try{
             apiMain.createResultFileForSelectedRecord();
-            dialogMain.showResultDialog();
+            Intent editTextRecord = new Intent(WaitInEndPlay.this, EditTextRecord.class);
+            startActivity(editTextRecord);
         }
         catch (IOException ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "finishProcessing");
@@ -114,4 +94,8 @@ public class WaitInEndPlay extends AppCompatActivity {
                 .concat(String.valueOf(RecordProcessing.getMaxDurationTranslation()));
     }
 
+    @Override
+    public void onBackPressed() {
+        //No actions
+    }
 }

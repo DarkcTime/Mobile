@@ -5,4 +5,5 @@
     <dimen name="standard">10dp</dimen>
     <dimen name="mini">5dp</dimen>
     <dimen name="size_help">25dp</dimen>
+    <dimen name="more_margin">20dp</dimen>
 </resources>

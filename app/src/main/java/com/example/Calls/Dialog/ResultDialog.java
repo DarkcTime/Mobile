@@ -27,7 +27,9 @@ public class ResultDialog extends DialogMain {
 
             builder = new AlertDialog.Builder(getActivity());
 
-            String message = ApiMain.readFullFileSelectedRecord();
+            ApiMain apiMain = new ApiMain();
+
+            String message = apiMain.readFullFileSelectedRecord();
 
 
             if(SharedMethods.isNullOrWhiteSpace(message)){
@@ -55,7 +57,7 @@ public class ResultDialog extends DialogMain {
                 .setNegativeButton(getString(R.string.cancel_rus), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        waitInEndPlayActivity.dialogResultCancel();
+
                         dialog.cancel();
                     }
                 });
@@ -65,7 +67,7 @@ public class ResultDialog extends DialogMain {
         builder.setPositiveButton(getString(R.string.add_rus), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                waitInEndPlayActivity.dialogResultAdd();
+
                 dialog.cancel();
             }
         });

@@ -36,9 +36,8 @@
 
         </activity>
 
-        <activity android:name=".SelectRecord" android:label="@string/settings" android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+        <activity android:name=".SelectRecord" android:label="@string/settings" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".EditTextRecord" android:label="@string/settings" android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".Play" android:label="@string/settings" android:theme="@style/AppTheme.NoActionBar">
 
