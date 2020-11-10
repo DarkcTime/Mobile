@@ -17,5 +17,4 @@ public class SharedMethods {
         return str.trim().isEmpty();
     }
 
-
 }

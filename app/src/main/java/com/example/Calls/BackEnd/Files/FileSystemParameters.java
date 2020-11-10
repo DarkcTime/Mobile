@@ -13,10 +13,11 @@ public class FileSystemParameters {
 
     @SuppressLint("SdCardPath")
     private static final String PathApplicationFileSystem = "/storage/emulated/0/Android/data/com.Calls/";
-
     public static String getPathApplicationFileSystem(){
         return PathApplicationFileSystem;
     }
+
+    public final static String RESULTFILE = "result.txt";
 
     //example: storage/emulated/0/Android/data/com.Calls/Миха/
     public static String getPathForSelectedContact(){
