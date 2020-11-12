@@ -1,0 +1,9 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="sizeIconSmall">24dp</dimen>
+    <dimen name="sizeIconBit">36dp</dimen>
+    <dimen name="standard">10dp</dimen>
+    <dimen name="mini">5dp</dimen>
+    <dimen name="size_help">25dp</dimen>
+    <dimen name="more_margin">20dp</dimen>
+</resources>

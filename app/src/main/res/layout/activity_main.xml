@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="@dimen/mini"
+    android:layout_marginTop="@dimen/standard"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/linerLayoutNoRecords"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.30">
+
+            <TextView
+                style="@style/TextViewStyle"
+                android:text="@string/help_if_have_not_records_rus" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <Button
+                style="@style/ButtonStyle.LongBlue"
+                android:layout_centerInParent="true"
+                android:onClick="onClickSelectPath"
+                android:text="@string/I_know_where_records_rus" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <Button
+                style="@style/ButtonStyle.LongBlue"
+                android:layout_centerInParent="true"
+                android:text="@string/I_have_not_records_rus" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linerLayoutListRecords"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginBottom="@dimen/standard"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editTextSearch"
+                style="@style/EditTextStyle.Search"
+                android:layout_width="0dp"
+                android:layout_weight="90"
+                android:background="@drawable/routed_edittext"
+                android:drawableLeft="@drawable/ic_search_black_32dp" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="10"
+                android:background="@drawable/ic_more_vert_black_24dp"
+                android:onClick="onClickButtonMainWindowMenu"/>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listViewContactsMA"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="95" />
+    </LinearLayout>
+
+</LinearLayout>

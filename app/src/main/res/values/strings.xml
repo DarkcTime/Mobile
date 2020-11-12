@@ -1,0 +1,139 @@
+<resources>
+    <string name="app_name">Психологический портрет</string>
+    <string name="I_know_where_records_rus">Я знаю где находятся записи</string>
+    <string name="I_have_not_records_rus">У меня нет записей</string>
+    <string name="select_record_rus">Выберите запись разговора...</string>
+    <string name="help_play_rus">
+        Выделите речь собеседника\n
+        2 клик вправо + 3 сек\n
+        2 клик слева  - 3 сек\n
+        Если отпустить кнопки, открывается меню
+    </string>
+    <string name="help_if_have_not_records_rus">
+        Записи переговоров с Персонами
+        не были найдены на вашем устройстве.
+        \nУкажите путь вручную - Я знаю где находятся записи
+        \nИли ознакомьтесь с инструкцией для получения первой записи
+    </string>
+    <string name="help_for_edit_text_rus">
+        Отредактируйте слова собеседника.
+    </string>
+    <string name="help_for_edit_text_2_rus">
+        знаки препинания, переносы строк и заглавные буквы значения не имеют.
+    </string>
+    <string name="get_portrait_button_rus">Получить портрет</string>
+    <string name="save_rus">Сохранить</string>
+    <string name="begin_rus">Начать</string>
+    <string name="title_activity_about_selected_contact">About_selected_contact</string>
+    <string name="help">Справка пользователя</string>
+    <string name="about_us">About us</string>
+    <string name="settings">Настройки</string>
+    <string name="russia">Русский</string>
+    <string name="english">English</string>
+    <string name="xiaomi">Xiaomi</string>
+    <string name="samsung">Samsung</string>
+    <string name="zte">ZTE</string>
+    <string name="selectLanguage">Выберите язык интерфейса устройства </string>
+    <string name="selectMark">Выберите марку устройства </string>
+    <string name="aboutApp">О приложении:</string>
+    <string name="aboutApplication">Целью данного приложения является выборка и перевод в текстовый формат слов собеседника из записи звонка.
+                                    Набрав 1000 слов вы можете скопировать текст и загрузить его в бота: [ссылка на бота]
+                                    Бот определит психологический портрет собеседника</string>
+    <string name="selectTypeView">Тип отображения записей выбранного контакта</string>
+    <string name="noTranslaterRecords">Не переведенные записи</string>
+    <string name="translaterRecords">Переведенные записи</string>
+    <string name="allRecords">Все записи</string>
+    <string name="searchContact">Поиск контактов</string>
+    <string name="pathWithRecords">Путь по которому располагаются записи звоноков(можете изменить самостоятельно)</string>
+    <string name="addHelp">Для получения справки о кнопке: зажмите выбранную кнопку в течении 1-2 секунд</string>
+    <string name="saveSettings">Сохранить выбранные настройки</string>
+    <string name="closeSettings">Закрывает окно настроек без сохранения</string>
+    <string name="helpLanguage">Является важным параметром при фильтрации записей для пользователя</string>
+    <string name="helpMark">Данный параметр позволяет выбрать расложение записей звонков на устройсте</string>
+    <string name="helpCall">Совершает звонок по выбранному номеру</string>
+    <string name="helpEditAll">Редактирование файла контакта</string>
+    <string name="helpRecords">Открывает список записей звонков</string>
+    <string name="helpEditRec">Если запись выбранна, открывает страницу для перевода в текст</string>
+    <string name="helpCancelRecord">Отмена выбранной записи звонка</string>
+    <string name="helpTranslated">Преобразует выбранную запись в текст</string>
+    <string name="helpSaveEditRec">Сохраняет текст в общий файл пользователя</string>
+    <string name="helpCopy">Копирует текст в буфер обмена</string>
+    <string name="helpCloseEditRec">Вернуться на окно выбора записей</string>
+    <string name="helpSaveEditAll">Сохраняет изменения</string>
+    <string name="helpCloseEditAll">Вернуться на окно выбранного контакта</string>
+    <string name="scenarioUsage">Сценарий использования приложения:</string>
+    <string name="recordCalls">Приложение не включает в себя функционал для записи звонков.\nЗапись звонков осуществляется встроенными средствами устройства  или сторонним приложением с PlayMarket
+
+                                </string>
+    <string name="linkXiaomi">Включить авто-записи для выбранных контактов на xiaomi:\nhttps://mi-box.ru/zapis-telefonnyh-razgovorov-na-xiaomi.html</string>
+    <string name="scenarioUsageText">1) Вы производите звонки с записями разговоров (автозапись или приложение как правило записывает все входящие и исходящие, или разговоры с выбранными контактами)\n2) Далее вы заходите в приложение и выбираете контакт/n3) На странице контакта при нажатии 3 кнопки (иконка загрузки, также все кнопки имеют справку если их зажать на 1-2 секунды). Открывается окно с записями разговоров для данного контака, которые располагаются по пути, который можно выбрать во 2 пункте, на странице настроек)\n4) При выборе записи выводиться полный путь к нему, также его можно прослушать в media playre ниже\n5) При нажатии кнопки принять открывается окно работы с выбранной записью разговора\n6) При нажатии кнопки "A" выполняется перевод записи в текстовый формат(переводятся только слова собеседника)\n7) Спустя время текст из записи разговора пояляется в текстовом поле, в котором вы можете его отредактировать\n8) После того как вы отредактировали запись вы должны нажать на кнопку (с дискетой) сохранить\n9) Выводиться уведомление что данные успешно сохранены\n10) Далее текст вы можете просмотреть в общем файле пользователя</string>
+    <string name="wait">Ожидайте</string>
+    <string name="about_application">
+        Приложение предназначено для\n
+        получения материала из\n
+        записей телефонных разговоров,\n
+        чтобы определить псих. портрет\n
+        через Телеграм бот PersonguideRU
+    </string>
+    <string name="how_use">Как использовать </string>
+    <string name="start">Начать использование</string>
+    <string name="help_russia">Помощь</string>
+    <string name="help_nofind_records">
+        Записи звонков не были найдены:\nсделайте больше записей или поменяйте путь для поиска в настройках.
+    </string>
+    <string name="select_contact">Выбор контакта</string>
+    <string name="path_for_records">Путь для поиска записей: </string>
+    <string name="save_settings">Сохранить настройки</string>
+    <string name="standart_path">Стандартный путь</string>
+    <string name="cancel_rus">Отмена</string>
+    <string name="add_rus">Добавить</string>
+    <string name="psyhoPass">Определить психологический портрет</string>
+    <string name="helpWithLevelUser">
+        Здравствуйте!\n
+        Выберите свой уровень пользования \n
+        данным приложением.\n
+        От выбора будет зависеть количество\n
+        всплывающих подсказок.\n
+        Позднее уровень можно будет поменять\n
+        в окне "Настройки"
+    </string>
+    <string name="beginLevel">Начинающий\nпользователь</string>
+    <string name="expertLevel">Опытный\nпользователь</string>
+    <string name="findAuto">Определить\nавтоматически</string>
+    <string name="selectHand">Выбрать\nвручную</string>
+    <string name="changeLevelUser">Поменять уровень\nпользователя</string>
+    <string name="I">Я</string>
+    <string name="companion">Собеседник</string>
+    <string name="rewindTime">Время перемотки записи:</string>
+    <string name="pauseTime">Время включения паузы\nпосле отпускания:</string>
+    <string name="stopGame">Завершить</string>
+    <string name="ready">Готово</string>
+    <string name="launch">Запуск...</string>
+    <string name="help_rus">Справка</string>
+    <string name="understand_rus">Понял</string>
+    <string name="firstHelp_message_rus">
+                                    1) Выберите контакт характер которого вы хотите узнать
+                                    2) Откройте список записанных разговоров\n
+                                    3) Выберите одну из записей\n
+                                    4) Выделите слова собеседника для определения портрета\n
+                                    6) Нажмите на кнопку завершить и ждите окончание процесса получения текста\n
+                                    7) Когда будет набрана 1 тыс слов, появиться возможность узнать характер\n
+                                    Данная справка актуальна для устройств марки - Xiaomi !!!
+    </string>
+    <string name="helpPlay_message_rus">
+                                    Окно для выделения речи собеседника.
+                                    Алгоритм использования:\n
+                                    1) Нажать кнопку - начать
+                                    2) Выделять свой голос и голос собеседника\n
+                                    3) После разметки всей записи, нажать кнопку завершить\n
+                                    </string>
+    <string name="error_rus">Ошибка</string>
+    <string name="translated_text_res">Текст полученный из данного разговора</string>
+    <string name="continue_rus">Продолжить</string>
+    <string name="return_selected_record_rus">Вернуться к выбору записи</string>
+    <string name="selected_cutter_rus">Запись выделена</string>
+    <string name="give_permission_rus">Дать приложению разрешения</string>
+    <string name="give_permission_mes_rus">Если вы не дадите разрешения, то прижение не сможет использовать задуманный функционал( \n" +
+                                    "Приложение использует защищенный протокол обработки данных. Также все записи и результаты переводов храняться на вашем телефоне без использования сторонних серверов"</string>
+</resources>
+

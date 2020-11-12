@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="30"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/standard">
+        <ImageView
+            android:layout_margin="@dimen/standard"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:background="@drawable/agent"
+            android:id="@+id/imageViewPortrait"/>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="50">
+            <TextView
+                style="@style/TextViewStyle.Big"
+                android:id="@+id/textViewHeaderPortrait"
+                android:layout_centerInParent="true"
+                android:textAlignment="center"
+                android:text="Не определено"
+                android:gravity="center_horizontal" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <MultiAutoCompleteTextView
+            android:id="@+id/multiTextViewPortrait"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="70"
+            android:inputType="textMultiLine"
+            android:gravity="top|left"
+            tools:ignore="RtlHardcoded"
+            android:layout_margin="@dimen/standard"
+            android:text="“All our dreams can come true,
+            if we have the courage to pursue them.” – Walt Disney"
+        >
+
+    </MultiAutoCompleteTextView>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="70"
+        android:id="@+id/relativeLayoutGetPortrait">
+        <Button
+            style="@style/ButtonStyle.LongBlue"
+            android:layout_centerInParent="true"
+            android:onClick="onClickButtonGetPortrait"
+            android:text="@string/get_portrait_button_rus"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>
