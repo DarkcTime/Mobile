@@ -1,5 +1,6 @@
 package com.example.Calls.Model.Repositories;
 
+import com.example.Calls.BackEnd.SharedClasses.SharedMethods;
 import com.example.Calls.Model.Contact;
 
 import java.util.ArrayList;
@@ -20,6 +21,10 @@ public class ContactRepository {
     }
     public static void setSelectedContact(Contact contact){
         selectedContact = contact;
+    }
+
+    public int getProgressAsPercentage(Contact contact){
+        return Math.round(contact.NumberWords);
     }
 
 

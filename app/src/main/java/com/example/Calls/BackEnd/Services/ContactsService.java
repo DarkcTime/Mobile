@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import com.example.Calls.BackEnd.Analysis.Analyze;
 import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.Files.FileSystemParameters;
 import com.example.Calls.BackEnd.SharedClasses.SharedMethods;
@@ -16,7 +17,10 @@ import com.example.Calls.Model.Repositories.ContactRepository;
 import com.example.Calls.Model.Repositories.RecordRepository;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -26,6 +30,7 @@ import java.util.List;
  */
 
 public class ContactsService {
+
 
     /**
      * Возвращает отфильтрованный список контактов
@@ -97,8 +102,14 @@ public class ContactsService {
                 Contact contact = new Contact();
                 contact.Name = nameContact;
                 contact.NumberPhone = phone;
+
+                String pathFileResult = getPathWithFileResultForContact(contact);
+                contact.NumberWords = countTheNumberOfWords(pathFileResult);
+
                 listContacts.add(contact);
             }
+
+            Collections.sort(listContacts);
 
             ContactRepository.setListContacts(listContacts);
             return listContacts;
@@ -107,6 +118,15 @@ public class ContactsService {
         }
     }
 
+    //get count words for contact
+    private static  int countTheNumberOfWords(String pathFile) throws IOException {
+        String textContact = FileSystem.ReadFile(pathFile);
+        return Analyze.getCountWords(textContact);
+    }
+    public static String getPathWithFileResultForContact(Contact contact){
+        String nameContact = contact.Name + "/";
+        return  FileSystemParameters.getPathApplicationFileSystem() + nameContact + FileSystemParameters.RESULTFILE;
+    }
 
     public static boolean isHaveDirectoryForCurrentContact() throws Exception {
         try {
@@ -116,56 +136,6 @@ public class ContactsService {
             throw new Exception("Contacts/isHaveDir - ".concat(ex.getMessage()));
         }
     }
-
-    /**
-     * Получает уникальный список имен которые содержаться в записи
-     *
-     * @param listFiles список всех файлов записей
-     * @return массив уникальных имен
-     */
-    private static String[] getUniqueList(List<File> listFiles) {
-        List<String> listNames = new ArrayList<String>();
-        /*
-            добавляет имена в коллекцию
-            если имя записи не является номером телефона
-
-        for (File file : listFiles){
-            String nameRecord = Records.getNameContactInRecord(file.getAbsolutePath());
-            if (!isName(nameRecord)) continue;
-            listNames.add(nameRecord);
-        }
-        //создание массива типа String[]
-
-         */
-        HashSet<String> hashSetListNames = new HashSet<>(listNames);
-        String[] strListNames = new String[hashSetListNames.size()];
-        hashSetListNames.toArray(strListNames);
-        return strListNames;
-
-
-    }
-
-
-    /**
-     * Данный метод определяет
-     * является ли переданное имя записи - именем контакта
-     * или номером телефона
-     *
-     * @param name имя записи
-     * @return true если это имя
-     */
-    private static boolean isName(String name) {
-        if (name.length() < 5) return true;
-        try {
-            Integer.valueOf(name.substring(0, 3));
-            return false;
-        } catch (Exception ex) {
-            Log.d("isName", ex.getMessage());
-            return true;
-        }
-
-    }
-
 
     //endregion
 

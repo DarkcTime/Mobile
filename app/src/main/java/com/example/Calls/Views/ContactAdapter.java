@@ -10,14 +10,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.Calls.Model.Contact;
+import com.example.Calls.Model.Repositories.ContactRepository;
 import com.example.Calls.R;
 import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactAdapter extends ArrayAdapter<Contact> {
+
+    private ContactRepository contactRepository = new ContactRepository();
 
     private LayoutInflater inflater;
     private int layout;
@@ -37,7 +41,12 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
         @SuppressLint("ViewHolder") View view = inflater.inflate(this.layout, parent, false);
 
         TextView nameContact = (TextView) view.findViewById(R.id.textViewNameContact);
+        com.github.lzyzsd.circleprogress.CircleProgress progressBar =
+                (com.github.lzyzsd.circleprogress.CircleProgress) view.findViewById(R.id.circleProgress);
         Contact contact = filteredData.get(position);
+
+        int progress = contactRepository.getProgressAsPercentage(contact);
+        progressBar.setProgress(progress);
 
         nameContact.setText(contact.Name);
 

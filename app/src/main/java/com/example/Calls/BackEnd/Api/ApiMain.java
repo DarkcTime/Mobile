@@ -6,7 +6,10 @@ import android.util.Log;
 
 import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.Files.FileSystemParameters;
+import com.example.Calls.BackEnd.Services.ContactsService;
+import com.example.Calls.Model.Contact;
 import com.example.Calls.Model.Record;
+import com.example.Calls.Model.Repositories.ContactRepository;
 import com.example.Calls.Model.Repositories.RecordRepository;
 
 import java.io.File;
@@ -32,8 +35,9 @@ public class ApiMain{
 
     //добавляет данные в общий результат пользователя
     public void addTextInFullFileSelectedContact(String message) throws IOException{
-        FileSystem.WriteFile(RecordRepository.getSelectedRecord().Path,
-                message,true);
+        Contact selectContact = ContactRepository.getSelectedContact();
+        String pathInFileResultSelectedContact = ContactsService.getPathWithFileResultForContact(selectContact);
+        FileSystem.WriteFile(pathInFileResultSelectedContact,message,true);
     }
 
     //читает полный файл пользователя
