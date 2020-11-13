@@ -29,6 +29,8 @@ public class RecordAdapter extends ArrayAdapter<Record> {
     public View getView(int position, View convertView, ViewGroup parent){
         View view = inflater.inflate(this.layout, parent, false);
 
+
+
         TextView dateTime = (TextView) view.findViewById(R.id.textViewDateTime);
         TextView duration = (TextView) view.findViewById(R.id.textViewDuration);
 
