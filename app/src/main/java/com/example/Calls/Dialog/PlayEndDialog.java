@@ -29,14 +29,14 @@ public class PlayEndDialog extends DialogMain{
                     .setPositiveButton(getString(R.string.continue_rus), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Play.StopGame();
+
                             dialog.cancel();
                         }
                     })
                     .setNegativeButton(getString(R.string.return_selected_record_rus), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Play.startAboutContact();
+
                             dialog.cancel();
                         }
                     });
