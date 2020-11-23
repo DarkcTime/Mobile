@@ -29,6 +29,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -77,9 +78,7 @@ public class Play extends AppCompatActivity
     //dialog windows
     final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.Play);
 
-    private LinearLayout startLayoutPage;
 
-    private LinearLayout playLinerLayout;
     private TextView textViewSelectedRecPlay, textViewStartPositionPlay;
     private SeekBar seekBarPositionPlay;
     private MediaPlayer mp;
@@ -109,8 +108,13 @@ public class Play extends AppCompatActivity
 
     private Button buttonBackRewind, buttonFordRewind;
 
+    //layouts
+    private LinearLayout startLayoutPage;
+    private LinearLayout linerLayoutPaintGame;
+    private LinearLayout linerLayoutButtonComplete;
 
-    //region Paint for Cutter
+
+    //region Paint For Cutter varibles
     private long mLoadingLastUpdateTime;
     private boolean mLoadingKeepGoing;
     private long mRecordingLastUpdateTime;
@@ -154,7 +158,7 @@ public class Play extends AppCompatActivity
     private int mPlayEndMsec;
     private Handler mHandler;
     private boolean mIsPlaying;
-    private SamplePlayer mPlayer;
+
     private boolean mTouchDragging;
     private float mTouchStart;
     private int mTouchInitialOffset;
@@ -166,16 +170,19 @@ public class Play extends AppCompatActivity
     private int mMarkerRightInset;
     private int mMarkerTopOffset;
     private int mMarkerBottomOffset;
-
     private Thread mLoadSoundFileThread;
     private Thread mRecordAudioThread;
     private Thread mSaveSoundFileThread;
 
 
+    private SamplePlayer mPlayer;
+    private Button buttonNoPerson, buttonPerson;
+    private Button buttonRawBackPlay, buttonRawForwardPlay;
     //endregion
 
     //endregion
 
+    //region load
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -183,13 +190,81 @@ public class Play extends AppCompatActivity
             super.onCreate(savedInstanceState);
             setContentView(R.layout.play);
 
+            //Layouts on page
             startLayoutPage = (LinearLayout) (findViewById(R.id.startLayoutPage));
-
-            playLinerLayout = (LinearLayout) (findViewById(R.id.playLinerLayout));
+            linerLayoutPaintGame = (LinearLayout) (findViewById(R.id.linerLayoutPaintGame));
+            linerLayoutButtonComplete = (LinearLayout) (findViewById(R.id.linerLayoutButtonComplete));
 
             //region Paint Game
             mFilename = RecordRepository.getSelectedRecord().Path;
             mSoundFile = null;
+            cutter = new Cutter();
+
+            //region buttons
+            //button raw <<
+            buttonRawBackPlay = (Button) (findViewById(R.id.buttonRawBackPlay));
+            buttonRawBackPlay.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if(isDown(event)){
+
+                    }
+                    else{
+
+                    }
+                    return false;
+                }
+            });
+            //button raw >>
+            buttonRawForwardPlay = (Button) (findViewById(R.id.buttonRawForwardPlay));
+            buttonRawForwardPlay.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if(isDown(event)){
+
+                    }
+                    else{
+
+                    }
+                    return  false;
+                }
+            });
+            //button No I
+            buttonNoPerson = (Button) (findViewById(R.id.buttonNoPerson));
+            buttonNoPerson.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if(isDown(event)){
+                        Log.d("stopModeWait", "smw");
+                        stopModeWait();
+                    }
+                    if(isUp(event)){
+                        Log.d("startModeWait", "swm");
+                        startModeWait();
+                    }
+                    return false;
+                }
+            });
+            //button I
+            buttonPerson = (Button) (findViewById(R.id.buttonPerson));
+            buttonPerson.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if(isDown(event)){
+                        Log.d("stopModeWait", "smw");
+                        addInterval();
+                        stopModeWait();
+                    }
+                    if(isUp(event)){
+                        Log.d("startModeWait", "swm");
+                        endInterval();
+                        startModeWait();
+                    }
+                    return false;
+                }
+            });
+
+            //endregion
 
 
             loadFromFile();
@@ -197,6 +272,8 @@ public class Play extends AppCompatActivity
             mHandler = new Handler();
 
             loadGui();
+
+
 
             //mHandler.postDelayed(mTimerRunnable, 100);
 
@@ -296,309 +373,29 @@ public class Play extends AppCompatActivity
 
     }
 
-    public void onClickStartPlay(View view){
-        try{
-            //TODO test code
-            cutter = new Cutter();
-            cutter.AddInterval(0);
-            cutter.StopInterval(2);
-            cutter.AddInterval(4);
-            cutter.StopInterval(6);
-
-            Intent intent = new Intent(Play.this, WaitInEndPlay.class);
-            startActivity(intent);
-
-            /* region LastCode
-            checkPlayCycle = true;
-            mp.start();
-
-            playCycle();
-
-            buttonStartPlay.setVisibility(View.GONE);
-            */
-        }
-        catch (Exception ex){
-            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickStartPlay");
-        }
+    //region
+    private boolean isDown(MotionEvent event){
+        return  event.getAction() == MotionEvent.ACTION_DOWN;
+    }
+    private boolean isUp(MotionEvent event){
+        return event.getAction() == MotionEvent.ACTION_UP;
+    }
+    private void addInterval(){
+        int sec = MediaPlayerClass.getCurrentPositionSec(mPlayer);
+        cutter.AddInterval(sec);
+    }
+    private void endInterval(){
+        int sec = MediaPlayerClass.getCurrentPositionSec(mPlayer);
+        cutter.StopInterval(sec);
+    }
+    private void startModeWait(){
+        mPlayer.pause();
+    }
+    private void stopModeWait(){
+       mPlayer.continueAudio();
 
     }
-
-
-    /** Called when the activity is finally destroyed. */
-    @Override
-    protected void onDestroy() {
-        Log.v("Ringdroid", "EditActivity OnDestroy");
-
-        mLoadingKeepGoing = false;
-        mRecordingKeepGoing = false;
-
-        mLoadSoundFileThread = null;
-        mRecordAudioThread = null;
-        mSaveSoundFileThread = null;
-        if(mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }
-        if(mAlertDialog != null) {
-            mAlertDialog.dismiss();
-            mAlertDialog = null;
-        }
-
-        if (mPlayer != null) {
-            if (mPlayer.isPlaying() || mPlayer.isPaused()) {
-                mPlayer.stop();
-            }
-            mPlayer.release();
-            mPlayer = null;
-        }
-
-        super.onDestroy();
-    }
-
-    /** Called with an Activity we started with an Intent returns. */
-    @Override
-    protected void onActivityResult(int requestCode,
-                                    int resultCode,
-                                    Intent dataIntent) {
-        Log.v("Ringdroid", "EditActivity onActivityResult");
-
-    }
-
-    /**
-     * Called when the orientation changes and/or the keyboard is shown
-     * or hidden.  We don't need to recreate the whole activity in this
-     * case, but we do need to redo our layout somewhat.
-     */
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        Log.v("Ringdroid", "EditActivity onConfigurationChanged");
-        final int saveZoomLevel = mWaveformView.getZoomLevel();
-        super.onConfigurationChanged(newConfig);
-
-        loadGui();
-
-        mHandler.postDelayed(new Runnable() {
-            public void run() {
-                mStartMarker.requestFocus();
-                markerFocus(mStartMarker);
-
-                mWaveformView.setZoomLevel(saveZoomLevel);
-                mWaveformView.recomputeHeights(mDensity);
-
-                updateDisplay();
-            }
-        }, 500);
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_SPACE) {
-            onPlay(mStartPos);
-            return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }
-
-    //
-    // WaveformListener
-    //
-
-    /**
-     * Every time we get a message that our waveform drew, see if we need to
-     * animate and trigger another redraw.
-     */
-    public void waveformDraw() {
-        mWidth = mWaveformView.getMeasuredWidth();
-        if (mOffsetGoal != mOffset && !mKeyDown)
-            updateDisplay();
-        else if (mIsPlaying) {
-            updateDisplay();
-        } else if (mFlingVelocity != 0) {
-            updateDisplay();
-        }
-    }
-
-    public void waveformTouchStart(float x) {
-        mTouchDragging = true;
-        mTouchStart = x;
-        mTouchInitialOffset = mOffset;
-        mFlingVelocity = 0;
-        mWaveformTouchStartMsec = getCurrentTime();
-    }
-
-    public void waveformTouchMove(float x) {
-        mOffset = trap((int)(mTouchInitialOffset + (mTouchStart - x)));
-        updateDisplay();
-    }
-
-    public void waveformTouchEnd() {
-        mTouchDragging = false;
-        mOffsetGoal = mOffset;
-
-        long elapsedMsec = getCurrentTime() - mWaveformTouchStartMsec;
-        if (elapsedMsec < 300) {
-            if (mIsPlaying) {
-                int seekMsec = mWaveformView.pixelsToMillisecs(
-                        (int)(mTouchStart + mOffset));
-                if (seekMsec >= mPlayStartMsec &&
-                        seekMsec < mPlayEndMsec) {
-                    mPlayer.seekTo(seekMsec);
-                } else {
-                    handlePause();
-                }
-            } else {
-                onPlay((int)(mTouchStart + mOffset));
-            }
-        }
-    }
-
-    public void waveformFling(float vx) {
-        mTouchDragging = false;
-        mOffsetGoal = mOffset;
-        mFlingVelocity = (int)(-vx);
-        updateDisplay();
-    }
-
-    public void waveformZoomIn() {
-        mWaveformView.zoomIn();
-        mStartPos = mWaveformView.getStart();
-        mEndPos = mWaveformView.getEnd();
-        mMaxPos = mWaveformView.maxPos();
-        mOffset = mWaveformView.getOffset();
-        mOffsetGoal = mOffset;
-        updateDisplay();
-    }
-
-    public void waveformZoomOut() {
-        mWaveformView.zoomOut();
-        mStartPos = mWaveformView.getStart();
-        mEndPos = mWaveformView.getEnd();
-        mMaxPos = mWaveformView.maxPos();
-        mOffset = mWaveformView.getOffset();
-        mOffsetGoal = mOffset;
-        updateDisplay();
-    }
-
-    //
-    // MarkerListener
-    //
-
-    public void markerDraw() {
-
-    }
-
-    public void markerTouchStart(MarkerView marker, float x) {
-        mTouchDragging = true;
-        mTouchStart = x;
-        mTouchInitialStartPos = mStartPos;
-        mTouchInitialEndPos = mEndPos;
-    }
-
-    public void markerTouchMove(MarkerView marker, float x) {
-        float delta = x - mTouchStart;
-
-        if (marker == mStartMarker) {
-            mStartPos = trap((int)(mTouchInitialStartPos + delta));
-            mEndPos = trap((int)(mTouchInitialEndPos + delta));
-        } else {
-            mEndPos = trap((int)(mTouchInitialEndPos + delta));
-            if (mEndPos < mStartPos)
-                mEndPos = mStartPos;
-        }
-
-        updateDisplay();
-    }
-
-    public void markerTouchEnd(MarkerView marker) {
-        mTouchDragging = false;
-        if (marker == mStartMarker) {
-            setOffsetGoalStart();
-        } else {
-            setOffsetGoalEnd();
-        }
-    }
-
-    public void markerLeft(MarkerView marker, int velocity) {
-        mKeyDown = true;
-
-        if (marker == mStartMarker) {
-            int saveStart = mStartPos;
-            mStartPos = trap(mStartPos - velocity);
-            mEndPos = trap(mEndPos - (saveStart - mStartPos));
-            setOffsetGoalStart();
-        }
-
-        if (marker == mEndMarker) {
-            if (mEndPos == mStartPos) {
-                mStartPos = trap(mStartPos - velocity);
-                mEndPos = mStartPos;
-            } else {
-                mEndPos = trap(mEndPos - velocity);
-            }
-
-            setOffsetGoalEnd();
-        }
-
-        updateDisplay();
-    }
-
-    public void markerRight(MarkerView marker, int velocity) {
-        mKeyDown = true;
-
-        if (marker == mStartMarker) {
-            int saveStart = mStartPos;
-            mStartPos += velocity;
-            if (mStartPos > mMaxPos)
-                mStartPos = mMaxPos;
-            mEndPos += (mStartPos - saveStart);
-            if (mEndPos > mMaxPos)
-                mEndPos = mMaxPos;
-
-            setOffsetGoalStart();
-        }
-
-        if (marker == mEndMarker) {
-            mEndPos += velocity;
-            if (mEndPos > mMaxPos)
-                mEndPos = mMaxPos;
-
-            setOffsetGoalEnd();
-        }
-
-        updateDisplay();
-    }
-
-    public void markerEnter(MarkerView marker) {
-    }
-
-    public void markerKeyUp() {
-        mKeyDown = false;
-        updateDisplay();
-    }
-
-    public void markerFocus(MarkerView marker) {
-        mKeyDown = false;
-        if (marker == mStartMarker) {
-            setOffsetGoalStartNoUpdate();
-        } else {
-            setOffsetGoalEndNoUpdate();
-        }
-
-        // Delay updaing the display because if this focus was in
-        // response to a touch event, we want to receive the touch
-        // event too before updating the display.
-        mHandler.postDelayed(new Runnable() {
-            public void run() {
-                updateDisplay();
-            }
-        }, 100);
-    }
-
-    //
-    // Internal methods
-    //
-
+    //endregion
     /**
      * Called from both onCreate and onConfigurationChanged
      * (if the user switched layouts)
@@ -773,109 +570,339 @@ public class Play extends AppCompatActivity
         mLoadSoundFileThread.start();
     }
 
-    private void recordAudio() {
-        mFile = null;
-        mTitle = null;
-        mArtist = null;
+    //endregion
 
-        mRecordingLastUpdateTime = getCurrentTime();
-        mRecordingKeepGoing = true;
-        mFinishActivity = false;
-        AlertDialog.Builder adBuilder = new AlertDialog.Builder(this);
-        adBuilder.setTitle("fs");
-        adBuilder.setCancelable(true);
-        adBuilder.setNegativeButton(
-                getResources().getText(R.string.progress_dialog_cancel),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        mRecordingKeepGoing = false;
-                        mFinishActivity = true;
-                    }
-                });
-        adBuilder.setPositiveButton(
-                getResources().getText(R.string.progress_dialog_stop),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        mRecordingKeepGoing = false;
-                    }
-                });
-        // TODO(nfaralli): try to use a FrameLayout and pass it to the following inflate call.
-        // Using null, android:layout_width etc. may not work (hence text is at the top of view).
-        // On the other hand, if the text is big enough, this is good enough.
+    //region Buttons
+    public void onClickStartPlay(View view){
+        try{
+            //TODO test code
 
+            cutter.AddInterval(0);
+            cutter.StopInterval(2);
+            cutter.AddInterval(4);
+            cutter.StopInterval(6);
 
-        final SoundFile.ProgressListener listener =
-                new SoundFile.ProgressListener() {
-                    public boolean reportProgress(double elapsedTime) {
-                        long now = getCurrentTime();
-                        if (now - mRecordingLastUpdateTime > 5) {
-                            mRecordingTime = elapsedTime;
-                            // Only UI thread can update Views such as TextViews.
-                            runOnUiThread(new Runnable() {
-                                public void run() {
-                                    int min = (int)(mRecordingTime/60);
-                                    float sec = (float)(mRecordingTime - 60 * min);
+            Intent intent = new Intent(Play.this, WaitInEndPlay.class);
+            startActivity(intent);
 
-                                }
-                            });
-                            mRecordingLastUpdateTime = now;
-                        }
-                        return mRecordingKeepGoing;
-                    }
-                };
+            /* region LastCode
+            checkPlayCycle = true;
+            mp.start();
 
-        // Record the audio stream in a background thread
-        mRecordAudioThread = new Thread() {
-            public void run() {
-                try {
-                    mSoundFile = SoundFile.record(listener);
-                    if (mSoundFile == null) {
-                        mAlertDialog.dismiss();
-                        Runnable runnable = new Runnable() {
-                            public void run() {
-                                showFinalAlert(
-                                        new Exception(),
-                                        getResources().getText(R.string.record_error)
-                                );
-                            }
-                        };
-                        mHandler.post(runnable);
-                        return;
-                    }
-                    mPlayer = new SamplePlayer(mSoundFile);
-                } catch (final Exception e) {
-                    mAlertDialog.dismiss();
-                    e.printStackTrace();
-                    mInfoContent = e.toString();
-                    runOnUiThread(new Runnable() {
-                        public void run() {
+            playCycle();
 
-                        }
-                    });
+            buttonStartPlay.setVisibility(View.GONE);
+            */
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickStartPlay");
+        }
 
-                    Runnable runnable = new Runnable() {
-                        public void run() {
-                            showFinalAlert(e, getResources().getText(R.string.record_error));
-                        }
-                    };
-                    mHandler.post(runnable);
-                    return;
-                }
-                mAlertDialog.dismiss();
-                if (mFinishActivity){
-                    finish();
-                } else {
-                    Runnable runnable = new Runnable() {
-                        public void run() {
-                            finishOpeningSoundFile();
-                        }
-                    };
-                    mHandler.post(runnable);
-                }
-            }
-        };
-        mRecordAudioThread.start();
     }
+
+    //region play buttons
+    public void onClickEndGame(View view){
+        onPlay(0);
+    }
+    public void onClickRawBackPlay(View view){
+
+    }
+    public void onClickRawForwardPlay(View view){
+
+    }
+    public void onClickNoPerson(View view){
+
+    }
+    public void onClickPerson(){
+
+    }
+    //endregion
+
+    //endregion
+
+    //region Destroy
+    /** Called when the activity is finally destroyed. */
+    @Override
+    protected void onDestroy() {
+        Log.v("Ringdroid", "EditActivity OnDestroy");
+
+        mLoadingKeepGoing = false;
+        mRecordingKeepGoing = false;
+
+        mLoadSoundFileThread = null;
+        mRecordAudioThread = null;
+        mSaveSoundFileThread = null;
+        if(mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+        if(mAlertDialog != null) {
+            mAlertDialog.dismiss();
+            mAlertDialog = null;
+        }
+
+        if (mPlayer != null) {
+            if (mPlayer.isPlaying() || mPlayer.isPaused()) {
+                mPlayer.stop();
+            }
+            mPlayer.release();
+            mPlayer = null;
+        }
+
+        super.onDestroy();
+    }
+
+    /** Called with an Activity we started with an Intent returns. */
+    @Override
+    protected void onActivityResult(int requestCode,
+                                    int resultCode,
+                                    Intent dataIntent) {
+        Log.v("Ringdroid", "EditActivity onActivityResult");
+
+    }
+
+    //endregion
+
+    /**
+     * Called when the orientation changes and/or the keyboard is shown
+     * or hidden.  We don't need to recreate the whole activity in this
+     * case, but we do need to redo our layout somewhat.
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Log.v("Ringdroid", "EditActivity onConfigurationChanged");
+        final int saveZoomLevel = mWaveformView.getZoomLevel();
+        super.onConfigurationChanged(newConfig);
+
+        loadGui();
+
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                mStartMarker.requestFocus();
+                markerFocus(mStartMarker);
+
+                mWaveformView.setZoomLevel(saveZoomLevel);
+                mWaveformView.recomputeHeights(mDensity);
+
+                updateDisplay();
+            }
+        }, 500);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_SPACE) {
+            onPlay(mStartPos);
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    //
+    // region WaveformListener
+    //
+
+    /**
+     * Every time we get a message that our waveform drew, see if we need to
+     * animate and trigger another redraw.
+     */
+    public void waveformDraw() {
+        mWidth = mWaveformView.getMeasuredWidth();
+        if (mOffsetGoal != mOffset && !mKeyDown)
+            updateDisplay();
+        else if (mIsPlaying) {
+            updateDisplay();
+        } else if (mFlingVelocity != 0) {
+            updateDisplay();
+        }
+    }
+
+    public void waveformTouchStart(float x) {
+        Toast.makeText(this, "waveForm", Toast.LENGTH_LONG).show();
+        mTouchDragging = true;
+        mTouchStart = x;
+        mTouchInitialOffset = mOffset;
+        mFlingVelocity = 0;
+        mWaveformTouchStartMsec = getCurrentTime();
+    }
+
+    public void waveformTouchMove(float x) {
+        mOffset = trap((int)(mTouchInitialOffset + (mTouchStart - x)));
+        updateDisplay();
+    }
+
+    public void waveformTouchEnd() {
+        mTouchDragging = false;
+        mOffsetGoal = mOffset;
+
+        long elapsedMsec = getCurrentTime() - mWaveformTouchStartMsec;
+        if (elapsedMsec < 300) {
+            if (mIsPlaying) {
+                int seekMsec = mWaveformView.pixelsToMillisecs(
+                        (int)(mTouchStart + mOffset));
+                if (seekMsec >= mPlayStartMsec &&
+                        seekMsec < mPlayEndMsec) {
+                    mPlayer.seekTo(seekMsec);
+                } else {
+                    handlePause();
+                }
+            } else {
+                onPlay((int)(mTouchStart + mOffset));
+            }
+        }
+    }
+
+    public void waveformFling(float vx) {
+        mTouchDragging = false;
+        mOffsetGoal = mOffset;
+        mFlingVelocity = (int)(-vx);
+        updateDisplay();
+    }
+
+    public void waveformZoomIn() {
+        mWaveformView.zoomIn();
+        mStartPos = mWaveformView.getStart();
+        mEndPos = mWaveformView.getEnd();
+        mMaxPos = mWaveformView.maxPos();
+        mOffset = mWaveformView.getOffset();
+        mOffsetGoal = mOffset;
+        updateDisplay();
+    }
+
+    public void waveformZoomOut() {
+        mWaveformView.zoomOut();
+        mStartPos = mWaveformView.getStart();
+        mEndPos = mWaveformView.getEnd();
+        mMaxPos = mWaveformView.maxPos();
+        mOffset = mWaveformView.getOffset();
+        mOffsetGoal = mOffset;
+        updateDisplay();
+    }
+
+    //endregion
+
+    //
+    // region MarkerListener
+    //
+
+    public void markerDraw() {
+
+    }
+
+    public void markerTouchStart(MarkerView marker, float x) {
+        mTouchDragging = true;
+        mTouchStart = x;
+        mTouchInitialStartPos = mStartPos;
+        mTouchInitialEndPos = mEndPos;
+    }
+
+    public void markerTouchMove(MarkerView marker, float x) {
+        float delta = x - mTouchStart;
+
+        if (marker == mStartMarker) {
+            mStartPos = trap((int)(mTouchInitialStartPos + delta));
+            mEndPos = trap((int)(mTouchInitialEndPos + delta));
+        } else {
+            mEndPos = trap((int)(mTouchInitialEndPos + delta));
+            if (mEndPos < mStartPos)
+                mEndPos = mStartPos;
+        }
+
+        updateDisplay();
+    }
+
+    public void markerTouchEnd(MarkerView marker) {
+        mTouchDragging = false;
+        if (marker == mStartMarker) {
+            setOffsetGoalStart();
+        } else {
+            setOffsetGoalEnd();
+        }
+    }
+
+    public void markerLeft(MarkerView marker, int velocity) {
+        mKeyDown = true;
+
+        if (marker == mStartMarker) {
+            int saveStart = mStartPos;
+            mStartPos = trap(mStartPos - velocity);
+            mEndPos = trap(mEndPos - (saveStart - mStartPos));
+            setOffsetGoalStart();
+        }
+
+        if (marker == mEndMarker) {
+            if (mEndPos == mStartPos) {
+                mStartPos = trap(mStartPos - velocity);
+                mEndPos = mStartPos;
+            } else {
+                mEndPos = trap(mEndPos - velocity);
+            }
+
+            setOffsetGoalEnd();
+        }
+
+        updateDisplay();
+    }
+
+    public void markerRight(MarkerView marker, int velocity) {
+        mKeyDown = true;
+
+        if (marker == mStartMarker) {
+            int saveStart = mStartPos;
+            mStartPos += velocity;
+            if (mStartPos > mMaxPos)
+                mStartPos = mMaxPos;
+            mEndPos += (mStartPos - saveStart);
+            if (mEndPos > mMaxPos)
+                mEndPos = mMaxPos;
+
+            setOffsetGoalStart();
+        }
+
+        if (marker == mEndMarker) {
+            mEndPos += velocity;
+            if (mEndPos > mMaxPos)
+                mEndPos = mMaxPos;
+
+            setOffsetGoalEnd();
+        }
+
+        updateDisplay();
+    }
+
+    public void markerEnter(MarkerView marker) {
+    }
+
+    public void markerKeyUp() {
+        mKeyDown = false;
+        updateDisplay();
+    }
+
+    public void markerFocus(MarkerView marker) {
+        mKeyDown = false;
+        if (marker == mStartMarker) {
+            setOffsetGoalStartNoUpdate();
+        } else {
+            setOffsetGoalEndNoUpdate();
+        }
+
+        // Delay updaing the display because if this focus was in
+        // response to a touch event, we want to receive the touch
+        // event too before updating the display.
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                updateDisplay();
+            }
+        }, 100);
+    }
+
+    //endregion
+
+    //
+    // Internal methods
+    //
 
     private void finishOpeningSoundFile() {
         mWaveformView.setSoundFile(mSoundFile);
@@ -1048,16 +1075,6 @@ public class Play extends AppCompatActivity
         }
     };
 
-    private void enableDisableButtons() {
-        if (mIsPlaying) {
-            mPlayButton.setImageResource(android.R.drawable.ic_media_pause);
-            mPlayButton.setContentDescription(getResources().getText(R.string.stop));
-        } else {
-            mPlayButton.setImageResource(android.R.drawable.ic_media_play);
-            mPlayButton.setContentDescription(getResources().getText(R.string.play));
-        }
-    }
-
     private void resetPositions() {
         mStartPos = mWaveformView.secondsToPixels(0.0);
         mEndPos = mWaveformView.secondsToPixels(15.0);
@@ -1136,7 +1153,6 @@ public class Play extends AppCompatActivity
         }
         mWaveformView.setPlayback(-1);
         mIsPlaying = false;
-        enableDisableButtons();
     }
 
     private synchronized void onPlay(int startPosition) {
@@ -1170,7 +1186,7 @@ public class Play extends AppCompatActivity
             mPlayer.seekTo(mPlayStartMsec);
             mPlayer.start();
             updateDisplay();
-            enableDisableButtons();
+
         } catch (Exception e) {
             showFinalAlert(e, R.string.play_error);
             return;
@@ -1218,6 +1234,7 @@ public class Play extends AppCompatActivity
 
     private View.OnClickListener mPlayListener = new View.OnClickListener() {
         public void onClick(View sender) {
+
             onPlay(mStartPos);
         }
     };

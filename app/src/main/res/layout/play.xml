@@ -188,35 +188,99 @@
 
     </LinearLayout>
 
-    <!-- Paint Game -->
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0px"
-        android:layout_weight="1">
 
-        <com.example.Calls.PaintGame.WaveformView
-            android:id="@+id/waveform"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+    <!-- Game -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/linerLayoutPaintGame"
+        >
+        <!--End game-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="5"
+            android:id="@+id/linerLayoutButtonComplete"
+            >
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/complete_rus"
+                android:onClick="onClickEndGame"/>
+        </LinearLayout>
+        <!-- Paint Game -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="60"
+            >
 
-        <com.example.Calls.PaintGame.MarkerView
-            android:id="@+id/startmarker"
-            android:nextFocusDown="@+id/endmarker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/marker_left"
-           />
+            <com.example.Calls.PaintGame.WaveformView
+                android:id="@+id/waveform"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
 
-        <com.example.Calls.PaintGame.MarkerView
-            android:id="@+id/endmarker"
-            android:nextFocusUp="@+id/startmarker"
-            android:nextFocusDown="@+id/info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/marker_right"
-            />
-    </RelativeLayout>
+            <com.example.Calls.PaintGame.MarkerView
+                android:id="@+id/startmarker"
+                android:nextFocusDown="@+id/endmarker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/marker_left"
+                />
 
-    <!--End game-->
+            <com.example.Calls.PaintGame.MarkerView
+                android:id="@+id/endmarker"
+                android:nextFocusUp="@+id/startmarker"
+                android:nextFocusDown="@+id/info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/marker_right"
+                />
+        </RelativeLayout>
 
+        <!--Buttons Game -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="35"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="20">
+                <Button
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50"
+                    android:text="back"
+                    android:id="@+id/buttonRawBackPlay"/>
+                <Button
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50"
+                    android:text="forward"
+                    android:id="@+id/buttonRawForwardPlay"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="80">
+                <Button
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50"
+                    android:text="Не Я"
+                    android:id="@+id/buttonNoPerson"/>
+                <Button
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50"
+                    android:text="Я"
+                    android:id="@+id/buttonPerson"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>

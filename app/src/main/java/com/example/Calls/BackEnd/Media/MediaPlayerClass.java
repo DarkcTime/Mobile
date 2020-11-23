@@ -4,6 +4,7 @@ package com.example.Calls.BackEnd.Media;
 import android.media.MediaPlayer;
 
 import com.example.Calls.BackEnd.Analysis.AnalyzeCall;
+import com.example.Calls.PaintGame.SamplePlayer;
 
 //TODO включить код логики media в данный класс
 public class MediaPlayerClass {
@@ -13,7 +14,7 @@ public class MediaPlayerClass {
     }
 
 
-    public static int getCurrentPositionSec(MediaPlayer mp){
+    public static int getCurrentPositionSec(SamplePlayer mp){
         return (int)Math.round(mp.getCurrentPosition() / 1000);
     }
 

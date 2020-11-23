@@ -102,6 +102,9 @@ public class SamplePlayer {
         if (isPlaying()) {
             return;
         }
+        if(isPaused()){
+
+        }
         mKeepPlaying = true;
         mAudioTrack.flush();
         mAudioTrack.play();
@@ -128,6 +131,11 @@ public class SamplePlayer {
             }
         };
         mPlayThread.start();
+    }
+
+    public void continueAudio(){
+        if(isPaused())
+            mPlayThread.start();
     }
 
     public void pause() {
