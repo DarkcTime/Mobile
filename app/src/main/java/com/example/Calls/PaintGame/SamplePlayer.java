@@ -19,7 +19,6 @@ package com.example.Calls.PaintGame;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
-import android.util.Log;
 
 import com.example.Calls.PaintGame.soundFile.SoundFile;
 
@@ -27,23 +26,32 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ShortBuffer;
 
+//Player for playing audio
 public class SamplePlayer {
+
     public interface OnCompletionListener {
         public void onCompletion();
     };
 
+    //region variables
+    private static AudioTrack mAudioTrack; //information about track
+    private Thread mPlayThread; //Thread for play audio
     private ShortBuffer mSamples;
-    private int mSampleRate;
-    private int mChannels;
-    private int mNumSamples;  // Number of samples per channel.
-    private static AudioTrack mAudioTrack;
     private short[] mBuffer;
+
+    private int mSampleRate,mChannels,mNumSamples;
     private int mPlaybackStart;  // Start offset, in samples.
-    private Thread mPlayThread;
+
     private boolean mKeepPlaying;
     private OnCompletionListener mListener;
+    //endregion
 
-    public SamplePlayer(ShortBuffer samples, int sampleRate, int channels, int numSamples) {
+    //region loadData
+    public SamplePlayer(SoundFile sf) {
+        //create Audio Track
+        create(sf.getSamples(), sf.getSampleRate(), sf.getChannels(), sf.getNumSamples());
+    }
+    private void create(ShortBuffer samples, int sampleRate, int channels, int numSamples) {
         mSamples = samples;
         mSampleRate = sampleRate;
         mChannels = channels;
@@ -88,55 +96,17 @@ public class SamplePlayer {
         mKeepPlaying = true;
         mListener = null;
     }
+    //endregion
 
-    public SamplePlayer(SoundFile sf) {
-        this(sf.getSamples(), sf.getSampleRate(), sf.getChannels(), sf.getNumSamples());
-    }
 
     public void setOnCompletionListener(OnCompletionListener listener) {
         mListener = listener;
     }
 
-    public boolean isPlaying() {
-        return mAudioTrack.getPlayState() == AudioTrack.PLAYSTATE_PLAYING;
-    }
-
-    public boolean isPaused() {
-        return mAudioTrack.getPlayState() == AudioTrack.PLAYSTATE_PAUSED;
-    }
-
     public void start() {
-        /*
-        if(isPaused()){
-            Log.d("pause", "true");
-            //seekTo(getCurrentPosition());
-
-
-            new Thread (new Runnable(){
-                public void run() {
-                    int i = 0;
-                    try{
-                        music = new byte[512];
-                        while(((i = is.read(music)) != -1) && !paused){
-                            at.write(music, 0, i);
-                            position += i;
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-
-
-            return;
-        }
-        if (isPlaying()) {
-            return;
-        }
-        */
         mKeepPlaying = true;
         mPlayThread = null;
-        //mAudioTrack.flush();
+        mAudioTrack.flush();
         mAudioTrack.play();
         // Setting thread feeding the audio samples to the audio hardware.
         // (Assumes mChannels = 1 or 2).
@@ -157,27 +127,13 @@ public class SamplePlayer {
                         }
                         mSamples.get(mBuffer, 0, numSamplesLeft);
                     }
-                    // TODO(nfaralli): use the write method that takes a ByteBuffer as argument.
+
                     mAudioTrack.write(mBuffer, 0, mBuffer.length);
                 }
             }
         };
         mPlayThread.start();
-
     }
-
-    public void continueAudio(){
-        if(isPaused())
-            mPlayThread.start();
-    }
-
-    public void pause() {
-        if (isPlaying()) {
-            mAudioTrack.pause();
-            seekTo(getCurrentPosition());
-        }
-    }
-
     public void stop() {
         if (isPlaying() || isPaused()) {
             mKeepPlaying = false;
@@ -187,33 +143,49 @@ public class SamplePlayer {
                 try {
                     mPlayThread.join();
                 } catch (InterruptedException e) {
+
                 }
                 mPlayThread = null;
             }
             mAudioTrack.flush();  // just in case...
         }
     }
-
     public void release() {
         stop();
         mAudioTrack.release();
     }
 
+    public boolean isPlaying() {
+        return mAudioTrack.getPlayState() == AudioTrack.PLAYSTATE_PLAYING;
+    }
+    public boolean isPaused() {
+        return mAudioTrack.getPlayState() == AudioTrack.PLAYSTATE_PAUSED;
+    }
+
+    public void pause() {
+        if (isPlaying()) {
+            mAudioTrack.pause();
+            seekTo(getCurrentPosition());
+        }
+    }
+
     public void seekTo(int msec) {
-        boolean wasPlaying = isPlaying();
         stop();
+        setPosition(msec);
+        if (isPlaying()) {
+            start();
+        }
+    }
+    public int getCurrentPosition() {
+        return (int)((mPlaybackStart + mAudioTrack.getPlaybackHeadPosition()) *
+                (1000.0 / mSampleRate));
+    }
+    private void setPosition(int msec){
         mPlaybackStart = (int)(msec * (mSampleRate / 1000.0));
         if (mPlaybackStart > mNumSamples) {
             mPlaybackStart = mNumSamples;  // Nothing to play...
         }
         mAudioTrack.setNotificationMarkerPosition(mNumSamples - 1 - mPlaybackStart);
-        if (wasPlaying) {
-            start();
-        }
     }
 
-    public int getCurrentPosition() {
-        return (int)((mPlaybackStart + mAudioTrack.getPlaybackHeadPosition()) *
-                (1000.0 / mSampleRate));
-    }
 }
