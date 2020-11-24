@@ -19,8 +19,12 @@ package com.example.Calls.PaintGame;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.util.Log;
+
 import com.example.Calls.PaintGame.soundFile.SoundFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ShortBuffer;
 
 public class SamplePlayer {
@@ -32,7 +36,7 @@ public class SamplePlayer {
     private int mSampleRate;
     private int mChannels;
     private int mNumSamples;  // Number of samples per channel.
-    private AudioTrack mAudioTrack;
+    private static AudioTrack mAudioTrack;
     private short[] mBuffer;
     private int mPlaybackStart;  // Start offset, in samples.
     private Thread mPlayThread;
@@ -55,6 +59,7 @@ public class SamplePlayer {
             bufferSize = mChannels * mSampleRate * 2;
         }
         mBuffer = new short[bufferSize/2]; // bufferSize is in Bytes.
+
         mAudioTrack = new AudioTrack(
                 AudioManager.STREAM_MUSIC,
                 mSampleRate,
@@ -62,6 +67,8 @@ public class SamplePlayer {
                 AudioFormat.ENCODING_PCM_16BIT,
                 mBuffer.length * 2,
                 AudioTrack.MODE_STREAM);
+
+
         // Check when player played all the given data and notify user if mListener is set.
         mAudioTrack.setNotificationMarkerPosition(mNumSamples - 1);  // Set the marker to the end.
         mAudioTrack.setPlaybackPositionUpdateListener(
@@ -99,17 +106,42 @@ public class SamplePlayer {
     }
 
     public void start() {
+        /*
+        if(isPaused()){
+            Log.d("pause", "true");
+            //seekTo(getCurrentPosition());
+
+
+            new Thread (new Runnable(){
+                public void run() {
+                    int i = 0;
+                    try{
+                        music = new byte[512];
+                        while(((i = is.read(music)) != -1) && !paused){
+                            at.write(music, 0, i);
+                            position += i;
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+
+
+            return;
+        }
         if (isPlaying()) {
             return;
         }
-        if(isPaused()){
-
-        }
+        */
         mKeepPlaying = true;
-        mAudioTrack.flush();
+        mPlayThread = null;
+        //mAudioTrack.flush();
         mAudioTrack.play();
         // Setting thread feeding the audio samples to the audio hardware.
         // (Assumes mChannels = 1 or 2).
+
+        //move line in WavefromView
         mPlayThread = new Thread() {
             public void run() {
                 int position = mPlaybackStart * mChannels;
@@ -131,6 +163,7 @@ public class SamplePlayer {
             }
         };
         mPlayThread.start();
+
     }
 
     public void continueAudio(){
@@ -141,7 +174,7 @@ public class SamplePlayer {
     public void pause() {
         if (isPlaying()) {
             mAudioTrack.pause();
-            // mAudioTrack.write() should block if it cannot write.
+            seekTo(getCurrentPosition());
         }
     }
 

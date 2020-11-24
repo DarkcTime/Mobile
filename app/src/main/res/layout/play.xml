@@ -227,6 +227,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/marker_left"
+                android:visibility="gone"
                 />
 
             <com.example.Calls.PaintGame.MarkerView
@@ -236,6 +237,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/marker_right"
+                android:visibility="gone"
                 />
         </RelativeLayout>
 

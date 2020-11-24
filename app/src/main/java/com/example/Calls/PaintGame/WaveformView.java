@@ -91,26 +91,32 @@ public class WaveformView extends View {
         setFocusable(false);
 
         Resources res = getResources();
+        //don't know
         mGridPaint = new Paint();
         mGridPaint.setAntiAlias(false);
         mGridPaint.setColor(res.getColor(R.color.grid_line));
+        //selected wave
         mSelectedLinePaint = new Paint();
         mSelectedLinePaint.setAntiAlias(false);
-        mSelectedLinePaint.setColor(res.getColor(R.color.green));
+        mSelectedLinePaint.setColor(res.getColor(R.color.waveform_selected));
+        //unselected wave
         mUnselectedLinePaint = new Paint();
         mUnselectedLinePaint.setAntiAlias(false);
         mUnselectedLinePaint.setColor(res.getColor(R.color.waveform_unselected));
+        //unselected background
         mUnselectedBkgndLinePaint = new Paint();
         mUnselectedBkgndLinePaint.setAntiAlias(false);
         mUnselectedBkgndLinePaint.setColor(res.getColor(R.color.waveform_unselected_bkgnd_overlay));
+        //line on select and unselect
         mBorderLinePaint = new Paint();
         mBorderLinePaint.setAntiAlias(true);
         mBorderLinePaint.setStrokeWidth(1.5f);
         mBorderLinePaint.setPathEffect(new DashPathEffect(new float[] { 3.0f, 2.0f }, 0.0f));
-        mBorderLinePaint.setColor(res.getColor(R.color.selection_border));
+        mBorderLinePaint.setColor(res.getColor(R.color.red));
+        //
         mPlaybackLinePaint = new Paint();
         mPlaybackLinePaint.setAntiAlias(false);
-        mPlaybackLinePaint.setColor(res.getColor(R.color.playback_indicator));
+        mPlaybackLinePaint.setColor(res.getColor(R.color.red));
         mTimecodePaint = new Paint();
         mTimecodePaint.setTextSize(12);
         mTimecodePaint.setAntiAlias(true);

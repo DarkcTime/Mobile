@@ -14,8 +14,8 @@ public class MediaPlayerClass {
     }
 
 
-    public static int getCurrentPositionSec(SamplePlayer mp){
-        return (int)Math.round(mp.getCurrentPosition() / 1000);
+    public static int getCurrentPositionSec(int position){
+        return (int)Math.round(position / 1000);
     }
 
     //region helperMethods

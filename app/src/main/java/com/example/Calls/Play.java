@@ -176,6 +176,7 @@ public class Play extends AppCompatActivity
 
 
     private SamplePlayer mPlayer;
+    private MediaPlayer mediaPlayer;
     private Button buttonNoPerson, buttonPerson;
     private Button buttonRawBackPlay, buttonRawForwardPlay;
     //endregion
@@ -207,9 +208,10 @@ public class Play extends AppCompatActivity
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(isDown(event)){
-
+                        RawBack();
                     }
-                    else{
+                    if(isUp(event)){
+                        Log.d("startModeWait", "swm");
 
                     }
                     return false;
@@ -221,10 +223,11 @@ public class Play extends AppCompatActivity
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(isDown(event)){
-
+                        Log.d("stopModeWait", "smw");
+                        RawForward();
                     }
-                    else{
-
+                    if(isUp(event)){
+                        Log.d("startModeWait", "swm");
                     }
                     return  false;
                 }
@@ -381,19 +384,25 @@ public class Play extends AppCompatActivity
         return event.getAction() == MotionEvent.ACTION_UP;
     }
     private void addInterval(){
-        int sec = MediaPlayerClass.getCurrentPositionSec(mPlayer);
+        int sec = MediaPlayerClass.getCurrentPositionSec(mPlayer.getCurrentPosition());
         cutter.AddInterval(sec);
     }
     private void endInterval(){
-        int sec = MediaPlayerClass.getCurrentPositionSec(mPlayer);
+        int sec = MediaPlayerClass.getCurrentPositionSec(mPlayer.getCurrentPosition());
         cutter.StopInterval(sec);
     }
     private void startModeWait(){
         mPlayer.pause();
     }
     private void stopModeWait(){
-       mPlayer.continueAudio();
+       mPlayer.start();
 
+    }
+    private void RawBack(){
+        mPlayer.seekTo(mPlayer.getCurrentPosition() - 1000);
+    }
+    private void RawForward(){
+        mPlayer.seekTo(mPlayer.getCurrentPosition() + 1000);
     }
     //endregion
     /**
@@ -720,7 +729,7 @@ public class Play extends AppCompatActivity
     }
 
     public void waveformTouchStart(float x) {
-        Toast.makeText(this, "waveForm", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "waveForm", Toast.LENGTH_LONG).show();
         mTouchDragging = true;
         mTouchStart = x;
         mTouchInitialOffset = mOffset;
