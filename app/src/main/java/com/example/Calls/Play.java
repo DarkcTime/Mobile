@@ -113,6 +113,10 @@ public class Play extends AppCompatActivity
     private LinearLayout linerLayoutPaintGame;
     private LinearLayout linerLayoutButtonComplete;
 
+    private SamplePlayer mPlayer;
+    private MediaPlayer mediaPlayer;
+    private Button buttonNoPerson, buttonPerson;
+    private Button buttonRawBackPlay, buttonRawForwardPlay;
 
     //region Paint For Cutter varibles
     private long mLoadingLastUpdateTime;
@@ -175,10 +179,7 @@ public class Play extends AppCompatActivity
     private Thread mSaveSoundFileThread;
 
 
-    private SamplePlayer mPlayer;
-    private MediaPlayer mediaPlayer;
-    private Button buttonNoPerson, buttonPerson;
-    private Button buttonRawBackPlay, buttonRawForwardPlay;
+
     //endregion
 
     //endregion
@@ -196,10 +197,12 @@ public class Play extends AppCompatActivity
             linerLayoutPaintGame = (LinearLayout) (findViewById(R.id.linerLayoutPaintGame));
             linerLayoutButtonComplete = (LinearLayout) (findViewById(R.id.linerLayoutButtonComplete));
 
-            //region Paint Game
+            //generate objects
+            //set file name
             mFilename = RecordRepository.getSelectedRecord().Path;
             mSoundFile = null;
             cutter = new Cutter();
+            mHandler = new Handler();
 
             //region buttons
             //button raw <<
@@ -238,11 +241,11 @@ public class Play extends AppCompatActivity
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(isDown(event)){
-                        Log.d("stopModeWait", "smw");
+                        addInterval();
                         stopModeWait();
                     }
                     if(isUp(event)){
-                        Log.d("startModeWait", "swm");
+                        endInterval();
                         startModeWait();
                     }
                     return false;
@@ -254,120 +257,14 @@ public class Play extends AppCompatActivity
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(isDown(event)){
-                        Log.d("stopModeWait", "smw");
-                        addInterval();
                         stopModeWait();
                     }
                     if(isUp(event)){
-                        Log.d("startModeWait", "swm");
-                        endInterval();
                         startModeWait();
                     }
                     return false;
                 }
             });
-
-            //endregion
-
-
-            loadFromFile();
-
-            mHandler = new Handler();
-
-            loadGui();
-
-
-
-            //mHandler.postDelayed(mTimerRunnable, 100);
-
-
-            //endregion
-
-
-            /*
-
-            setVariablesForPlay();
-
-            setSettingsForRewards();
-
-            createMediaPlayer();
-
-
-            buttonExit.setVisibility(View.GONE);
-
-            textViewSelectedRecPlay.setText("Выбранная запись: ".concat(Records.getNameSelectedRecord()));
-
-            handler = new Handler();
-
-            hearing = false;
-
-            cutter = new Cutter();
-
-
-            //endregion
-
-            /*
-            if(!SavedSettings.isExpert()){
-                dialogMain.showHelpDialog(HelpDialog.Helps.PlayHelp);
-            }
-
-
-
-
-            //region button I and Other
-
-            buttonMyPlay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    try{
-                        if(!mp.isPlaying()) return false;
-
-                        if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
-                        {
-                            updateGame();
-
-                            setIntervalStop();
-                        }
-                    }
-                    catch (Exception ex){
-                        dialogMain.showErrorDialogAndTheOutputLogs(ex, "buttonMyPlay");
-                    }
-                    return false;
-                }
-            });
-
-            buttonCompanion.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    try {
-                        if(!mp.isPlaying()) return false;
-
-                        if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
-                        {
-                            updateGame();
-                            setIntervalAdd();
-                        }
-                    }
-                    catch (Exception ex){
-                        dialogMain.showErrorDialogAndTheOutputLogs(ex, "buttonCompanion");
-                    }
-
-                    return false;
-                }
-            });
-
-
-            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    endRecord = true;
-                }
-            });
-            //endregion
-
-
-
-             */
 
         }
         catch (Exception ex){
@@ -375,40 +272,38 @@ public class Play extends AppCompatActivity
         }
 
     }
-
-    //region
-    private boolean isDown(MotionEvent event){
-        return  event.getAction() == MotionEvent.ACTION_DOWN;
-    }
-    private boolean isUp(MotionEvent event){
-        return event.getAction() == MotionEvent.ACTION_UP;
-    }
-    private void addInterval(){
-        int sec = MediaPlayerClass.getCurrentPositionSec(mPlayer.getCurrentPosition());
-        cutter.AddInterval(sec);
-    }
-    private void endInterval(){
-        int sec = MediaPlayerClass.getCurrentPositionSec(mPlayer.getCurrentPosition());
-        cutter.StopInterval(sec);
-    }
-    private void startModeWait(){
-        mPlayer.pause();
-    }
-    private void stopModeWait(){
-       mPlayer.start();
+    //region buttons start and end
+    public void onClickStartPlay(View view){
+        try{
+            setPlayUI();
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickStartPlay");
+        }
 
     }
-    private void RawBack(){
-        mPlayer.seekTo(mPlayer.getCurrentPosition() - 1000);
+    //start load and view play
+    private void setPlayUI(){
+        loadGui();
+        loadFromFile();
     }
-    private void RawForward(){
-        mPlayer.seekTo(mPlayer.getCurrentPosition() + 1000);
+    private void VisibilityPlay(){
+        startLayoutPage.setVisibility(View.GONE);
+        linerLayoutPaintGame.setVisibility(View.VISIBLE);
     }
+    public void onClickEndGame(View view){
+        try{
+            Intent intent = new Intent(Play.this, WaitInEndPlay.class);
+            startActivity(intent);
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickEndGame");
+        }
+    }
+
     //endregion
-    /**
-     * Called from both onCreate and onConfigurationChanged
-     * (if the user switched layouts)
-     */
+
+    //region Load and Update GUI
     private void loadGui() {
         // Inflate our UI from its XML layout description.
 
@@ -420,30 +315,6 @@ public class Play extends AppCompatActivity
         mMarkerRightInset = (int)(48 * mDensity);
         mMarkerTopOffset = (int)(10 * mDensity);
         mMarkerBottomOffset = (int)(10 * mDensity);
-
-        /*
-        mStartText = (TextView)findViewById(R.id.starttext);
-        mStartText.addTextChangedListener(mTextWatcher);
-        mEndText = (TextView)findViewById(R.id.endtext);
-        mEndText.addTextChangedListener(mTextWatcher);
-
-        mPlayButton = (ImageButton)findViewById(R.id.play);
-        mPlayButton.setOnClickListener(mPlayListener);
-        mRewindButton = (ImageButton)findViewById(R.id.rew);
-        mRewindButton.setOnClickListener(mRewindListener);
-        mFfwdButton = (ImageButton)findViewById(R.id.ffwd);
-        mFfwdButton.setOnClickListener(mFfwdListener);
-
-
-
-        TextView markStartButton = (TextView) findViewById(R.id.mark_start);
-        markStartButton.setOnClickListener(mMarkStartListener);
-        TextView markEndButton = (TextView) findViewById(R.id.mark_end);
-        markEndButton.setOnClickListener(mMarkEndListener);
-
-        enableDisableButtons();
-
-         */
 
         mWaveformView = (WaveformView)findViewById(R.id.waveform);
         mWaveformView.setListener(this);
@@ -474,7 +345,6 @@ public class Play extends AppCompatActivity
 
         updateDisplay();
     }
-
     private void loadFromFile() {
         mFile = new File(mFilename);
 
@@ -578,55 +448,188 @@ public class Play extends AppCompatActivity
         };
         mLoadSoundFileThread.start();
     }
+    private void finishOpeningSoundFile() {
+        mWaveformView.setSoundFile(mSoundFile);
+        mWaveformView.recomputeHeights(mDensity);
 
-    //endregion
+        mMaxPos = mWaveformView.maxPos();
+        mLastDisplayedStartPos = -1;
+        mLastDisplayedEndPos = -1;
 
-    //region Buttons
-    public void onClickStartPlay(View view){
-        try{
-            //TODO test code
+        mTouchDragging = false;
 
-            cutter.AddInterval(0);
-            cutter.StopInterval(2);
-            cutter.AddInterval(4);
-            cutter.StopInterval(6);
+        mOffset = 0;
+        mOffsetGoal = 0;
+        mFlingVelocity = 0;
+        resetPositions();
+        if (mEndPos > mMaxPos)
+            mEndPos = mMaxPos;
 
-            Intent intent = new Intent(Play.this, WaitInEndPlay.class);
-            startActivity(intent);
+        mCaption =
+                mSoundFile.getFiletype() + ", " +
+                        mSoundFile.getSampleRate() + " Hz, " +
+                        mSoundFile.getAvgBitrateKbps() + " kbps, " +
+                        formatTime(mMaxPos) + " " +
+                        getResources().getString(R.string.time_seconds);
 
-            /* region LastCode
-            checkPlayCycle = true;
-            mp.start();
-
-            playCycle();
-
-            buttonStartPlay.setVisibility(View.GONE);
-            */
-        }
-        catch (Exception ex){
-            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickStartPlay");
-        }
-
-    }
-
-    //region play buttons
-    public void onClickEndGame(View view){
+        VisibilityPlay();
         onPlay(0);
-    }
-    public void onClickRawBackPlay(View view){
 
+        updateDisplay();
     }
-    public void onClickRawForwardPlay(View view){
+    private synchronized void updateDisplay() {
+        if (mIsPlaying) {
+            int now = mPlayer.getCurrentPosition();
+            int frames = mWaveformView.millisecsToPixels(now);
+            mWaveformView.setPlayback(frames);
+            setOffsetGoalNoUpdate(frames - mWidth / 2);
+            if (now >= mPlayEndMsec) {
+                handlePause();
+            }
+        }
 
-    }
-    public void onClickNoPerson(View view){
+        if (!mTouchDragging) {
+            int offsetDelta;
 
-    }
-    public void onClickPerson(){
+            if (mFlingVelocity != 0) {
+                offsetDelta = mFlingVelocity / 30;
+                if (mFlingVelocity > 80) {
+                    mFlingVelocity -= 80;
+                } else if (mFlingVelocity < -80) {
+                    mFlingVelocity += 80;
+                } else {
+                    mFlingVelocity = 0;
+                }
 
+                mOffset += offsetDelta;
+
+                if (mOffset + mWidth / 2 > mMaxPos) {
+                    mOffset = mMaxPos - mWidth / 2;
+                    mFlingVelocity = 0;
+                }
+                if (mOffset < 0) {
+                    mOffset = 0;
+                    mFlingVelocity = 0;
+                }
+                mOffsetGoal = mOffset;
+            } else {
+                offsetDelta = mOffsetGoal - mOffset;
+
+                if (offsetDelta > 10)
+                    offsetDelta = offsetDelta / 10;
+                else if (offsetDelta > 0)
+                    offsetDelta = 1;
+                else if (offsetDelta < -10)
+                    offsetDelta = offsetDelta / 10;
+                else if (offsetDelta < 0)
+                    offsetDelta = -1;
+                else
+                    offsetDelta = 0;
+
+                mOffset += offsetDelta;
+            }
+        }
+
+        mWaveformView.setParameters(mStartPos, mEndPos, mOffset);
+        mWaveformView.invalidate();
+
+        mStartMarker.setContentDescription(
+                getResources().getText(R.string.start_marker) + " " +
+                        formatTime(mStartPos));
+        mEndMarker.setContentDescription(
+                getResources().getText(R.string.end_marker) + " " +
+                        formatTime(mEndPos));
+
+        int startX = mStartPos - mOffset - mMarkerLeftInset;
+        if (startX + mStartMarker.getWidth() >= 0) {
+            if (!mStartVisible) {
+                // Delay this to avoid flicker
+                mHandler.postDelayed(new Runnable() {
+                    public void run() {
+                        mStartVisible = true;
+                        mStartMarker.setAlpha(1f);
+                    }
+                }, 0);
+            }
+        } else {
+            if (mStartVisible) {
+                mStartMarker.setAlpha(0f);
+                mStartVisible = false;
+            }
+            startX = 0;
+        }
+
+        int endX = mEndPos - mOffset - mEndMarker.getWidth() + mMarkerRightInset;
+        if (endX + mEndMarker.getWidth() >= 0) {
+            if (!mEndVisible) {
+                // Delay this to avoid flicker
+                mHandler.postDelayed(new Runnable() {
+                    public void run() {
+                        mEndVisible = true;
+                        mEndMarker.setAlpha(1f);
+                    }
+                }, 0);
+            }
+        } else {
+            if (mEndVisible) {
+                mEndMarker.setAlpha(0f);
+                mEndVisible = false;
+            }
+            endX = 0;
+        }
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(
+                startX,
+                mMarkerTopOffset,
+                -mStartMarker.getWidth(),
+                -mStartMarker.getHeight());
+        mStartMarker.setLayoutParams(params);
+
+        params = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(
+                endX,
+                mWaveformView.getMeasuredHeight() - mEndMarker.getHeight() - mMarkerBottomOffset,
+                -mStartMarker.getWidth(),
+                -mStartMarker.getHeight());
+        mEndMarker.setLayoutParams(params);
     }
     //endregion
 
+    //region Playing
+    private boolean isDown(MotionEvent event){
+        return  event.getAction() == MotionEvent.ACTION_DOWN;
+    }
+    private boolean isUp(MotionEvent event){
+        return event.getAction() == MotionEvent.ACTION_UP;
+    }
+
+    private void addInterval(){
+        int sec = MediaPlayerClass.getCurrentPositionSec(mPlayer.getCurrentPosition());
+        cutter.AddInterval(sec);
+    }
+    private void endInterval(){
+        int sec = MediaPlayerClass.getCurrentPositionSec(mPlayer.getCurrentPosition());
+        cutter.StopInterval(sec);
+    }
+
+    private void startModeWait(){
+        mPlayer.pause();
+    }
+    private void stopModeWait(){
+       mPlayer.start();
+    }
+
+    private void RawBack(){
+        mPlayer.seekTo(mPlayer.getCurrentPosition() - 1000);
+    }
+    private void RawForward(){
+        mPlayer.seekTo(mPlayer.getCurrentPosition() + 1000);
+    }
     //endregion
 
     //region Destroy
@@ -912,157 +915,6 @@ public class Play extends AppCompatActivity
     //
     // Internal methods
     //
-
-    private void finishOpeningSoundFile() {
-        mWaveformView.setSoundFile(mSoundFile);
-        mWaveformView.recomputeHeights(mDensity);
-
-        mMaxPos = mWaveformView.maxPos();
-        mLastDisplayedStartPos = -1;
-        mLastDisplayedEndPos = -1;
-
-        mTouchDragging = false;
-
-        mOffset = 0;
-        mOffsetGoal = 0;
-        mFlingVelocity = 0;
-        resetPositions();
-        if (mEndPos > mMaxPos)
-            mEndPos = mMaxPos;
-
-        mCaption =
-                mSoundFile.getFiletype() + ", " +
-                        mSoundFile.getSampleRate() + " Hz, " +
-                        mSoundFile.getAvgBitrateKbps() + " kbps, " +
-                        formatTime(mMaxPos) + " " +
-                        getResources().getString(R.string.time_seconds);
-
-
-
-        updateDisplay();
-    }
-
-    private synchronized void updateDisplay() {
-        if (mIsPlaying) {
-            int now = mPlayer.getCurrentPosition();
-            int frames = mWaveformView.millisecsToPixels(now);
-            mWaveformView.setPlayback(frames);
-            setOffsetGoalNoUpdate(frames - mWidth / 2);
-            if (now >= mPlayEndMsec) {
-                handlePause();
-            }
-        }
-
-        if (!mTouchDragging) {
-            int offsetDelta;
-
-            if (mFlingVelocity != 0) {
-                offsetDelta = mFlingVelocity / 30;
-                if (mFlingVelocity > 80) {
-                    mFlingVelocity -= 80;
-                } else if (mFlingVelocity < -80) {
-                    mFlingVelocity += 80;
-                } else {
-                    mFlingVelocity = 0;
-                }
-
-                mOffset += offsetDelta;
-
-                if (mOffset + mWidth / 2 > mMaxPos) {
-                    mOffset = mMaxPos - mWidth / 2;
-                    mFlingVelocity = 0;
-                }
-                if (mOffset < 0) {
-                    mOffset = 0;
-                    mFlingVelocity = 0;
-                }
-                mOffsetGoal = mOffset;
-            } else {
-                offsetDelta = mOffsetGoal - mOffset;
-
-                if (offsetDelta > 10)
-                    offsetDelta = offsetDelta / 10;
-                else if (offsetDelta > 0)
-                    offsetDelta = 1;
-                else if (offsetDelta < -10)
-                    offsetDelta = offsetDelta / 10;
-                else if (offsetDelta < 0)
-                    offsetDelta = -1;
-                else
-                    offsetDelta = 0;
-
-                mOffset += offsetDelta;
-            }
-        }
-
-        mWaveformView.setParameters(mStartPos, mEndPos, mOffset);
-        mWaveformView.invalidate();
-
-        mStartMarker.setContentDescription(
-                getResources().getText(R.string.start_marker) + " " +
-                        formatTime(mStartPos));
-        mEndMarker.setContentDescription(
-                getResources().getText(R.string.end_marker) + " " +
-                        formatTime(mEndPos));
-
-        int startX = mStartPos - mOffset - mMarkerLeftInset;
-        if (startX + mStartMarker.getWidth() >= 0) {
-            if (!mStartVisible) {
-                // Delay this to avoid flicker
-                mHandler.postDelayed(new Runnable() {
-                    public void run() {
-                        mStartVisible = true;
-                        mStartMarker.setAlpha(1f);
-                    }
-                }, 0);
-            }
-        } else {
-            if (mStartVisible) {
-                mStartMarker.setAlpha(0f);
-                mStartVisible = false;
-            }
-            startX = 0;
-        }
-
-        int endX = mEndPos - mOffset - mEndMarker.getWidth() + mMarkerRightInset;
-        if (endX + mEndMarker.getWidth() >= 0) {
-            if (!mEndVisible) {
-                // Delay this to avoid flicker
-                mHandler.postDelayed(new Runnable() {
-                    public void run() {
-                        mEndVisible = true;
-                        mEndMarker.setAlpha(1f);
-                    }
-                }, 0);
-            }
-        } else {
-            if (mEndVisible) {
-                mEndMarker.setAlpha(0f);
-                mEndVisible = false;
-            }
-            endX = 0;
-        }
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(
-                startX,
-                mMarkerTopOffset,
-                -mStartMarker.getWidth(),
-                -mStartMarker.getHeight());
-        mStartMarker.setLayoutParams(params);
-
-        params = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(
-                endX,
-                mWaveformView.getMeasuredHeight() - mEndMarker.getHeight() - mMarkerBottomOffset,
-                -mStartMarker.getWidth(),
-                -mStartMarker.getHeight());
-        mEndMarker.setLayoutParams(params);
-    }
 
     private Runnable mTimerRunnable = new Runnable() {
         public void run() {
