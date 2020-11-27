@@ -17,6 +17,10 @@ public class Cutter {
 
     private List<CutterInterval> intervalList;
 
+    public List<CutterInterval> getIntervalList() {
+        return intervalList;
+    }
+
     private CutterInterval interval;
 
     //record have duration > 19 sec
@@ -29,16 +33,9 @@ public class Cutter {
     }
 
     public void StopInterval(int end) {
-
         Log.d("end", String.valueOf(end));
-
-        if(checkDurationInterval(end)){
-            splitTheInterval(end);
-        }
-        else{
-            interval.setEnd(end);
-            intervalList.add(interval);
-        }
+        interval.setEnd(end);
+        intervalList.add(interval);
     }
 
     private boolean checkDurationInterval(int end){

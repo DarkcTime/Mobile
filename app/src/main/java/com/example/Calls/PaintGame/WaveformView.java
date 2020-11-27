@@ -28,8 +28,14 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
+import com.example.Calls.BackEnd.CutterFiles.Cutter;
+import com.example.Calls.BackEnd.CutterFiles.CutterInterval;
+import com.example.Calls.Play;
 import com.example.Calls.R;
 import com.example.Calls.PaintGame.soundFile.SoundFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * WaveformView is an Android view that displays a visual representation
@@ -60,9 +66,12 @@ public class WaveformView extends View {
     private Paint mSelectedLinePaint;
     private Paint mUnselectedLinePaint;
     private Paint mUnselectedBkgndLinePaint;
+    private Paint mSelectedBkgndLinePaint;
     private Paint mBorderLinePaint;
     private Paint mPlaybackLinePaint;
     private Paint mTimecodePaint;
+
+    private List<CutterInterval> listIntervals;
 
     private SoundFile mSoundFile;
     private int[] mLenByZoomLevel;
@@ -74,8 +83,8 @@ public class WaveformView extends View {
     private int mSampleRate;
     private int mSamplesPerFrame;
     private int mOffset;
-    private int mSelectionStart;
-    private int mSelectionEnd;
+    private int mSelectionStart = 10;
+    private int mSelectionEnd = 20;
     private int mPlaybackPos;
     private float mDensity;
     private float mInitialScaleSpan;
@@ -107,6 +116,10 @@ public class WaveformView extends View {
         mUnselectedBkgndLinePaint = new Paint();
         mUnselectedBkgndLinePaint.setAntiAlias(false);
         mUnselectedBkgndLinePaint.setColor(res.getColor(R.color.waveform_unselected_bkgnd_overlay));
+        //selected background
+        mSelectedBkgndLinePaint = new Paint();
+        mSelectedBkgndLinePaint.setAntiAlias(false);
+        mSelectedBkgndLinePaint.setColor(res.getColor(R.color.white));
         //line on select and unselect
         mBorderLinePaint = new Paint();
         mBorderLinePaint.setAntiAlias(true);
@@ -291,10 +304,19 @@ public class WaveformView extends View {
                      (mSampleRate * z) + 0.5);
     }
 
-    public void setParameters(int start, int end, int offset) {
-        mSelectionStart = start;
-        mSelectionEnd = end;
+    public void setParameters(List<CutterInterval> _listIntervals, int offset) {
+        listIntervals = _listIntervals;
         mOffset = offset;
+    }
+
+    private List<CutterToPixel> generateListIntervals(){
+        List<CutterToPixel> intervals = new ArrayList<>();
+        for (CutterInterval interval : listIntervals) {
+            int start = secondsToPixels(interval.getStart());
+            int end = secondsToPixels(interval.getEnd());
+            intervals.add(new CutterToPixel(start, end));
+        }
+        return intervals;
     }
 
     public int getStart() {
@@ -371,16 +393,31 @@ public class WaveformView extends View {
         }
 
         // Draw waveform
+
+        int buf = 0;
+        //draw selected and unselected wave
+        List<CutterToPixel> listIntervals = generateListIntervals();
+
         for (i = 0; i < width; i++) {
-            Paint paint;
-            if (i + start >= mSelectionStart &&
-                i + start < mSelectionEnd) {
-                paint = mSelectedLinePaint;
-            } else {
-                drawWaveformLine(canvas, i, 0, measuredHeight,
-                                 mUnselectedBkgndLinePaint);
+            Paint paint = new Paint();
+
+            drawWaveformLine(canvas, i, 0, measuredHeight, mUnselectedBkgndLinePaint);
+
+            if(listIntervals.size() == 0){
                 paint = mUnselectedLinePaint;
             }
+            else{
+                for(CutterToPixel interval : listIntervals)
+                {
+                    if ((i + start >= interval.getStartInterval() && i + start < interval.getEndInterval())) {
+                        paint = mSelectedLinePaint;
+                        break;
+                    } else {
+                        paint = mUnselectedLinePaint;
+                    }
+                }
+            }
+
             drawWaveformLine(
                 canvas, i,
                 ctr - mHeightsAtThisZoomLevel[start + i],
@@ -392,6 +429,7 @@ public class WaveformView extends View {
             }
         }
 
+        //draw unselectedBackground
         // If we can see the right edge of the waveform, draw the
         // non-waveform area to the right as unselected
         for (i = width; i < measuredWidth; i++) {
@@ -596,5 +634,20 @@ public class WaveformView extends View {
             mHeightsAtThisZoomLevel[i] =
                 (int)(mValuesByZoomLevel[mZoomLevel][i] * halfHeight);
         }
+    }
+}
+
+class CutterToPixel{
+    private final int startInterval;
+    private final int endInterval;
+    public CutterToPixel(int start, int end){
+        startInterval = start;
+        endInterval = end;
+    }
+    public int getStartInterval() {
+        return startInterval;
+    }
+    public int getEndInterval(){
+        return endInterval;
     }
 }

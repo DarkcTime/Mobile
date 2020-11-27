@@ -178,8 +178,6 @@ public class Play extends AppCompatActivity
     private Thread mRecordAudioThread;
     private Thread mSaveSoundFileThread;
 
-
-
     //endregion
 
     //endregion
@@ -374,6 +372,8 @@ public class Play extends AppCompatActivity
                 });
         mProgressDialog.show();
 
+
+
         final SoundFile.ProgressListener listener =
                 new SoundFile.ProgressListener() {
                     public boolean reportProgress(double fractionComplete) {
@@ -477,6 +477,45 @@ public class Play extends AppCompatActivity
 
         updateDisplay();
     }
+
+    private synchronized void onPlay(int startPosition) {
+        if (mIsPlaying) {
+            handlePause();
+            return;
+        }
+
+        if (mPlayer == null) {
+            // Not initialized yet
+            return;
+        }
+
+        try {
+            mPlayStartMsec = mWaveformView.pixelsToMillisecs(startPosition);
+            if (startPosition < mStartPos) {
+                mPlayEndMsec = mWaveformView.pixelsToMillisecs(mStartPos);
+            } else if (startPosition > mEndPos) {
+                mPlayEndMsec = mWaveformView.pixelsToMillisecs(mMaxPos);
+            } else {
+                mPlayEndMsec = mWaveformView.pixelsToMillisecs(mEndPos);
+            }
+            mPlayer.setOnCompletionListener(new SamplePlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion() {
+                    handlePause();
+                }
+            });
+            mIsPlaying = true;
+
+            mPlayer.seekTo(mPlayStartMsec);
+            mPlayer.start();
+            updateDisplay();
+
+        } catch (Exception e) {
+            showFinalAlert(e, R.string.play_error);
+            return;
+        }
+    }
+
     private synchronized void updateDisplay() {
         if (mIsPlaying) {
             int now = mPlayer.getCurrentPosition();
@@ -530,7 +569,12 @@ public class Play extends AppCompatActivity
             }
         }
 
-        mWaveformView.setParameters(mStartPos, mEndPos, mOffset);
+        //TODO go to start and end position for mWaveformView
+        /**
+         * send list to WaveForm for show intervals
+         */
+        mWaveformView.setParameters(cutter.getIntervalList(), mOffset);
+
         mWaveformView.invalidate();
 
         mStartMarker.setContentDescription(
@@ -1014,44 +1058,6 @@ public class Play extends AppCompatActivity
         }
         mWaveformView.setPlayback(-1);
         mIsPlaying = false;
-    }
-
-    private synchronized void onPlay(int startPosition) {
-        if (mIsPlaying) {
-            handlePause();
-            return;
-        }
-
-        if (mPlayer == null) {
-            // Not initialized yet
-            return;
-        }
-
-        try {
-            mPlayStartMsec = mWaveformView.pixelsToMillisecs(startPosition);
-            if (startPosition < mStartPos) {
-                mPlayEndMsec = mWaveformView.pixelsToMillisecs(mStartPos);
-            } else if (startPosition > mEndPos) {
-                mPlayEndMsec = mWaveformView.pixelsToMillisecs(mMaxPos);
-            } else {
-                mPlayEndMsec = mWaveformView.pixelsToMillisecs(mEndPos);
-            }
-            mPlayer.setOnCompletionListener(new SamplePlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion() {
-                    handlePause();
-                }
-            });
-            mIsPlaying = true;
-
-            mPlayer.seekTo(mPlayStartMsec);
-            mPlayer.start();
-            updateDisplay();
-
-        } catch (Exception e) {
-            showFinalAlert(e, R.string.play_error);
-            return;
-        }
     }
 
     /**
