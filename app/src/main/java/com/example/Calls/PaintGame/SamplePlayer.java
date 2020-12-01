@@ -176,6 +176,7 @@ public class SamplePlayer {
             start();
         }
     }
+
     public int getCurrentPosition() {
         return (int)((mPlaybackStart + mAudioTrack.getPlaybackHeadPosition()) *
                 (1000.0 / mSampleRate));

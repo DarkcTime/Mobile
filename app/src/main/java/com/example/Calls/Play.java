@@ -23,6 +23,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.Touch;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -42,6 +43,7 @@ import android.widget.Toast;
 
 import com.example.Calls.BackEnd.Analysis.AnalyzeCall;
 import com.example.Calls.BackEnd.CutterFiles.Cutter;
+import com.example.Calls.BackEnd.CutterFiles.CutterInterval;
 import com.example.Calls.BackEnd.Media.MediaPlayerClass;
 import com.example.Calls.BackEnd.Services.HistoryTranslateService;
 import com.example.Calls.BackEnd.Services.RecordsService;
@@ -63,6 +65,7 @@ import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.sound.sampled.AudioFileFormat;
@@ -101,10 +104,10 @@ public class Play extends AppCompatActivity
     private SharedPreferences mSettings;
 
     private static Cutter cutter;
-
     public static Cutter getCutter(){
         return cutter;
     }
+    public CutterInterval selectedInterval;
 
     private Button buttonBackRewind, buttonFordRewind;
 
@@ -117,6 +120,8 @@ public class Play extends AppCompatActivity
     private MediaPlayer mediaPlayer;
     private Button buttonNoPerson, buttonPerson;
     private Button buttonRawBackPlay, buttonRawForwardPlay;
+
+    private TextView textViewSelectedInterval;
 
     //region Paint For Cutter varibles
     private long mLoadingLastUpdateTime;
@@ -202,6 +207,7 @@ public class Play extends AppCompatActivity
             cutter = new Cutter();
             mHandler = new Handler();
 
+            textViewSelectedInterval = findViewById(R.id.textViewSelectedInterval);
             //region buttons
             //button raw <<
             buttonRawBackPlay = (Button) (findViewById(R.id.buttonRawBackPlay));
@@ -288,6 +294,13 @@ public class Play extends AppCompatActivity
     private void VisibilityPlay(){
         startLayoutPage.setVisibility(View.GONE);
         linerLayoutPaintGame.setVisibility(View.VISIBLE);
+    }
+    public void onClickButtonRemove(View view){
+        cutter.RemoveInterval(selectedInterval.getId());
+        for(CutterInterval intervals : cutter.getIntervalList()){
+            Log.d("id", String.valueOf(intervals.getId()));
+        }
+        updateDisplay();
     }
     public void onClickEndGame(View view){
         try{
@@ -777,6 +790,20 @@ public class Play extends AppCompatActivity
 
     public void waveformTouchStart(float x) {
         //Toast.makeText(this, "waveForm", Toast.LENGTH_LONG).show();
+        List<CutterInterval> listIntervals = cutter.getIntervalList();
+        int position = mPlayer.getCurrentPosition()/1000;
+        for(CutterInterval interval : listIntervals){
+            Log.d("id", String.valueOf(interval.getId()));
+            if(interval.getStart() < position && position < interval.getEnd()){
+                String b = " Start: " + String.valueOf(interval.getStart()) + " End: " + String.valueOf(interval.getEnd());
+                textViewSelectedInterval.setText(b);
+                selectedInterval = interval;
+                break;
+            }
+        }
+
+        Log.d("waveForm", "start");
+
         mTouchDragging = true;
         mTouchStart = x;
         mTouchInitialOffset = mOffset;
@@ -792,6 +819,8 @@ public class Play extends AppCompatActivity
     public void waveformTouchEnd() {
         mTouchDragging = false;
         mOffsetGoal = mOffset;
+
+        Log.d("waveForm", "end");
 
         long elapsedMsec = getCurrentTime() - mWaveformTouchStartMsec;
         if (elapsedMsec < 300) {
@@ -848,6 +877,7 @@ public class Play extends AppCompatActivity
     }
 
     public void markerTouchStart(MarkerView marker, float x) {
+        Log.d("markerWaveForm", "start");
         mTouchDragging = true;
         mTouchStart = x;
         mTouchInitialStartPos = mStartPos;

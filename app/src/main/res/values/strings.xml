@@ -24,7 +24,8 @@
     
     <!-- Buttons --> 
     <string name="complete_rus">Завершить</string>
-    
+    <string name="remove_rus">Удалить</string>
+
     <string name="get_portrait_button_rus">Получить портрет</string>
     <string name="save_rus">Сохранить</string>
     <string name="begin_rus">Начать</string>

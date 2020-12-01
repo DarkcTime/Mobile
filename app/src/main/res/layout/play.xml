@@ -196,7 +196,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:id="@+id/linerLayoutPaintGame"
-        android:visibility="gone"
+        android:visibility="visible"
         >
         <!--End game-->
         <LinearLayout
@@ -252,6 +252,24 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0px"
+                android:layout_weight="20"
+                android:orientation="horizontal"
+                android:layout_margin="5dp">
+                <TextView
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="70"
+                    android:id="@+id/textViewSelectedInterval"/>
+                <Button
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="30"
+                    android:text="@string/remove_rus"
+                    android:onClick="onClickButtonRemove"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0px"
                 android:layout_weight="20">
                 <Button
                     android:layout_width="0px"
@@ -287,4 +305,6 @@
         </LinearLayout>
 
     </LinearLayout>
+
+
 </LinearLayout>

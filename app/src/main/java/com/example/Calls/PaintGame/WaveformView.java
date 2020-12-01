@@ -136,6 +136,8 @@ public class WaveformView extends View {
         mTimecodePaint.setColor(res.getColor(R.color.blue));
         mTimecodePaint.setShadowLayer(2, 1, 1, res.getColor(R.color.yellow));
 
+
+
         //обработка жестов
         mGestureDetector = new GestureDetector(
             context,

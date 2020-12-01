@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.Calls.BackEnd.Files.FileSystem;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -21,6 +22,8 @@ public class Cutter {
         return intervalList;
     }
 
+    private int id = 0;
+
     private CutterInterval interval;
 
     //record have duration > 19 sec
@@ -28,16 +31,18 @@ public class Cutter {
     private final int MAX_DURATION = 19;
 
     public void AddInterval(int start){
-        Log.d("start", String.valueOf(start));
-        interval = new CutterInterval(start);
+        interval = new CutterInterval(id, start);
+        id++;
     }
 
     public void StopInterval(int end) {
-        Log.d("end", String.valueOf(end));
         interval.setEnd(end);
         intervalList.add(interval);
     }
 
+    public void RemoveInterval(int id){
+        intervalList.remove(id);
+    }
     private boolean checkDurationInterval(int end){
         int duration = end - interval.getStart();
         return duration > MAX_DURATION;
