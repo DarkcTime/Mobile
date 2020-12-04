@@ -10,12 +10,17 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
 
+import com.example.Calls.BackEnd.Files.Directories;
+import com.example.Calls.BackEnd.Files.FileSystemParameters;
 import com.example.Calls.BackEnd.Mail.Mailer;
 import com.example.Calls.EditTextRecord;
 import com.example.Calls.MainActivity;
+import com.example.Calls.Model.Repositories.RecordRepository;
 import com.example.Calls.R;
 import com.example.Calls.SelectRecord;
 import com.example.Calls.WaitInEndPlay;
+
+import java.io.File;
 
 @SuppressLint("ValidFragment")
 public class QuestionDialog extends AppCompatDialogFragment {
@@ -38,6 +43,9 @@ public class QuestionDialog extends AppCompatDialogFragment {
                 .setMessage("Вы уверены, что хотите закрыть полученный результат?")
                 .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        Directories directories = new Directories(RecordRepository.getSelectedRecord());
+                        directories.deleteDirectory(new File(FileSystemParameters.getPathForSelectedRecord()));
+
                         Intent intent = new Intent(editTextRecord, MainActivity.class);
                         startActivity(intent);
                         dialog.cancel();

@@ -30,8 +30,6 @@ public class ResultDialog extends DialogMain {
             ApiMain apiMain = new ApiMain();
 
             String message = apiMain.readFullFileSelectedRecord();
-
-
             if(SharedMethods.isNullOrWhiteSpace(message)){
                 message = "Текст для данной записи не удалось получить";
             }
@@ -40,7 +38,6 @@ public class ResultDialog extends DialogMain {
             }
 
             generateBuilder(message);
-
 
             return builder.create();
         }

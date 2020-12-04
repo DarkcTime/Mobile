@@ -54,10 +54,8 @@ public class ErrorDialog extends AppCompatDialogFragment {
                     .setMessage(message)
                     .setPositiveButton("Отправить разработчику на мыло", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-
                             Mailer mailer = new Mailer(builder.getContext());
                             mailer.SendMail(typeException, message);
-
                             dialog.cancel();
                         }
                     })

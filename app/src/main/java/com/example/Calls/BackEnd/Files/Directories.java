@@ -22,6 +22,16 @@ public class Directories {
         createDirectoryForWorkWithApi();
     }
 
+    public boolean deleteDirectory(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
+    }
+
     private void createDirectoryApplication(){
         if(!new File(FileSystemParameters.getPathApplicationFileSystem()).mkdir())
             Log.d("createDirApp", "dir no create");
@@ -31,7 +41,6 @@ public class Directories {
         if(!new File(FileSystemParameters.getPathForSelectedContact()).mkdir())
             Log.d("createDirForCon", "dir no create");
     }
-
 
     private void createDirectoryForRecordsInSelectedRecord(){
         if(!new File(FileSystemParameters.getPathForSelectedRecordsForCutter()).mkdir())
