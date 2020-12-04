@@ -21,6 +21,9 @@ public class Cutter {
     public List<CutterInterval> getIntervalList() {
         return intervalList;
     }
+    public boolean isNullIntervalList(){
+        return intervalList.isEmpty();
+    }
 
     private int id = 0;
 
@@ -34,12 +37,10 @@ public class Cutter {
         interval = new CutterInterval(id, start);
         id++;
     }
-
     public void StopInterval(int end) {
         interval.setEnd(end);
         intervalList.add(interval);
     }
-
     public void RemoveInterval(int id){
         intervalList.remove(id);
     }

@@ -188,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "loadMain");
         }
-
     }
 
     //endregion

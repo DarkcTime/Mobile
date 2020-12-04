@@ -42,11 +42,11 @@ public class WaitInEndPlay extends AppCompatActivity {
 
             Directories directories = new Directories(RecordRepository.getSelectedRecord());
             directories.createDirectories();
+            //get list intervals
+            Cutter cutter = Play.getCutter();
 
             apiMain = new ApiMain();
 
-            //get list intervals
-            Cutter cutter = Play.getCutter();
             cutter.startCutFileIntervals(this);
 
         }

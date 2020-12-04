@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -48,6 +49,7 @@ import com.example.Calls.BackEnd.Media.MediaPlayerClass;
 import com.example.Calls.BackEnd.Services.HistoryTranslateService;
 import com.example.Calls.BackEnd.Services.RecordsService;
 import com.example.Calls.BackEnd.Settings.SavedSettings;
+import com.example.Calls.BackEnd.SharedClasses.SharedMethods;
 import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Dialog.HelpDialog;
 import com.example.Calls.Model.Repositories.RecordRepository;
@@ -76,52 +78,28 @@ import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
 //TODO декомпозировать код после определения интерфейса и планов на переработку
 
 public class Play extends AppCompatActivity
-        implements  MarkerView.MarkerListener,WaveformView.WaveformListener {
+        implements WaveformView.WaveformListener {
 
     //dialog windows
     final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.Play);
-
-
-    private TextView textViewSelectedRecPlay, textViewStartPositionPlay;
-    private SeekBar seekBarPositionPlay;
-    private MediaPlayer mp;
-
-    private Handler handler;
-    private Runnable runnable;
-
-    private Button buttonStartPlay,buttonMyPlay, buttonExit, buttonCompanion;
-
-    private static boolean checkPlayCycle = false;
-
-    private boolean endRecord = false;
-
-    private boolean hearing;
-
-    private static int checkPlaying;
-
-    //значение паузы и перемотки
-    private int secRewind, secPause;
-    private SharedPreferences mSettings;
 
     private static Cutter cutter;
     public static Cutter getCutter(){
         return cutter;
     }
     public CutterInterval selectedInterval;
-
+    public EditText editTextStart,editTextEnd;
     private Button buttonBackRewind, buttonFordRewind;
 
     //layouts
     private LinearLayout startLayoutPage;
     private LinearLayout linerLayoutPaintGame;
-    private LinearLayout linerLayoutButtonComplete;
+    private LinearLayout linerLayoutButtonComplete,linerLayoutRemoveInterval;
 
     private SamplePlayer mPlayer;
     private MediaPlayer mediaPlayer;
     private Button buttonNoPerson, buttonPerson;
     private Button buttonRawBackPlay, buttonRawForwardPlay;
-
-    private TextView textViewSelectedInterval;
 
     //region Paint For Cutter varibles
     private long mLoadingLastUpdateTime;
@@ -199,6 +177,7 @@ public class Play extends AppCompatActivity
             startLayoutPage = (LinearLayout) (findViewById(R.id.startLayoutPage));
             linerLayoutPaintGame = (LinearLayout) (findViewById(R.id.linerLayoutPaintGame));
             linerLayoutButtonComplete = (LinearLayout) (findViewById(R.id.linerLayoutButtonComplete));
+            linerLayoutRemoveInterval = (LinearLayout) (findViewById(R.id.linerLayoutRemoveInterval));
 
             //generate objects
             //set file name
@@ -207,8 +186,10 @@ public class Play extends AppCompatActivity
             cutter = new Cutter();
             mHandler = new Handler();
 
-            textViewSelectedInterval = findViewById(R.id.textViewSelectedInterval);
+            editTextStart = (EditText) findViewById(R.id.editTextStart);
+            editTextEnd = (EditText) findViewById(R.id.editTextEnd);
             //region buttons
+
             //button raw <<
             buttonRawBackPlay = (Button) (findViewById(R.id.buttonRawBackPlay));
             buttonRawBackPlay.setOnTouchListener(new View.OnTouchListener() {
@@ -219,7 +200,6 @@ public class Play extends AppCompatActivity
                     }
                     if(isUp(event)){
                         Log.d("startModeWait", "swm");
-
                     }
                     return false;
                 }
@@ -276,6 +256,7 @@ public class Play extends AppCompatActivity
         }
 
     }
+
     //region buttons start and end
     public void onClickStartPlay(View view){
         try{
@@ -288,221 +269,218 @@ public class Play extends AppCompatActivity
     }
     //start load and view play
     private void setPlayUI(){
-        loadGui();
-        loadFromFile();
+        try{
+            loadGui();
+            loadFromFile();
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "setPlayUI");
+        }
     }
     private void VisibilityPlay(){
         startLayoutPage.setVisibility(View.GONE);
         linerLayoutPaintGame.setVisibility(View.VISIBLE);
     }
+    //endregion
+
+    //region events buttons
     public void onClickButtonRemove(View view){
-        cutter.RemoveInterval(selectedInterval.getId());
-        for(CutterInterval intervals : cutter.getIntervalList()){
-            Log.d("id", String.valueOf(intervals.getId()));
+        try{
+            cutter.RemoveInterval(selectedInterval.getId());
+            updateDisplay();
         }
-        updateDisplay();
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "buttonRemove");
+        }
     }
     public void onClickEndGame(View view){
         try{
-            Intent intent = new Intent(Play.this, WaitInEndPlay.class);
-            startActivity(intent);
+            //open wait End Play Activity
+            if(!cutter.isNullIntervalList()){
+                Intent intent = new Intent(Play.this, WaitInEndPlay.class);
+                startActivity(intent);
+            }
+            else{
+                Toast.makeText(this, "Запись разговора не размечена. Выделите собеседника", Toast.LENGTH_LONG).show();
+            }
         }
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickEndGame");
         }
     }
-
     //endregion
 
     //region Load and Update GUI
     private void loadGui() {
-        // Inflate our UI from its XML layout description.
+        //Inflate our UI from its XML layout description
+        try{
+            DisplayMetrics metrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            mDensity = metrics.density;
+            mWaveformView = (WaveformView)findViewById(R.id.waveform);
+            mWaveformView.setListener(this);
 
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        mDensity = metrics.density;
+            mMaxPos = 0;
+            mLastDisplayedStartPos = -1;
+            mLastDisplayedEndPos = -1;
 
-        mMarkerLeftInset = (int)(46 * mDensity);
-        mMarkerRightInset = (int)(48 * mDensity);
-        mMarkerTopOffset = (int)(10 * mDensity);
-        mMarkerBottomOffset = (int)(10 * mDensity);
+            if (mSoundFile != null && !mWaveformView.hasSoundFile()) {
+                mWaveformView.setSoundFile(mSoundFile);
+                mWaveformView.recomputeHeights(mDensity);
+                mMaxPos = mWaveformView.maxPos();
+            }
 
-        mWaveformView = (WaveformView)findViewById(R.id.waveform);
-        mWaveformView.setListener(this);
-
-        mMaxPos = 0;
-        mLastDisplayedStartPos = -1;
-        mLastDisplayedEndPos = -1;
-
-        if (mSoundFile != null && !mWaveformView.hasSoundFile()) {
-            mWaveformView.setSoundFile(mSoundFile);
-            mWaveformView.recomputeHeights(mDensity);
-            mMaxPos = mWaveformView.maxPos();
+            updateDisplay();
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "loadGuiPlay");
         }
 
-        mStartMarker = (MarkerView)findViewById(R.id.startmarker);
-        mStartMarker.setListener(this);
-        mStartMarker.setAlpha(1f);
-        mStartMarker.setFocusable(true);
-        mStartMarker.setFocusableInTouchMode(true);
-        mStartVisible = true;
-
-        mEndMarker = (MarkerView)findViewById(R.id.endmarker);
-        mEndMarker.setListener(this);
-        mEndMarker.setAlpha(1f);
-        mEndMarker.setFocusable(true);
-        mEndMarker.setFocusableInTouchMode(true);
-        mEndVisible = true;
-
-        updateDisplay();
     }
     private void loadFromFile() {
-        mFile = new File(mFilename);
+        try{
+            mFile = new File(mFilename);
+            SongMetadataReader metadataReader = new SongMetadataReader(
+                    this, mFilename);
+            mTitle = metadataReader.mTitle;
+            mArtist = metadataReader.mArtist;
 
-        SongMetadataReader metadataReader = new SongMetadataReader(
-                this, mFilename);
-        mTitle = metadataReader.mTitle;
-        mArtist = metadataReader.mArtist;
+            String titleLabel = mTitle;
+            if (mArtist != null && mArtist.length() > 0) {
+                titleLabel += " - " + mArtist;
+            }
+            setTitle(titleLabel);
 
-        String titleLabel = mTitle;
-        if (mArtist != null && mArtist.length() > 0) {
-            titleLabel += " - " + mArtist;
-        }
-        setTitle(titleLabel);
-
-        mLoadingLastUpdateTime = getCurrentTime();
-        mLoadingKeepGoing = true;
-        mFinishActivity = false;
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        mProgressDialog.setCancelable(true);
-        mProgressDialog.setOnCancelListener(
-                new DialogInterface.OnCancelListener() {
-                    public void onCancel(DialogInterface dialog) {
-                        mLoadingKeepGoing = false;
-                        mFinishActivity = true;
-                    }
-                });
-        mProgressDialog.show();
-
-
-
-        final SoundFile.ProgressListener listener =
-                new SoundFile.ProgressListener() {
-                    public boolean reportProgress(double fractionComplete) {
-                        long now = getCurrentTime();
-                        if (now - mLoadingLastUpdateTime > 100) {
-                            mProgressDialog.setProgress(
-                                    (int) (mProgressDialog.getMax() * fractionComplete));
-                            mLoadingLastUpdateTime = now;
+            mLoadingLastUpdateTime = getCurrentTime();
+            mLoadingKeepGoing = true;
+            mFinishActivity = false;
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgressDialog.setCancelable(true);
+            mProgressDialog.setOnCancelListener(
+                    new DialogInterface.OnCancelListener() {
+                        public void onCancel(DialogInterface dialog) {
+                            mLoadingKeepGoing = false;
+                            mFinishActivity = true;
                         }
-                        return mLoadingKeepGoing;
-                    }
-                };
+                    });
+            mProgressDialog.show();
 
-        // Load the sound file in a background thread
-        mLoadSoundFileThread = new Thread() {
-            public void run() {
-                try {
-                    mSoundFile = SoundFile.create(mFile.getAbsolutePath(), listener);
+            final SoundFile.ProgressListener listener =
+                    new SoundFile.ProgressListener() {
+                        public boolean reportProgress(double fractionComplete) {
+                            long now = getCurrentTime();
+                            if (now - mLoadingLastUpdateTime > 100) {
+                                mProgressDialog.setProgress(
+                                        (int) (mProgressDialog.getMax() * fractionComplete));
+                                mLoadingLastUpdateTime = now;
+                            }
+                            return mLoadingKeepGoing;
+                        }
+                    };
 
-                    if (mSoundFile == null) {
+            // Load the sound file in a background thread
+            mLoadSoundFileThread = new Thread() {
+                public void run() {
+                    try {
+                        mSoundFile = SoundFile.create(mFile.getAbsolutePath(), listener);
+
+                        if (mSoundFile == null) {
+                            mProgressDialog.dismiss();
+                            String name = mFile.getName().toLowerCase();
+                            String[] components = name.split("\\.");
+                            String err;
+                            if (components.length < 2) {
+                                err = "getResources().getString()";
+
+                            } else {
+                                err = "getResources().getString()";
+
+                            }
+                            final String finalErr = err;
+                            Runnable runnable = new Runnable() {
+                                public void run() {
+                                    showFinalAlert(new Exception(), finalErr);
+                                }
+                            };
+                            mHandler.post(runnable);
+                            return;
+                        }
+                        mPlayer = new SamplePlayer(mSoundFile);
+                    } catch (final Exception e) {
                         mProgressDialog.dismiss();
-                        String name = mFile.getName().toLowerCase();
-                        String[] components = name.split("\\.");
-                        String err;
-                        if (components.length < 2) {
-                            err = "getResources().getString()";
+                        e.printStackTrace();
+                        mInfoContent = e.toString();
+                        runOnUiThread(new Runnable() {
+                            public void run() {
 
-                        } else {
-                            err = "getResources().getString()";
+                            }
+                        });
 
-                        }
-                        final String finalErr = err;
                         Runnable runnable = new Runnable() {
                             public void run() {
-                                showFinalAlert(new Exception(), finalErr);
+
                             }
                         };
                         mHandler.post(runnable);
                         return;
                     }
-                    mPlayer = new SamplePlayer(mSoundFile);
-                } catch (final Exception e) {
                     mProgressDialog.dismiss();
-                    e.printStackTrace();
-                    mInfoContent = e.toString();
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-
-                        }
-                    });
-
-                    Runnable runnable = new Runnable() {
-                        public void run() {
-
-                        }
-                    };
-                    mHandler.post(runnable);
-                    return;
+                    if (mLoadingKeepGoing) {
+                        Runnable runnable = new Runnable() {
+                            public void run() {
+                                finishOpeningSoundFile();
+                            }
+                        };
+                        mHandler.post(runnable);
+                    } else if (mFinishActivity){
+                        finish();
+                    }
                 }
-                mProgressDialog.dismiss();
-                if (mLoadingKeepGoing) {
-                    Runnable runnable = new Runnable() {
-                        public void run() {
-                            finishOpeningSoundFile();
-                        }
-                    };
-                    mHandler.post(runnable);
-                } else if (mFinishActivity){
-                    finish();
-                }
-            }
-        };
-        mLoadSoundFileThread.start();
+            };
+            mLoadSoundFileThread.start();
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "loadFromFile");
+        }
     }
     private void finishOpeningSoundFile() {
-        mWaveformView.setSoundFile(mSoundFile);
-        mWaveformView.recomputeHeights(mDensity);
+        try{
+            mWaveformView.setSoundFile(mSoundFile);
+            mWaveformView.recomputeHeights(mDensity);
 
-        mMaxPos = mWaveformView.maxPos();
-        mLastDisplayedStartPos = -1;
-        mLastDisplayedEndPos = -1;
+            mMaxPos = mWaveformView.maxPos();
+            mLastDisplayedStartPos = -1;
+            mLastDisplayedEndPos = -1;
 
-        mTouchDragging = false;
+            mTouchDragging = false;
 
-        mOffset = 0;
-        mOffsetGoal = 0;
-        mFlingVelocity = 0;
-        resetPositions();
-        if (mEndPos > mMaxPos)
-            mEndPos = mMaxPos;
+            mOffset = 0;
+            mOffsetGoal = 0;
+            mFlingVelocity = 0;
+            resetPositions();
+            if (mEndPos > mMaxPos)
+                mEndPos = mMaxPos;
 
-        mCaption =
-                mSoundFile.getFiletype() + ", " +
-                        mSoundFile.getSampleRate() + " Hz, " +
-                        mSoundFile.getAvgBitrateKbps() + " kbps, " +
-                        formatTime(mMaxPos) + " " +
-                        getResources().getString(R.string.time_seconds);
-
-        VisibilityPlay();
-        onPlay(0);
-
-        updateDisplay();
+            VisibilityPlay();
+            updateDisplay();
+            Toast.makeText(this, "Начните выделять свой голос или голос собеседника", Toast.LENGTH_LONG).show();
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "finishOpeningSoundFile");
+        }
     }
 
     private synchronized void onPlay(int startPosition) {
-        if (mIsPlaying) {
-            handlePause();
-            return;
-        }
-
-        if (mPlayer == null) {
-            // Not initialized yet
-            return;
-        }
-
         try {
+            if (mIsPlaying) {
+                handlePause();
+                return;
+            }
+            if (mPlayer == null) {
+                // Not initialized yet
+                return;
+            }
             mPlayStartMsec = mWaveformView.pixelsToMillisecs(startPosition);
             if (startPosition < mStartPos) {
                 mPlayEndMsec = mWaveformView.pixelsToMillisecs(mStartPos);
@@ -523,137 +501,73 @@ public class Play extends AppCompatActivity
             mPlayer.start();
             updateDisplay();
 
-        } catch (Exception e) {
-            showFinalAlert(e, R.string.play_error);
-            return;
+        } catch (Exception ex) {
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onPlay");
         }
     }
 
     private synchronized void updateDisplay() {
-        if (mIsPlaying) {
-            int now = mPlayer.getCurrentPosition();
-            int frames = mWaveformView.millisecsToPixels(now);
-            mWaveformView.setPlayback(frames);
-            setOffsetGoalNoUpdate(frames - mWidth / 2);
-            if (now >= mPlayEndMsec) {
-                handlePause();
+        try{
+            if (mIsPlaying) {
+                int now = mPlayer.getCurrentPosition();
+                int frames = mWaveformView.millisecsToPixels(now);
+                mWaveformView.setPlayback(frames);
+                setOffsetGoalNoUpdate(frames - mWidth / 2);
+                if (now >= mPlayEndMsec) {
+                    handlePause();
+                }
             }
-        }
 
-        if (!mTouchDragging) {
-            int offsetDelta;
+            if (!mTouchDragging) {
+                int offsetDelta;
 
-            if (mFlingVelocity != 0) {
-                offsetDelta = mFlingVelocity / 30;
-                if (mFlingVelocity > 80) {
-                    mFlingVelocity -= 80;
-                } else if (mFlingVelocity < -80) {
-                    mFlingVelocity += 80;
+                if (mFlingVelocity != 0) {
+                    offsetDelta = mFlingVelocity / 30;
+                    if (mFlingVelocity > 80) {
+                        mFlingVelocity -= 80;
+                    } else if (mFlingVelocity < -80) {
+                        mFlingVelocity += 80;
+                    } else {
+                        mFlingVelocity = 0;
+                    }
+
+                    mOffset += offsetDelta;
+
+                    if (mOffset + mWidth / 2 > mMaxPos) {
+                        mOffset = mMaxPos - mWidth / 2;
+                        mFlingVelocity = 0;
+                    }
+                    if (mOffset < 0) {
+                        mOffset = 0;
+                        mFlingVelocity = 0;
+                    }
+                    mOffsetGoal = mOffset;
                 } else {
-                    mFlingVelocity = 0;
+                    offsetDelta = mOffsetGoal - mOffset;
+
+                    if (offsetDelta > 10)
+                        offsetDelta = offsetDelta / 10;
+                    else if (offsetDelta > 0)
+                        offsetDelta = 1;
+                    else if (offsetDelta < -10)
+                        offsetDelta = offsetDelta / 10;
+                    else if (offsetDelta < 0)
+                        offsetDelta = -1;
+                    else
+                        offsetDelta = 0;
+
+                    mOffset += offsetDelta;
                 }
-
-                mOffset += offsetDelta;
-
-                if (mOffset + mWidth / 2 > mMaxPos) {
-                    mOffset = mMaxPos - mWidth / 2;
-                    mFlingVelocity = 0;
-                }
-                if (mOffset < 0) {
-                    mOffset = 0;
-                    mFlingVelocity = 0;
-                }
-                mOffsetGoal = mOffset;
-            } else {
-                offsetDelta = mOffsetGoal - mOffset;
-
-                if (offsetDelta > 10)
-                    offsetDelta = offsetDelta / 10;
-                else if (offsetDelta > 0)
-                    offsetDelta = 1;
-                else if (offsetDelta < -10)
-                    offsetDelta = offsetDelta / 10;
-                else if (offsetDelta < 0)
-                    offsetDelta = -1;
-                else
-                    offsetDelta = 0;
-
-                mOffset += offsetDelta;
             }
+
+            //TODO go to start and end position for mWaveformView
+            //send list to WaveForm for show intervals
+            mWaveformView.setParameters(cutter.getIntervalList(), mOffset);
+            mWaveformView.invalidate();
         }
-
-        //TODO go to start and end position for mWaveformView
-        /**
-         * send list to WaveForm for show intervals
-         */
-        mWaveformView.setParameters(cutter.getIntervalList(), mOffset);
-
-        mWaveformView.invalidate();
-
-        mStartMarker.setContentDescription(
-                getResources().getText(R.string.start_marker) + " " +
-                        formatTime(mStartPos));
-        mEndMarker.setContentDescription(
-                getResources().getText(R.string.end_marker) + " " +
-                        formatTime(mEndPos));
-
-        int startX = mStartPos - mOffset - mMarkerLeftInset;
-        if (startX + mStartMarker.getWidth() >= 0) {
-            if (!mStartVisible) {
-                // Delay this to avoid flicker
-                mHandler.postDelayed(new Runnable() {
-                    public void run() {
-                        mStartVisible = true;
-                        mStartMarker.setAlpha(1f);
-                    }
-                }, 0);
-            }
-        } else {
-            if (mStartVisible) {
-                mStartMarker.setAlpha(0f);
-                mStartVisible = false;
-            }
-            startX = 0;
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "updateDisplay");
         }
-
-        int endX = mEndPos - mOffset - mEndMarker.getWidth() + mMarkerRightInset;
-        if (endX + mEndMarker.getWidth() >= 0) {
-            if (!mEndVisible) {
-                // Delay this to avoid flicker
-                mHandler.postDelayed(new Runnable() {
-                    public void run() {
-                        mEndVisible = true;
-                        mEndMarker.setAlpha(1f);
-                    }
-                }, 0);
-            }
-        } else {
-            if (mEndVisible) {
-                mEndMarker.setAlpha(0f);
-                mEndVisible = false;
-            }
-            endX = 0;
-        }
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(
-                startX,
-                mMarkerTopOffset,
-                -mStartMarker.getWidth(),
-                -mStartMarker.getHeight());
-        mStartMarker.setLayoutParams(params);
-
-        params = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(
-                endX,
-                mWaveformView.getMeasuredHeight() - mEndMarker.getHeight() - mMarkerBottomOffset,
-                -mStartMarker.getWidth(),
-                -mStartMarker.getHeight());
-        mEndMarker.setLayoutParams(params);
     }
     //endregion
 
@@ -678,7 +592,12 @@ public class Play extends AppCompatActivity
         mPlayer.pause();
     }
     private void stopModeWait(){
-       mPlayer.start();
+        if(mPlayer.getCurrentPosition() != 0){
+            mPlayer.start();
+        }
+        else{
+            onPlay(0);
+        }
     }
 
     private void RawBack(){
@@ -689,49 +608,6 @@ public class Play extends AppCompatActivity
     }
     //endregion
 
-    //region Destroy
-    /** Called when the activity is finally destroyed. */
-    @Override
-    protected void onDestroy() {
-        Log.v("Ringdroid", "EditActivity OnDestroy");
-
-        mLoadingKeepGoing = false;
-        mRecordingKeepGoing = false;
-
-        mLoadSoundFileThread = null;
-        mRecordAudioThread = null;
-        mSaveSoundFileThread = null;
-        if(mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }
-        if(mAlertDialog != null) {
-            mAlertDialog.dismiss();
-            mAlertDialog = null;
-        }
-
-        if (mPlayer != null) {
-            if (mPlayer.isPlaying() || mPlayer.isPaused()) {
-                mPlayer.stop();
-            }
-            mPlayer.release();
-            mPlayer = null;
-        }
-
-        super.onDestroy();
-    }
-
-    /** Called with an Activity we started with an Intent returns. */
-    @Override
-    protected void onActivityResult(int requestCode,
-                                    int resultCode,
-                                    Intent dataIntent) {
-        Log.v("Ringdroid", "EditActivity onActivityResult");
-
-    }
-
-    //endregion
-
     /**
      * Called when the orientation changes and/or the keyboard is shown
      * or hidden.  We don't need to recreate the whole activity in this
@@ -739,23 +615,25 @@ public class Play extends AppCompatActivity
      */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        Log.v("Ringdroid", "EditActivity onConfigurationChanged");
-        final int saveZoomLevel = mWaveformView.getZoomLevel();
-        super.onConfigurationChanged(newConfig);
+        try{
+            final int saveZoomLevel = mWaveformView.getZoomLevel();
+            super.onConfigurationChanged(newConfig);
 
-        loadGui();
+            loadGui();
 
-        mHandler.postDelayed(new Runnable() {
-            public void run() {
-                mStartMarker.requestFocus();
-                markerFocus(mStartMarker);
+            mHandler.postDelayed(new Runnable() {
+                public void run() {
 
-                mWaveformView.setZoomLevel(saveZoomLevel);
-                mWaveformView.recomputeHeights(mDensity);
+                    mWaveformView.setZoomLevel(saveZoomLevel);
+                    mWaveformView.recomputeHeights(mDensity);
 
-                updateDisplay();
-            }
-        }, 500);
+                    updateDisplay();
+                }
+            }, 500);
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "Play/onConfigurationChanged");
+        }
     }
 
     @Override
@@ -778,37 +656,56 @@ public class Play extends AppCompatActivity
      * animate and trigger another redraw.
      */
     public void waveformDraw() {
-        mWidth = mWaveformView.getMeasuredWidth();
-        if (mOffsetGoal != mOffset && !mKeyDown)
-            updateDisplay();
-        else if (mIsPlaying) {
-            updateDisplay();
-        } else if (mFlingVelocity != 0) {
-            updateDisplay();
+        try{
+            mWidth = mWaveformView.getMeasuredWidth();
+            if (mOffsetGoal != mOffset && !mKeyDown)
+                updateDisplay();
+            else if (mIsPlaying) {
+                updateDisplay();
+            } else if (mFlingVelocity != 0) {
+                updateDisplay();
+            }
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "Play/waveformDraw");
         }
     }
 
     public void waveformTouchStart(float x) {
-        //Toast.makeText(this, "waveForm", Toast.LENGTH_LONG).show();
-        List<CutterInterval> listIntervals = cutter.getIntervalList();
-        int position = mPlayer.getCurrentPosition()/1000;
-        for(CutterInterval interval : listIntervals){
-            Log.d("id", String.valueOf(interval.getId()));
-            if(interval.getStart() < position && position < interval.getEnd()){
-                String b = " Start: " + String.valueOf(interval.getStart()) + " End: " + String.valueOf(interval.getEnd());
-                textViewSelectedInterval.setText(b);
-                selectedInterval = interval;
-                break;
+        try{
+            selectedInterval = null;
+            List<CutterInterval> listIntervals = cutter.getIntervalList();
+            int position = mPlayer.getCurrentPosition()/1000;
+            for(CutterInterval interval : listIntervals){
+                Log.d("id", String.valueOf(interval.getId()));
+                if(interval.getStart() < position && position < interval.getEnd()){
+                    selectedInterval = interval;
+                    setUIForSelectedInterval();
+                    break;
+                }
             }
+
+            if(selectedInterval != null){
+                linerLayoutRemoveInterval.setVisibility(View.VISIBLE);
+            }
+            else{
+                linerLayoutRemoveInterval.setVisibility(View.GONE);
+            }
+
+            mTouchDragging = true;
+            mTouchStart = x;
+            mTouchInitialOffset = mOffset;
+            mFlingVelocity = 0;
+            mWaveformTouchStartMsec = getCurrentTime();
+
         }
-
-        Log.d("waveForm", "start");
-
-        mTouchDragging = true;
-        mTouchStart = x;
-        mTouchInitialOffset = mOffset;
-        mFlingVelocity = 0;
-        mWaveformTouchStartMsec = getCurrentTime();
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "Play/waveformTouchStart");
+        }
+    }
+    private void setUIForSelectedInterval(){
+        editTextStart.setText(SharedMethods.secondsToTime(selectedInterval.getStart()));
+        editTextEnd.setText(SharedMethods.secondsToTime(selectedInterval.getEnd()));
     }
 
     public void waveformTouchMove(float x) {
@@ -817,171 +714,71 @@ public class Play extends AppCompatActivity
     }
 
     public void waveformTouchEnd() {
-        mTouchDragging = false;
-        mOffsetGoal = mOffset;
+        try{
+            mTouchDragging = false;
+            mOffsetGoal = mOffset;
 
-        Log.d("waveForm", "end");
-
-        long elapsedMsec = getCurrentTime() - mWaveformTouchStartMsec;
-        if (elapsedMsec < 300) {
-            if (mIsPlaying) {
-                int seekMsec = mWaveformView.pixelsToMillisecs(
-                        (int)(mTouchStart + mOffset));
-                if (seekMsec >= mPlayStartMsec &&
-                        seekMsec < mPlayEndMsec) {
-                    mPlayer.seekTo(seekMsec);
+            long elapsedMsec = getCurrentTime() - mWaveformTouchStartMsec;
+            if (elapsedMsec < 300) {
+                if (mIsPlaying) {
+                    int seekMsec = mWaveformView.pixelsToMillisecs(
+                            (int)(mTouchStart + mOffset));
+                    if (seekMsec >= mPlayStartMsec &&
+                            seekMsec < mPlayEndMsec) {
+                        mPlayer.seekTo(seekMsec);
+                    } else {
+                        handlePause();
+                    }
                 } else {
-                    handlePause();
+                    onPlay((int)(mTouchStart + mOffset));
                 }
-            } else {
-                onPlay((int)(mTouchStart + mOffset));
             }
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "Play/waveformTouchEnd");
         }
     }
 
     public void waveformFling(float vx) {
-        mTouchDragging = false;
-        mOffsetGoal = mOffset;
-        mFlingVelocity = (int)(-vx);
-        updateDisplay();
+        try{
+            mTouchDragging = false;
+            mOffsetGoal = mOffset;
+            mFlingVelocity = (int)(-vx);
+            updateDisplay();
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "Play/waveformFling");
+        }
     }
 
     public void waveformZoomIn() {
-        mWaveformView.zoomIn();
-        mStartPos = mWaveformView.getStart();
-        mEndPos = mWaveformView.getEnd();
-        mMaxPos = mWaveformView.maxPos();
-        mOffset = mWaveformView.getOffset();
-        mOffsetGoal = mOffset;
-        updateDisplay();
+        try{
+            mWaveformView.zoomIn();
+            mStartPos = mWaveformView.getStart();
+            mEndPos = mWaveformView.getEnd();
+            mMaxPos = mWaveformView.maxPos();
+            mOffset = mWaveformView.getOffset();
+            mOffsetGoal = mOffset;
+            updateDisplay();
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "Play/waveformZoomIn");
+        }
     }
 
     public void waveformZoomOut() {
-        mWaveformView.zoomOut();
-        mStartPos = mWaveformView.getStart();
-        mEndPos = mWaveformView.getEnd();
-        mMaxPos = mWaveformView.maxPos();
-        mOffset = mWaveformView.getOffset();
-        mOffsetGoal = mOffset;
-        updateDisplay();
-    }
-
-    //endregion
-
-    //
-    // region MarkerListener
-    //
-
-    public void markerDraw() {
-
-    }
-
-    public void markerTouchStart(MarkerView marker, float x) {
-        Log.d("markerWaveForm", "start");
-        mTouchDragging = true;
-        mTouchStart = x;
-        mTouchInitialStartPos = mStartPos;
-        mTouchInitialEndPos = mEndPos;
-    }
-
-    public void markerTouchMove(MarkerView marker, float x) {
-        float delta = x - mTouchStart;
-
-        if (marker == mStartMarker) {
-            mStartPos = trap((int)(mTouchInitialStartPos + delta));
-            mEndPos = trap((int)(mTouchInitialEndPos + delta));
-        } else {
-            mEndPos = trap((int)(mTouchInitialEndPos + delta));
-            if (mEndPos < mStartPos)
-                mEndPos = mStartPos;
+        try{
+            mWaveformView.zoomOut();
+            mStartPos = mWaveformView.getStart();
+            mEndPos = mWaveformView.getEnd();
+            mMaxPos = mWaveformView.maxPos();
+            mOffset = mWaveformView.getOffset();
+            mOffsetGoal = mOffset;
+            updateDisplay();
         }
-
-        updateDisplay();
-    }
-
-    public void markerTouchEnd(MarkerView marker) {
-        mTouchDragging = false;
-        if (marker == mStartMarker) {
-            setOffsetGoalStart();
-        } else {
-            setOffsetGoalEnd();
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "Play/waveformZoomOut");
         }
-    }
-
-    public void markerLeft(MarkerView marker, int velocity) {
-        mKeyDown = true;
-
-        if (marker == mStartMarker) {
-            int saveStart = mStartPos;
-            mStartPos = trap(mStartPos - velocity);
-            mEndPos = trap(mEndPos - (saveStart - mStartPos));
-            setOffsetGoalStart();
-        }
-
-        if (marker == mEndMarker) {
-            if (mEndPos == mStartPos) {
-                mStartPos = trap(mStartPos - velocity);
-                mEndPos = mStartPos;
-            } else {
-                mEndPos = trap(mEndPos - velocity);
-            }
-
-            setOffsetGoalEnd();
-        }
-
-        updateDisplay();
-    }
-
-    public void markerRight(MarkerView marker, int velocity) {
-        mKeyDown = true;
-
-        if (marker == mStartMarker) {
-            int saveStart = mStartPos;
-            mStartPos += velocity;
-            if (mStartPos > mMaxPos)
-                mStartPos = mMaxPos;
-            mEndPos += (mStartPos - saveStart);
-            if (mEndPos > mMaxPos)
-                mEndPos = mMaxPos;
-
-            setOffsetGoalStart();
-        }
-
-        if (marker == mEndMarker) {
-            mEndPos += velocity;
-            if (mEndPos > mMaxPos)
-                mEndPos = mMaxPos;
-
-            setOffsetGoalEnd();
-        }
-
-        updateDisplay();
-    }
-
-    public void markerEnter(MarkerView marker) {
-    }
-
-    public void markerKeyUp() {
-        mKeyDown = false;
-        updateDisplay();
-    }
-
-    public void markerFocus(MarkerView marker) {
-        mKeyDown = false;
-        if (marker == mStartMarker) {
-            setOffsetGoalStartNoUpdate();
-        } else {
-            setOffsetGoalEndNoUpdate();
-        }
-
-        // Delay updaing the display because if this focus was in
-        // response to a touch event, we want to receive the touch
-        // event too before updating the display.
-        mHandler.postDelayed(new Runnable() {
-            public void run() {
-                updateDisplay();
-            }
-        }, 100);
     }
 
     //endregion
@@ -996,23 +793,19 @@ public class Play extends AppCompatActivity
             // we only do the update if the text has actually changed.
             if (mStartPos != mLastDisplayedStartPos &&
                     !mStartText.hasFocus()) {
-
                 mLastDisplayedStartPos = mStartPos;
             }
-
             if (mEndPos != mLastDisplayedEndPos &&
                     !mEndText.hasFocus()) {
-
                 mLastDisplayedEndPos = mEndPos;
             }
-
             mHandler.postDelayed(mTimerRunnable, 100);
         }
     };
 
     private void resetPositions() {
         mStartPos = mWaveformView.secondsToPixels(0.0);
-        mEndPos = mWaveformView.secondsToPixels(15.0);
+        mEndPos = mWaveformView.secondsToPixels(1000);
     }
 
     private int trap(int pos) {
@@ -1023,63 +816,15 @@ public class Play extends AppCompatActivity
         return pos;
     }
 
-    private void setOffsetGoalStart() {
-        setOffsetGoal(mStartPos - mWidth / 2);
-    }
-
-    private void setOffsetGoalStartNoUpdate() {
-        setOffsetGoalNoUpdate(mStartPos - mWidth / 2);
-    }
-
-    private void setOffsetGoalEnd() {
-        setOffsetGoal(mEndPos - mWidth / 2);
-    }
-
-    private void setOffsetGoalEndNoUpdate() {
-        setOffsetGoalNoUpdate(mEndPos - mWidth / 2);
-    }
-
-    private void setOffsetGoal(int offset) {
-        setOffsetGoalNoUpdate(offset);
-        updateDisplay();
-    }
-
     private void setOffsetGoalNoUpdate(int offset) {
         if (mTouchDragging) {
             return;
         }
-
         mOffsetGoal = offset;
         if (mOffsetGoal + mWidth / 2 > mMaxPos)
             mOffsetGoal = mMaxPos - mWidth / 2;
         if (mOffsetGoal < 0)
             mOffsetGoal = 0;
-    }
-
-    private String formatTime(int pixels) {
-        if (mWaveformView != null && mWaveformView.isInitialized()) {
-            return formatDecimal(mWaveformView.pixelsToSeconds(pixels));
-        } else {
-            return "";
-        }
-    }
-
-    private String formatDecimal(double x) {
-        int xWhole = (int)x;
-        int xFrac = (int)(100 * (x - xWhole) + 0.5);
-
-        if (xFrac >= 100) {
-            xWhole++; //Round up
-            xFrac -= 100; //Now we need the remainder after the round up
-            if (xFrac < 10) {
-                xFrac *= 10; //we need a fraction that is 2 digits long
-            }
-        }
-
-        if (xFrac < 10)
-            return xWhole + ".0" + xFrac;
-        else
-            return xWhole + "." + xFrac;
     }
 
     private synchronized void handlePause() {
@@ -1128,94 +873,6 @@ public class Play extends AppCompatActivity
         showFinalAlert(e, getResources().getText(messageResourceId));
     }
 
-
-    private View.OnClickListener mPlayListener = new View.OnClickListener() {
-        public void onClick(View sender) {
-
-            onPlay(mStartPos);
-        }
-    };
-
-    private View.OnClickListener mRewindListener = new View.OnClickListener() {
-        public void onClick(View sender) {
-            if (mIsPlaying) {
-                int newPos = mPlayer.getCurrentPosition() - 5000;
-                if (newPos < mPlayStartMsec)
-                    newPos = mPlayStartMsec;
-                mPlayer.seekTo(newPos);
-            } else {
-                mStartMarker.requestFocus();
-                markerFocus(mStartMarker);
-            }
-        }
-    };
-
-    private View.OnClickListener mFfwdListener = new View.OnClickListener() {
-        public void onClick(View sender) {
-            if (mIsPlaying) {
-                int newPos = 5000 + mPlayer.getCurrentPosition();
-                if (newPos > mPlayEndMsec)
-                    newPos = mPlayEndMsec;
-                mPlayer.seekTo(newPos);
-            } else {
-                mEndMarker.requestFocus();
-                markerFocus(mEndMarker);
-            }
-        }
-    };
-
-    private View.OnClickListener mMarkStartListener = new View.OnClickListener() {
-        public void onClick(View sender) {
-            if (mIsPlaying) {
-                mStartPos = mWaveformView.millisecsToPixels(
-                        mPlayer.getCurrentPosition());
-                updateDisplay();
-            }
-        }
-    };
-
-    private View.OnClickListener mMarkEndListener = new View.OnClickListener() {
-        public void onClick(View sender) {
-            if (mIsPlaying) {
-                mEndPos = mWaveformView.millisecsToPixels(
-                        mPlayer.getCurrentPosition());
-                updateDisplay();
-                handlePause();
-            }
-        }
-    };
-
-    private TextWatcher mTextWatcher = new TextWatcher() {
-        public void beforeTextChanged(CharSequence s, int start,
-                                      int count, int after) {
-        }
-
-        public void onTextChanged(CharSequence s,
-                                  int start, int before, int count) {
-        }
-
-        public void afterTextChanged(Editable s) {
-            if (mStartText.hasFocus()) {
-                try {
-                    mStartPos = mWaveformView.secondsToPixels(
-                            Double.parseDouble(
-                                    mStartText.getText().toString()));
-                    updateDisplay();
-                } catch (NumberFormatException e) {
-                }
-            }
-            if (mEndText.hasFocus()) {
-                try {
-                    mEndPos = mWaveformView.secondsToPixels(
-                            Double.parseDouble(
-                                    mEndText.getText().toString()));
-                    updateDisplay();
-                } catch (NumberFormatException e) {
-                }
-            }
-        }
-    };
-
     private long getCurrentTime() {
         return System.nanoTime() / 1000000;
     }
@@ -1225,5 +882,42 @@ public class Play extends AppCompatActivity
         e.printStackTrace(new PrintWriter(writer));
         return writer.toString();
     }
+
+    //region Destroy
+    /** Called when the activity is finally destroyed. */
+    @Override
+    protected void onDestroy() {
+        mLoadingKeepGoing = false;
+        mRecordingKeepGoing = false;
+        mLoadSoundFileThread = null;
+        mRecordAudioThread = null;
+        mSaveSoundFileThread = null;
+        if(mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+        if(mAlertDialog != null) {
+            mAlertDialog.dismiss();
+            mAlertDialog = null;
+        }
+        if (mPlayer != null) {
+            if (mPlayer.isPlaying() || mPlayer.isPaused()) {
+                mPlayer.stop();
+            }
+            mPlayer.release();
+            mPlayer = null;
+        }
+        super.onDestroy();
+    }
+
+    /** Called with an Activity we started with an Intent returns. */
+    @Override
+    protected void onActivityResult(int requestCode,
+                                    int resultCode,
+                                    Intent dataIntent) {
+        Log.v("Ringdroid", "EditActivity onActivityResult");
+    }
+
+    //endregion
 
 }

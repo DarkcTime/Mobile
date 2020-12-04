@@ -32,26 +32,30 @@ public class SelectRecord extends AppCompatActivity {
             setContentView(R.layout.select_record);
 
             listViewRecords = (ListView) findViewById(R.id.listViewRecords);
-
             RecordRepository recordRepository = new RecordRepository();
 
             ArrayList<Record> listRecords = recordRepository.getDisplayList();
+
             RecordAdapter recordAdapter = new RecordAdapter(this, R.layout.list_records, listRecords);
-
+            //list records
             listViewRecords.setAdapter(recordAdapter);
-
+            //open play activity
             listViewRecords.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //set selectedRecord
                     Record selectedRecord = (Record) parent.getItemAtPosition(position);
                     RecordRepository.setSelectedRecord(selectedRecord);
+                    //open Play
                     Intent intent = new Intent(SelectRecord.this, Play.class);
                     startActivity(intent);
-
                 }
             });
-
-        } catch (Exception ex) {
+        }
+        catch (NullPointerException nullPointerException){
+            dialogMain.showErrorDialogAndTheOutputLogs(nullPointerException, "SelectRec - NullPointEx");
+        }
+        catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "SelectRecordOnCreate");
         }
     }
@@ -59,6 +63,10 @@ public class SelectRecord extends AppCompatActivity {
     //Button back
     @Override
     public void onBackPressed() {
+        openMainActivity();
+    }
+
+    private void openMainActivity(){
         Intent mainActivity = new Intent(SelectRecord.this, MainActivity.class);
         startActivity(mainActivity);
     }
