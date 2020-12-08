@@ -27,6 +27,8 @@
     <string name="remove_rus">Удалить</string>
     <string name="get_portrait_button_rus">Получить портрет</string>
     <string name="save_rus">Сохранить</string>
+    <string name="copy_rus">Копировать</string>
+    <string name="edit_rus">Редактировать</string>
     <string name="begin_rus">Начать</string>
     <string name="start_eng">start</string>
     <string name="end_eng">end</string>

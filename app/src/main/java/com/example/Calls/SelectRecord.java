@@ -15,6 +15,7 @@ import com.example.Calls.BackEnd.Services.HistoryTranslateService;
 import com.example.Calls.BackEnd.Services.ListRecords;
 import com.example.Calls.Dialog.DialogMain;
 import com.example.Calls.Model.Record;
+import com.example.Calls.Model.Repositories.ContactRepository;
 import com.example.Calls.Model.Repositories.RecordRepository;
 import com.example.Calls.Views.RecordAdapter;
 
@@ -33,6 +34,9 @@ public class SelectRecord extends AppCompatActivity {
             LinearLayout linerLayoutSelectRecord, linerLayoutIfHaveNotRecords;
             linerLayoutSelectRecord = (LinearLayout) (findViewById(R.id.linerLayoutSelectRecord));
             linerLayoutIfHaveNotRecords = (LinearLayout) (findViewById(R.id.linerLayoutIfHaveNotRecords));
+
+            TextView textViewSelectedContact = (TextView) findViewById(R.id.textViewSelectedContact);
+            textViewSelectedContact.setText(ContactRepository.getSelectedContact().Name);
 
             ListView listViewRecords;
             listViewRecords = (ListView) findViewById(R.id.listViewRecords);
