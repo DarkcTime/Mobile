@@ -2,6 +2,7 @@ package com.example.Calls.Views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,8 +13,12 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.Calls.MainActivity;
 import com.example.Calls.Model.Contact;
 import com.example.Calls.Model.Repositories.ContactRepository;
+import com.example.Calls.PsychologicalPortrait;
 import com.example.Calls.R;
 import org.w3c.dom.Text;
 import java.util.ArrayList;
@@ -22,6 +27,8 @@ import java.util.List;
 public class ContactAdapter extends ArrayAdapter<Contact> {
 
     private ContactRepository contactRepository = new ContactRepository();
+
+    private MainActivity mainActivity;
 
     private LayoutInflater inflater;
     private int layout;
@@ -33,6 +40,7 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
 
     public ContactAdapter(Context context, int resource, ArrayList<Contact> contacts){
         super(context,resource,contacts);
+        this.mainActivity = (MainActivity) context;
         this.layout = resource;
         this.inflater = LayoutInflater.from(context);
         this.originalData = contacts;
@@ -46,6 +54,14 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
         com.github.lzyzsd.circleprogress.CircleProgress progressBar =
                 (com.github.lzyzsd.circleprogress.CircleProgress) view.findViewById(R.id.circleProgress);
         Contact contact = filteredData.get(position);
+
+        progressBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mainActivity, PsychologicalPortrait.class);
+                mainActivity.startActivity(intent);
+            }
+        });
 
         int progress = contactRepository.getProgressAsPercentage(contact);
 
@@ -61,6 +77,9 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
         return view;
     }
 
+    public void onClickProgressBarContact(View view){
+
+    }
 
     @Override
     public int getCount() {

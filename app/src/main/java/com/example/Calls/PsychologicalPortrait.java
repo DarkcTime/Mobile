@@ -34,9 +34,6 @@ public class PsychologicalPortrait extends AppCompatActivity {
         multiTextViewPortrait = (MultiAutoCompleteTextView) findViewById(R.id.multiTextViewPortrait);
         relativeLayoutGetPortrait = (RelativeLayout) findViewById(R.id.relativeLayoutGetPortrait);
 
-
-
-
     }
 
 

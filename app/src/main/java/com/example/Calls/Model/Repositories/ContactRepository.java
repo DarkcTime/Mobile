@@ -8,7 +8,6 @@ import java.util.List;
 
 public class ContactRepository {
     public static final int MAX_PERCENTAGE = 100;
-    public static final int MAX_NUMBERS = 20;
 
     private static ArrayList<Contact> listContacts;
     public static ArrayList<Contact> getListContacts(){
@@ -26,13 +25,9 @@ public class ContactRepository {
         selectedContact = contact;
     }
 
-    //TODO make percentage correnct
     public int getProgressAsPercentage(Contact contact){
-        if(contact.Name.equals("Айна")){
-            return 100;
-        }
-        return Math.round(contact.NumberWords);
+        int percentage = Math.round(contact.NumberWords / 10);
+        return Math.min(percentage, MAX_PERCENTAGE);
     }
-
 
 }

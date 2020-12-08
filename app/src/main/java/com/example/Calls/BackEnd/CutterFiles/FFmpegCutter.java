@@ -90,10 +90,6 @@ public class FFmpegCutter {
                     File copyFile = new File(getTargetFileForCopy(FileSystemParameters.getPathForSelectedRecordApi(),
                             file.getDestination().getName()).getAbsolutePath());
 
-
-
-
-
                     executeFFMpegCommand(getCommand(file), sourceFile, copyFile);
 
                 } catch (FFmpegCommandAlreadyRunningException ex) {
@@ -165,7 +161,6 @@ public class FFmpegCutter {
                 try {
                     //copy files in dir for work with Api
                     FileSystem.CopyFile(sourceFile, copyFile);
-                    Log.d("Copy", "FileCopy");
                     //set Text View Duration
                     RecordProcessing.changeDurationProcessingAndStartApi();
 

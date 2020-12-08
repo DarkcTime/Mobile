@@ -110,7 +110,8 @@ public class MainActivity extends AppCompatActivity {
                         Contact selectedContact = (Contact) parent.getItemAtPosition(position);
                         ContactRepository.setSelectedContact(selectedContact);
 
-                        if(selectedContact.NumberWords >= ContactRepository.MAX_NUMBERS){
+                        if(contactRepository.getProgressAsPercentage(ContactRepository.getSelectedContact())
+                                >= ContactRepository.MAX_PERCENTAGE){
                             Intent psychologicalPortrait = new Intent(MainActivity.this, PsychologicalPortrait.class);
                             startActivity(psychologicalPortrait);
                         }
