@@ -161,6 +161,8 @@ public class Play extends AppCompatActivity
     private Thread mRecordAudioThread;
     private Thread mSaveSoundFileThread;
 
+    private boolean isButtonNoPerson = false;
+
     //endregion
 
     //endregion
@@ -191,11 +193,13 @@ public class Play extends AppCompatActivity
             //region buttons
 
             //button raw <<
+
             buttonRawBackPlay = (Button) (findViewById(R.id.buttonRawBackPlay));
             buttonRawBackPlay.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(isDown(event)){
+                        Log.d("buttonRaw", String.valueOf(isButtonNoPerson));
                         RawBack();
                     }
                     if(isUp(event)){
@@ -210,7 +214,10 @@ public class Play extends AppCompatActivity
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(isDown(event)){
-                        Log.d("stopModeWait", "smw");
+                        if(isButtonNoPerson){
+                            addInterval();
+                            endIntervalRaw();
+                        }
                         RawForward();
                     }
                     if(isUp(event)){
@@ -225,9 +232,15 @@ public class Play extends AppCompatActivity
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(isDown(event)){
+                        if(cutter.isNullIntervalList()){
+                            buttonRawForwardPlay.setEnabled(true);
+                            buttonRawBackPlay.setEnabled(true);
+                        }
                         addInterval();
+                        isButtonNoPerson = true;
                         stopModeWait();
                     }
+
                     if(isUp(event)){
                         endInterval();
                         startModeWait();
@@ -241,6 +254,12 @@ public class Play extends AppCompatActivity
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(isDown(event)){
+                        if(cutter.isNullIntervalList()){
+                            buttonRawForwardPlay.setEnabled(true);
+                            buttonRawBackPlay.setEnabled(true);
+                        }
+
+                        isButtonNoPerson = false;
                         stopModeWait();
                     }
                     if(isUp(event)){
@@ -588,6 +607,11 @@ public class Play extends AppCompatActivity
         cutter.StopInterval(sec);
     }
 
+    private void endIntervalRaw(){
+        int sec = MediaPlayerClass.getCurrentPositionSec(mPlayer.getCurrentPosition()) + 2;
+        cutter.StopInterval(sec);
+    }
+
     private void startModeWait(){
         mPlayer.pause();
     }
@@ -601,10 +625,10 @@ public class Play extends AppCompatActivity
     }
 
     private void RawBack(){
-        mPlayer.seekTo(mPlayer.getCurrentPosition() - 1000);
+        mPlayer.seekTo(mPlayer.getCurrentPosition() - 2000);
     }
     private void RawForward(){
-        mPlayer.seekTo(mPlayer.getCurrentPosition() + 1000);
+        mPlayer.seekTo(mPlayer.getCurrentPosition() + 2000);
     }
     //endregion
 
@@ -618,15 +642,11 @@ public class Play extends AppCompatActivity
         try{
             final int saveZoomLevel = mWaveformView.getZoomLevel();
             super.onConfigurationChanged(newConfig);
-
             loadGui();
-
             mHandler.postDelayed(new Runnable() {
                 public void run() {
-
                     mWaveformView.setZoomLevel(saveZoomLevel);
                     mWaveformView.recomputeHeights(mDensity);
-
                     updateDisplay();
                 }
             }, 500);

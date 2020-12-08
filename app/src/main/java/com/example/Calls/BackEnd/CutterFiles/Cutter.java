@@ -44,6 +44,15 @@ public class Cutter {
     public void RemoveInterval(int id){
         intervalList.remove(id);
     }
+
+    public boolean IsHaveEnd(){
+        return interval.getEnd() != 0;
+    }
+
+    public boolean IsNullInterval(){
+        return interval == null;
+    }
+
     private boolean checkDurationInterval(int end){
         int duration = end - interval.getStart();
         return duration > MAX_DURATION;
