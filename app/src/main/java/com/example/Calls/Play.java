@@ -45,6 +45,9 @@ import android.widget.Toast;
 import com.example.Calls.BackEnd.Analysis.AnalyzeCall;
 import com.example.Calls.BackEnd.CutterFiles.Cutter;
 import com.example.Calls.BackEnd.CutterFiles.CutterInterval;
+import com.example.Calls.BackEnd.Files.Directories;
+import com.example.Calls.BackEnd.Files.FileSystem;
+import com.example.Calls.BackEnd.Files.FileSystemParameters;
 import com.example.Calls.BackEnd.Media.MediaPlayerClass;
 import com.example.Calls.BackEnd.Services.HistoryTranslateService;
 import com.example.Calls.BackEnd.Services.RecordsService;
@@ -61,7 +64,9 @@ import com.example.Calls.PaintGame.soundFile.SoundFile;
 
 import org.tritonus.share.sampled.file.TAudioFileFormat;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
@@ -69,6 +74,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
@@ -90,6 +96,8 @@ public class Play extends AppCompatActivity
     public CutterInterval selectedInterval;
     public EditText editTextStart,editTextEnd;
     private Button buttonBackRewind, buttonFordRewind;
+
+    public Directories directories = new Directories(RecordRepository.getSelectedRecord());
 
     //layouts
     private LinearLayout startLayoutPage;
@@ -161,6 +169,8 @@ public class Play extends AppCompatActivity
     private Thread mRecordAudioThread;
     private Thread mSaveSoundFileThread;
 
+    private boolean isButtonNoPerson = false;
+
     //endregion
 
     //endregion
@@ -190,12 +200,23 @@ public class Play extends AppCompatActivity
             editTextEnd = (EditText) findViewById(R.id.editTextEnd);
             //region buttons
 
+            if(cutter.IsHaveInterval()){
+                RelativeLayout relativeLayoutStartPlay = findViewById(R.id.relativeLayoutStartPlay);
+                relativeLayoutStartPlay.setVisibility(View.GONE);
+            }
+            else{
+                RelativeLayout relativeLayoutHaveIntervals = findViewById(R.id.relativeLayoutHaveIntervals);
+                relativeLayoutHaveIntervals.setVisibility(View.GONE);
+            }
+
             //button raw <<
+
             buttonRawBackPlay = (Button) (findViewById(R.id.buttonRawBackPlay));
             buttonRawBackPlay.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(isDown(event)){
+                        Log.d("buttonRaw", String.valueOf(isButtonNoPerson));
                         RawBack();
                     }
                     if(isUp(event)){
@@ -210,7 +231,10 @@ public class Play extends AppCompatActivity
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(isDown(event)){
-                        Log.d("stopModeWait", "smw");
+                        if(isButtonNoPerson){
+                            addInterval();
+                            endIntervalRaw();
+                        }
                         RawForward();
                     }
                     if(isUp(event)){
@@ -225,9 +249,15 @@ public class Play extends AppCompatActivity
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(isDown(event)){
+                        if(cutter.isNullIntervalList()){
+                            buttonRawForwardPlay.setEnabled(true);
+                            buttonRawBackPlay.setEnabled(true);
+                        }
                         addInterval();
+                        isButtonNoPerson = true;
                         stopModeWait();
                     }
+
                     if(isUp(event)){
                         endInterval();
                         startModeWait();
@@ -241,6 +271,11 @@ public class Play extends AppCompatActivity
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(isDown(event)){
+                        if(cutter.isNullIntervalList()){
+                            buttonRawForwardPlay.setEnabled(true);
+                            buttonRawBackPlay.setEnabled(true);
+                        }
+                        isButtonNoPerson = false;
                         stopModeWait();
                     }
                     if(isUp(event)){
@@ -281,6 +316,19 @@ public class Play extends AppCompatActivity
         startLayoutPage.setVisibility(View.GONE);
         linerLayoutPaintGame.setVisibility(View.VISIBLE);
     }
+
+    public void onClickButtonContinue(View view){
+        Directories directories = new Directories(RecordRepository.getSelectedRecord());
+        directories.deleteDirectory(new File(FileSystemParameters.getPathForSelectedRecordDir()));
+        cutter.FillIntervalsFromFile();
+        openWaitEndPlay();
+
+    }
+    public void onClickButtonAgain(View view){
+        Directories directories = new Directories(RecordRepository.getSelectedRecord());
+        directories.deleteDirectory(new File(FileSystemParameters.getPathForSelectedRecordDir()));
+        setPlayUI();
+    }
     //endregion
 
     //region events buttons
@@ -297,8 +345,10 @@ public class Play extends AppCompatActivity
         try{
             //open wait End Play Activity
             if(!cutter.isNullIntervalList()){
-                Intent intent = new Intent(Play.this, WaitInEndPlay.class);
-                startActivity(intent);
+                directories.createDirectoryApplication();
+                directories.createDirectoryForContact();
+                cutter.SaveIntervalsToFile();
+                openWaitEndPlay();
             }
             else{
                 Toast.makeText(this, "Запись разговора не размечена. Выделите собеседника", Toast.LENGTH_LONG).show();
@@ -308,7 +358,14 @@ public class Play extends AppCompatActivity
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickEndGame");
         }
     }
+    private void openWaitEndPlay(){
+        Intent intent = new Intent(Play.this, WaitInEndPlay.class);
+        startActivity(intent);
+    }
+
     //endregion
+
+
 
     //region Load and Update GUI
     private void loadGui() {
@@ -316,6 +373,7 @@ public class Play extends AppCompatActivity
         try{
             DisplayMetrics metrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
             mDensity = metrics.density;
             mWaveformView = (WaveformView)findViewById(R.id.waveform);
             mWaveformView.setListener(this);
@@ -588,6 +646,11 @@ public class Play extends AppCompatActivity
         cutter.StopInterval(sec);
     }
 
+    private void endIntervalRaw(){
+        int sec = MediaPlayerClass.getCurrentPositionSec(mPlayer.getCurrentPosition()) + 2;
+        cutter.StopInterval(sec);
+    }
+
     private void startModeWait(){
         mPlayer.pause();
     }
@@ -601,10 +664,10 @@ public class Play extends AppCompatActivity
     }
 
     private void RawBack(){
-        mPlayer.seekTo(mPlayer.getCurrentPosition() - 1000);
+        mPlayer.seekTo(mPlayer.getCurrentPosition() - 2000);
     }
     private void RawForward(){
-        mPlayer.seekTo(mPlayer.getCurrentPosition() + 1000);
+        mPlayer.seekTo(mPlayer.getCurrentPosition() + 2000);
     }
     //endregion
 
@@ -618,18 +681,15 @@ public class Play extends AppCompatActivity
         try{
             final int saveZoomLevel = mWaveformView.getZoomLevel();
             super.onConfigurationChanged(newConfig);
-
             loadGui();
-
             mHandler.postDelayed(new Runnable() {
                 public void run() {
-
                     mWaveformView.setZoomLevel(saveZoomLevel);
                     mWaveformView.recomputeHeights(mDensity);
-
                     updateDisplay();
                 }
             }, 500);
+
         }
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "Play/onConfigurationChanged");
@@ -638,12 +698,10 @@ public class Play extends AppCompatActivity
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
         if (keyCode == KeyEvent.KEYCODE_SPACE) {
             onPlay(mStartPos);
             return true;
         }
-
         return super.onKeyDown(keyCode, event);
     }
 

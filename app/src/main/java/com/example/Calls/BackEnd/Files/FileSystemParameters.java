@@ -32,11 +32,19 @@ public class FileSystemParameters {
         }
     }
 
+
     //example: storage/emulated/0/Android/data/com.Calls/Миха/Call@4321432/
     public static String getPathForSelectedRecord(){
         return getPathForSelectedContact()
                 .concat(RecordRepository.getSelectedRecord().FullName
                         .replace(".mp3", "").concat("/"));
+    }
+
+
+    public static String getPathForSelectedRecordDir(){
+        return getPathForSelectedContact()
+                .concat(RecordRepository.getSelectedRecord().FullName
+                        .replace(".mp3", ""));
     }
 
     //example: storage/emulated/0/Android/data/com.Calls/Миха/Call@4321432/records
@@ -53,6 +61,7 @@ public class FileSystemParameters {
                 .replace(".mp3", "")
                 .concat("/api/"));
     }
+
 
     //example: storage/emulated/0/Android/data/com.Calls/Миха/Call@4321432/result.txt
     public static String getPathFileResultForRecord(){

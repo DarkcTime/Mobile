@@ -53,11 +53,12 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
         TextView nameContact = (TextView) view.findViewById(R.id.textViewNameContact);
         com.github.lzyzsd.circleprogress.CircleProgress progressBar =
                 (com.github.lzyzsd.circleprogress.CircleProgress) view.findViewById(R.id.circleProgress);
-        Contact contact = filteredData.get(position);
+        final Contact contact = filteredData.get(position);
 
         progressBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ContactRepository.setSelectedContact(contact);
                 Intent intent = new Intent(mainActivity, PsychologicalPortrait.class);
                 mainActivity.startActivity(intent);
             }

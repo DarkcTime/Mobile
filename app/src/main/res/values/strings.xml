@@ -4,10 +4,9 @@
     <string name="I_have_not_records_rus">У меня нет записей</string>
     <string name="select_record_rus">Выберите запись разговора...</string>
     <string name="help_play_rus">
-        Выделите речь собеседника\n
-        2 клик вправо + 3 сек\n
-        2 клик слева  - 3 сек\n
-        Если отпустить кнопки, открывается меню
+        Выделите речь собеседника.
+        Если прекратить выделение Персоны, ставиться пауза.
+        Для ускорения разметки можно использовать перемотку.
     </string>
     <string name="help_if_have_not_records_rus">
         Записи переговоров с Персонами
@@ -25,12 +24,18 @@
     <!-- Buttons --> 
     <string name="complete_rus">Завершить</string>
     <string name="remove_rus">Удалить</string>
-
     <string name="get_portrait_button_rus">Получить портрет</string>
     <string name="save_rus">Сохранить</string>
+    <string name="copy_rus">Копировать</string>
+    <string name="edit_rus">Редактировать</string>
     <string name="begin_rus">Начать</string>
     <string name="start_eng">start</string>
     <string name="end_eng">end</string>
+    <string name="back_rus">Назад</string>
+    <string name="ifHaveNotRecords_rus">
+        Для данной Персоны у вас больше нет записей.
+        Чтобы продолжить получение текста, сделайте больше звонков Персоне.
+    </string>
     <string name="title_activity_about_selected_contact">About_selected_contact</string>
     <string name="help">Справка пользователя</string>
     <string name="about_us">About us</string>

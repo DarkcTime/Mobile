@@ -30,6 +30,15 @@ public class FileSystem {
         writer.close();
     }
 
+    //запись данных в файл
+    public static void WriteFile(String path, String str, boolean append, boolean isNewLine) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(path, append));
+        writer.write(str);
+        writer.write("\n");
+        writer.close();
+    }
+
+
     //чтение данных из файла
     public static String ReadFile(String path) throws IOException {
         File file = new File(path);
@@ -50,6 +59,26 @@ public class FileSystem {
             return "";
         }
     }
+
+    public static String ReadFile(File file) throws IOException {
+        if (file.exists()) {
+            int length = (int) file.length();
+            byte[] bytes = new byte[length];
+            FileInputStream in = new FileInputStream(file);
+            try {
+                in.read(bytes);
+            } catch (IOException e){
+                e.printStackTrace();
+            } finally {
+                in.close();
+            }
+            return new String(bytes);
+        } else {
+            Log.d("FileSystemReadFile","File no exist");
+            return "";
+        }
+    }
+
 
     /**
      * Выбирает список файлов и папок по выбранному пути

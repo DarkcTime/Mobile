@@ -15,8 +15,6 @@ public class Directories {
     }
 
     public void createDirectories(){
-        createDirectoryApplication();
-        createDirectoryForContact();
         createDirectoryForSelectedRecord();
         createDirectoryForRecordsInSelectedRecord();
         createDirectoryForWorkWithApi();
@@ -32,12 +30,12 @@ public class Directories {
         return directoryToBeDeleted.delete();
     }
 
-    private void createDirectoryApplication(){
+    public void createDirectoryApplication(){
         if(!new File(FileSystemParameters.getPathApplicationFileSystem()).mkdir())
             Log.d("createDirApp", "dir no create");
     }
 
-    private void createDirectoryForContact(){
+    public void createDirectoryForContact(){
         if(!new File(FileSystemParameters.getPathForSelectedContact()).mkdir())
             Log.d("createDirForCon", "dir no create");
     }

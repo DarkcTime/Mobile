@@ -1,12 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/TextViewStyle.Big"
+        android:id="@+id/textViewSelectedContact"
+        android:gravity="center_horizontal"
+        android:layout_marginVertical="@dimen/mini"
+        >
+    </TextView>
+
+    <!-- if I have not record -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linerLayoutIfHaveNotRecords"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:layout_margin="@dimen/standard"
+            android:text="@string/ifHaveNotRecords_rus"
+            style="@style/TextViewStyle.Big"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                style="@style/ButtonStyle.LongBlue"
+                android:layout_centerHorizontal="true"
+                android:text="@string/back_rus"
+                android:onClick="onClickButtonBackSelectedPlay"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <!-- select record-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_margin="@dimen/standard">
+        android:layout_margin="@dimen/standard"
+        android:visibility="gone"
+        android:id="@+id/linerLayoutSelectRecord">
         <TextView
             style="@style/TextViewStyle.Big"
             android:text="@string/select_record_rus"
@@ -20,4 +56,4 @@
 
 
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
