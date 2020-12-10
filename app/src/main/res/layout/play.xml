@@ -15,14 +15,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="50"
                 android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="50"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -37,15 +40,45 @@
                             android:text="@string/help_play_rus"/>
                     </RelativeLayout>
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="50"/>
+
             </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="50">
+                android:layout_weight="50"
+                android:id="@+id/relativeLayoutHaveIntervals">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerInParent="true">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Был найдет файл с разметкой"
+                        android:textColor="@color/red">
+
+                    </TextView>
+                    <Button
+                        style="@style/ButtonStyle.LongBlue"
+                        android:layout_marginVertical="@dimen/standard"
+                        android:text="Продолжить"
+                        android:onClick="onClickButtonContinue"/>
+
+                    <Button
+                        style="@style/ButtonStyle.LongBlue"
+                        android:text="Начать заново"
+                        android:background="@color/red"
+                        android:onClick="onClickButtonAgain"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="50"
+                android:id="@+id/relativeLayoutStartPlay">
                 <Button
                     style="@style/ButtonStyle.LongBlue"
                     android:layout_centerInParent="true"
@@ -60,8 +93,6 @@
             android:orientation="vertical"
             android:id="@+id/playLinerLayout"
             android:visibility="gone">
-
-
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -189,7 +220,6 @@
 
 
     </LinearLayout>
-
 
     <!-- Game -->
     <LinearLayout
@@ -332,6 +362,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 </LinearLayout>

@@ -30,6 +30,14 @@ public class FileSystem {
         writer.close();
     }
 
+    //запись данных в файл
+    public static void WriteFile(String path, String str, boolean append, boolean isNewLine) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(path, append));
+        writer.write(str);
+        writer.write("\n");
+        writer.close();
+    }
+
 
     //чтение данных из файла
     public static String ReadFile(String path) throws IOException {
