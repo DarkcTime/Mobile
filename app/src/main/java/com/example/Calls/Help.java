@@ -24,7 +24,7 @@ public class Help extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.help);
 
-            mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
+            //mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
 
         }
         catch (Exception ex){

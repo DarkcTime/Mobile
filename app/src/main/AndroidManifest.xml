@@ -42,6 +42,8 @@
         <activity android:name=".Play" android:label="@string/settings" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".WaitInEndPlay" android:label="@string/select_contact" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".Help" android:label="@string/help" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".AboutUs" android:label="О нас" android:theme="@style/AppTheme.NoActionBar"/>
+
 
     </application>
 

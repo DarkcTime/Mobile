@@ -14,6 +14,7 @@ import android.system.Os;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -208,10 +209,38 @@ public class MainActivity extends AppCompatActivity {
     //открывает окно настроек
     public void onClickButtonMainWindowMenu(View view) {
         try {
-            PopupMenu.showPopupMenu(this, view, R.menu.popupmenu_mainwindow);
+            showPopupMenu(this, view, R.menu.popupmenu_mainwindow);
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonSettings");
         }
+    }
+
+    public void showPopupMenu(Context context, View view, int resource){
+        android.widget.PopupMenu popup = new android.widget.PopupMenu(context, view);
+        //popup.setOnMenuItemClickListener((android.widget.PopupMenu.OnMenuItemClickListener) context);
+        popup.inflate(resource);
+
+        popup.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.settings_main_menu:
+                        Intent settings = new Intent(MainActivity.this, Settings.class);
+                        startActivity(settings);
+                        return true;
+                    case R.id.help_main_menu:
+                        Intent help = new Intent(MainActivity.this, Help.class);
+                        startActivity(help);
+                        return true;
+                    case R.id.about_us_main_menu:
+                        Intent about_us = new Intent(MainActivity.this, AboutUs.class);
+                        startActivity(about_us);
+                        return true;
+                }
+                return false;
+            }
+        });
+        popup.show();
     }
 
     //endregion

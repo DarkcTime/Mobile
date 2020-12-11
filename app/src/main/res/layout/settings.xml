@@ -86,82 +86,31 @@
                     </RelativeLayout>
                 </LinearLayout>
 
-
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="50dp">
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-                    <TextView
-                        style="@style/StyleTextViewSmall"
-                        android:text="@string/changeLevelUser"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        >
-                    </TextView>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-                    <Button
-                        style="@style/StyleButtonIconBig2"
-                        android:layout_marginLeft="@dimen/size_help"
-                        android:id="@+id/buttonChangeRole"
-                        android:onClick="onClickButtonChangeRoleSetting"
-                        android:layout_centerHorizontal="true"
-                        >
-
-                    </Button>
-                </RelativeLayout>
-
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginBottom="@dimen/size_help"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
-            >
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_height="wrap_content">
                 <Button
-                    style="@style/StyleButtonIconBig2"
-                    android:background="@drawable/save"
-                    android:onClick="onClickButtonSaveSettings"
-                    android:layout_centerHorizontal="true"/>
+                    style="@style/ButtonStyle.LongBlue"
+                    android:text="@string/save_rus"
+                    android:layout_margin="@dimen/standard"
+                    android:layout_centerInParent="true"
+                    android:onClick="onClickButtonSaveSettings"/>
             </RelativeLayout>
             <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
                 <Button
-                    style="@style/StyleButtonIconBig2"
-                    android:background="@drawable/home"
+                    style="@style/ButtonStyle.LongBlue"
+                    android:text="@string/cancel_rus"
+                    android:layout_margin="@dimen/standard"
                     android:onClick="onClickCancelSaveSettings"
-                    android:layout_centerHorizontal="true"/>
+                    android:layout_centerInParent="true"/>
             </RelativeLayout>
-
 
         </LinearLayout>
 
     </RelativeLayout>
-
 
 </android.support.constraint.ConstraintLayout>
