@@ -96,6 +96,8 @@ public class Settings extends AppCompatActivity {
 
     public void onClickButtonChangeRoleSetting(View view){
         /*
+
+
         if(SavedSettings.isExpert()){
             typeUser = false;
             buttonChangeRole.setBackgroundResource(R.drawable.begin);
