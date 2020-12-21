@@ -65,7 +65,6 @@ public class SelectRecord extends AppCompatActivity {
             }
             else{
                 linerLayoutIfHaveNotRecords.setVisibility(View.VISIBLE);
-
             }
 
         }

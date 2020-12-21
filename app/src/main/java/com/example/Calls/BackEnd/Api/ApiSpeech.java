@@ -40,13 +40,8 @@ public class ApiSpeech{
 
         int Length = getLengthAudio(pathRecord)/1000;
 
+        startAsyncApiForTranslated();
 
-        if (Length>19){
-
-        }
-        else {
-            startAsyncApiForTranslated();
-        }
     }
 
     public static int getLengthAudio(String path) {
@@ -76,7 +71,7 @@ public class ApiSpeech{
                     Log.d("ApiSpeechText", str);
 
                     //write data in file
-                    FileSystem.WriteFile(pathRecord.concat(".txt"),str,false);
+                    FileSystem.WriteFile(pathRecord.concat(".txt"),str + " ",false);
                     break;
                 } else {
                     Log.d("ApiSpeech", "key.noequals");

@@ -47,20 +47,13 @@ public class WaitInEndPlay extends AppCompatActivity {
             apiMain = new ApiMain();
 
             //get list intervals
-
             cutter.startCutFileIntervals(this);
-
         }
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreateWaitEndPlay");
         }
 
     }
-
-    private void startActivityAboutContact() throws Exception{
-
-    }
-
 
     public void finishProcessingAndTranslating(){
         try{
@@ -97,6 +90,6 @@ public class WaitInEndPlay extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //No actions
+        dialogMain.showQuestionDialogWaitEndPlay();
     }
 }

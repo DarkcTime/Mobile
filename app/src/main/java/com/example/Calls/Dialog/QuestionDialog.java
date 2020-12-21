@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
 
+import com.example.Calls.BackEnd.CutterFiles.FFmpegCutter;
 import com.example.Calls.BackEnd.Files.Directories;
 import com.example.Calls.BackEnd.Files.FileSystemParameters;
 import com.example.Calls.BackEnd.Mail.Mailer;
@@ -25,11 +26,17 @@ import java.io.File;
 @SuppressLint("ValidFragment")
 public class QuestionDialog extends AppCompatDialogFragment {
 
-    private EditTextRecord editTextRecord;
+    private EditTextRecord editTextRecord = null;
+    private WaitInEndPlay waitInEndPlay = null;
 
     @SuppressLint("ValidFragment")
     public QuestionDialog(EditTextRecord editTextRecord){
         this.editTextRecord = editTextRecord;
+    }
+
+    @SuppressLint("ValidFragment")
+    public QuestionDialog(WaitInEndPlay waitInEndPlay){
+        this.waitInEndPlay = waitInEndPlay;
     }
 
     @Override
@@ -43,11 +50,18 @@ public class QuestionDialog extends AppCompatDialogFragment {
                 .setMessage("Вы уверены, что хотите закрыть полученный результат?")
                 .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Directories directories = new Directories(RecordRepository.getSelectedRecord());
-                        directories.deleteDirectory(new File(FileSystemParameters.getPathForSelectedRecord()));
-
-                        Intent intent = new Intent(editTextRecord, MainActivity.class);
+                        Intent intent = null;
+                        if(editTextRecord != null){
+                            intent = new Intent(editTextRecord, MainActivity.class);
+                            Directories directories = new Directories(RecordRepository.getSelectedRecord());
+                            directories.deleteDirectory(new File(FileSystemParameters.getPathForSelectedRecord()));
+                        }
+                        else if(waitInEndPlay != null){
+                            intent = new Intent(waitInEndPlay, MainActivity.class);
+                            FFmpegCutter.isStop = true;
+                        }
                         startActivity(intent);
+
                         dialog.cancel();
                     }
                 })

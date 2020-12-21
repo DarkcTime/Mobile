@@ -85,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
             if(!RecordsService.checkPath(RecordsService.getPathForFindRecords()))
                 noExistingPath();
 
-
-
             editTextSearch.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -120,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
                                 >= ContactRepository.MAX_PERCENTAGE){
                             Intent psychologicalPortrait = new Intent(MainActivity.this, PsychologicalPortrait.class);
                             startActivity(psychologicalPortrait);
-
                         }
                         else{
                             Intent selectRecord = new Intent(MainActivity.this, SelectRecord.class);
@@ -153,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (grantResults.length > 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 loadListRecords();
-
             } else {
                 // permission denied
                 dialogMain.showPermissionDialog();
@@ -211,8 +207,7 @@ public class MainActivity extends AppCompatActivity {
         try{
             Intent settings = new Intent(MainActivity.this, Settings.class);
             startActivity(settings);
-        }
-        catch (Exception ex){
+        } catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickSelectPath");
         }
     }

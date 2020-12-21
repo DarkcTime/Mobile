@@ -80,10 +80,11 @@ public class Cutter {
     //контакт
 
     public void startCutFileIntervals(Context _context) throws Exception {
+        FFmpegCutter.isStop = false;
 
         FFmpegCutter fFmpegCutter = new FFmpegCutter(_context);
 
-        fFmpegCutter.executeCommandForCutFileAfterPlay(FileSystem.getFilesForCutter(intervalList));
+        fFmpegCutter.executeCommandForCutFileAfterPlay(getFilesForCutter(intervalList));
 
     }
 
@@ -123,6 +124,50 @@ public class Cutter {
         catch (Exception ex){
             Log.d("FillIntervalsFromFile", ex.getMessage());
         }
+    }
+    public void DeleteIntervalFile(){
+        try{
+            new File((pathFile)).delete();
+        }catch (Exception exception){
+            Log.d("FillIntervalsFromFile", exception.getMessage());
+        }
+    }
+
+    /**
+     * Генерирует список файлов для резчика,
+     * параметры файлов устанавливаются на основе листа с интервалами
+     * @param intervalList
+     * @return
+     */
+    public static List<FileForCutter> getFilesForCutter(List<CutterInterval> intervalList){
+        int i = 0;
+        List<FileForCutter> fileForCutterList = new ArrayList<FileForCutter>();
+
+        for (CutterInterval interval : intervalList) {
+            //generation parameters
+            int start = interval.getStart();
+            int end = interval.getEnd();
+            //remove incorrect intervals
+            if(end <= start)
+                continue;
+
+            int duration = end - start;
+
+            File targetFile = new File(FileSystemParameters.getPathForSelectedRecordsForCutter().concat(String.valueOf(i)).concat(".mp3"));
+            File sourceFile = new File(RecordRepository.getSelectedRecord().Path);
+
+            //генерация объекта
+            FileForCutter fileForCutter = new FileForCutter(interval.getStart(),
+                    duration,
+                    sourceFile,
+                    targetFile);
+
+            //заполнение листа
+            fileForCutterList.add(fileForCutter);
+            i++;
+        }
+
+        return fileForCutterList;
     }
 
 

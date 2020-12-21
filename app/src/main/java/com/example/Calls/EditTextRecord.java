@@ -65,8 +65,6 @@ public class EditTextRecord extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        dialogMain.showQuestionDialog();
-        //Intent mainActivity = new Intent(EditTextRecord.this, MainActivity.class);
-        //startActivity(mainActivity);
+        dialogMain.showQuestionDialogEditText();
     }
 }

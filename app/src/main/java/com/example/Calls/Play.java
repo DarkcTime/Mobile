@@ -289,7 +289,6 @@ public class Play extends AppCompatActivity
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreatePlay");
         }
-
     }
 
     //region buttons start and end
@@ -327,6 +326,7 @@ public class Play extends AppCompatActivity
     public void onClickButtonAgain(View view){
         Directories directories = new Directories(RecordRepository.getSelectedRecord());
         directories.deleteDirectory(new File(FileSystemParameters.getPathForSelectedRecordDir()));
+        cutter.DeleteIntervalFile();
         setPlayUI();
     }
     //endregion
