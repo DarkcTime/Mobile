@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <RelativeLayout
+    android:orientation="vertical">
+    <TextView
+        style="@style/TextViewStyle.Big"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-        <TextView
-            style="@style/TextViewStyle.Big"
-            android:text="Здесь будет страница справки "/>
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:text="@string/help"
+        android:gravity="center_horizontal"
+        />
+    <TextView
+        style="@style/TextViewStyle.Big"
+        android:layout_margin="@dimen/more_margin"
+        android:text="@string/help_user"/>
 
-    </RelativeLayout>
 
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

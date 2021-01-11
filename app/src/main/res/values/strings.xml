@@ -20,7 +20,26 @@
     <string name="help_for_edit_text_2_rus">
         знаки препинания, переносы строк и заглавные буквы значения не имеют.
     </string>
-    
+
+    <!-- Helps -->
+    <string name="help_user">
+        1) Выберите контакт характер которого вы хотите узнать
+        \n2) Выберите запись разговора
+        \n3) Выделите слова собеседника
+        \n4) Нажмите на кнопку завершить и ждите окончания процесса перевода
+        \n5) Отредактируйте речь собеседника
+        \n6) Когда будет набрана 1 тыс слов, появиться возможность узнать характер
+    </string>
+
+    <!-- About us -->
+    <string name="about_us">
+        Приложение было разработано как дополнение к Telegram боту.
+        \nPersonGuideRU - определение психологического потрета человека по его словам.
+        \nПолная справка по использованию бота и приложения, есть на сайте:
+        \nhttp://personguide.mozello.ru/
+    </string>
+
+
     <!-- Buttons --> 
     <string name="complete_rus">Завершить</string>
     <string name="remove_rus">Удалить</string>
@@ -38,7 +57,6 @@
     </string>
     <string name="title_activity_about_selected_contact">About_selected_contact</string>
     <string name="help">Справка пользователя</string>
-    <string name="about_us">About us</string>
     <string name="settings">Настройки</string>
     <string name="russia">Русский</string>
     <string name="english">English</string>
