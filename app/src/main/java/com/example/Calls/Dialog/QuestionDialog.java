@@ -17,6 +17,7 @@ import com.example.Calls.BackEnd.Mail.Mailer;
 import com.example.Calls.EditTextRecord;
 import com.example.Calls.MainActivity;
 import com.example.Calls.Model.Repositories.RecordRepository;
+import com.example.Calls.Play;
 import com.example.Calls.R;
 import com.example.Calls.SelectRecord;
 import com.example.Calls.WaitInEndPlay;
@@ -28,6 +29,7 @@ public class QuestionDialog extends AppCompatDialogFragment {
 
     private EditTextRecord editTextRecord = null;
     private WaitInEndPlay waitInEndPlay = null;
+    private Play play = null;
 
     @SuppressLint("ValidFragment")
     public QuestionDialog(EditTextRecord editTextRecord){
@@ -37,6 +39,11 @@ public class QuestionDialog extends AppCompatDialogFragment {
     @SuppressLint("ValidFragment")
     public QuestionDialog(WaitInEndPlay waitInEndPlay){
         this.waitInEndPlay = waitInEndPlay;
+    }
+
+    @SuppressLint("ValidFragment")
+    public QuestionDialog(Play play){
+        this.play = play;
     }
 
     @Override
@@ -60,6 +67,10 @@ public class QuestionDialog extends AppCompatDialogFragment {
                             intent = new Intent(waitInEndPlay, MainActivity.class);
                             FFmpegCutter.isStop = true;
                         }
+                        else if(play != null){
+                            intent = new Intent(play, SelectRecord.class);
+                        }
+
                         startActivity(intent);
 
                         dialog.cancel();

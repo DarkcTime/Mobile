@@ -32,12 +32,6 @@
                 android:text="@string/help_for_edit_text_2_rus"/>
         </LinearLayout>
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/ic_more_vert_black_24dp"
-            android:onClick="onClickButtonSettingsEdit"/>
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"

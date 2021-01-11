@@ -664,9 +664,16 @@ public class Play extends AppCompatActivity
     }
 
     private void RawBack(){
-        mPlayer.seekTo(mPlayer.getCurrentPosition() - 2000);
+        int currentPosition = mPlayer.getCurrentPosition();
+        int backCurrentPosition = currentPosition - 2000;
+        if(backCurrentPosition < 0)
+            return;
+        mPlayer.seekTo(backCurrentPosition);
     }
     private void RawForward(){
+        int currentPosition = mPlayer.getCurrentPosition();
+
+        int backCurrentPosition = currentPosition - 2000;
         mPlayer.seekTo(mPlayer.getCurrentPosition() + 2000);
     }
     //endregion
@@ -974,6 +981,12 @@ public class Play extends AppCompatActivity
                                     int resultCode,
                                     Intent dataIntent) {
         Log.v("Ringdroid", "EditActivity onActivityResult");
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        dialogMain.showQuestionDialogPlay();
     }
 
     //endregion

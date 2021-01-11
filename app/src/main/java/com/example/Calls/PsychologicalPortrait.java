@@ -61,6 +61,7 @@ public class PsychologicalPortrait extends AppCompatActivity {
             TextView textViewSelectedContactPortrait = (TextView) findViewById(R.id.textViewSelectedContactPortrait);
             textViewSelectedContactPortrait.setText(selectedContact.Name);
 
+            
             //if we have more 1000 words
             if(selectedContact.NumberWords >= ContactRepository.MAX_PERCENTAGE){
                 relativeLayoutGetPortrait.setVisibility(View.VISIBLE);

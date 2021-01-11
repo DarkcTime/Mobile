@@ -29,12 +29,17 @@ public class EditTextRecord extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.edit_text_record);
 
+            String noText = "текст не получен для данной записи";
+
             apiMain = new ApiMain();
             String result = apiMain.readFullFileSelectedRecord();
 
             editTextTranslatedResult = (EditText) findViewById(R.id.editTextTranslatedResult);
-            if (SharedMethods.isNullOrWhiteSpace(result))
-                result = "текст не получен для данной записи";
+            if (SharedMethods.isNullOrWhiteSpace(result)){
+                result = noText;
+                editTextTranslatedResult.setEnabled(false);
+            }
+
             editTextTranslatedResult.setText(result);
 
         } catch (Exception ex) {
@@ -57,9 +62,6 @@ public class EditTextRecord extends AppCompatActivity {
         }
     }
 
-    public void onClickButtonSettingsEdit(View view) {
-
-    }
     //endregion
 
 

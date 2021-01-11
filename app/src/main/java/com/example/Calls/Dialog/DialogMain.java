@@ -113,6 +113,16 @@ public class DialogMain extends AppCompatDialogFragment {
         }
     }
 
+    public void showQuestionDialogPlay(){
+        try{
+            QuestionDialog questionDialog = new QuestionDialog(play);
+            questionDialog.show(manager, "showQuestionDialogPlay");
+        }
+        catch (Exception ex){
+            showErrorDialogAndTheOutputLogs(ex, "showQuestionDialogPlay");
+        }
+    }
+
     public void showHelpDialog(HelpDialog.Helps help){
         try{
             HelpDialog helpDialog = new HelpDialog();
