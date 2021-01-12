@@ -289,7 +289,6 @@ public class Play extends AppCompatActivity
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreatePlay");
         }
-
     }
 
     //region buttons start and end
@@ -327,6 +326,7 @@ public class Play extends AppCompatActivity
     public void onClickButtonAgain(View view){
         Directories directories = new Directories(RecordRepository.getSelectedRecord());
         directories.deleteDirectory(new File(FileSystemParameters.getPathForSelectedRecordDir()));
+        cutter.DeleteIntervalFile();
         setPlayUI();
     }
     //endregion
@@ -664,9 +664,16 @@ public class Play extends AppCompatActivity
     }
 
     private void RawBack(){
-        mPlayer.seekTo(mPlayer.getCurrentPosition() - 2000);
+        int currentPosition = mPlayer.getCurrentPosition();
+        int backCurrentPosition = currentPosition - 2000;
+        if(backCurrentPosition < 0)
+            return;
+        mPlayer.seekTo(backCurrentPosition);
     }
     private void RawForward(){
+        int currentPosition = mPlayer.getCurrentPosition();
+
+        int backCurrentPosition = currentPosition - 2000;
         mPlayer.seekTo(mPlayer.getCurrentPosition() + 2000);
     }
     //endregion
@@ -974,6 +981,12 @@ public class Play extends AppCompatActivity
                                     int resultCode,
                                     Intent dataIntent) {
         Log.v("Ringdroid", "EditActivity onActivityResult");
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        dialogMain.showQuestionDialogPlay();
     }
 
     //endregion

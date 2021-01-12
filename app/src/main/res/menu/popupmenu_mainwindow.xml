@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menu1"
+        android:id="@+id/settings_main_menu"
         android:icon="@mipmap/ic_launcher"
         android:title="Настройки"/>
     <item
-        android:id="@+id/menu2"
+        android:id="@+id/help_main_menu"
+        android:icon="@mipmap/ic_launcher"
+        android:title="Справка"/>
+    <item
+        android:id="@+id/about_us_main_menu"
         android:title="О приложении"/>
 </menu>

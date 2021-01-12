@@ -44,6 +44,7 @@
             <Button
                 style="@style/ButtonStyle.LongBlue"
                 android:layout_centerInParent="true"
+                android:onClick="onClickHelpIfNotRecords"
                 android:text="@string/I_have_not_records_rus" />
         </RelativeLayout>
     </LinearLayout>

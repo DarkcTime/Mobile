@@ -2,7 +2,10 @@ package com.example.Calls;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.AudioFormat;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -37,11 +40,16 @@ public class PsychologicalPortrait extends AppCompatActivity {
 
     private RelativeLayout relativeLayoutGetPortrait;
 
+    private final String BOARD = "----------";
+    private final String TELEGRAMPACKAGE = "org.telegram.messenger";
+
+
     final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.MainActivity);
 
     private Button buttonEditTextForPortrait;
     private EditText editTextForPortrait;
     private LinearLayout linerLayoutTextForPortrait;
+    private TextView textViewNumberWords;
 
     ClipboardManager myClipboard;
     File fileResult;
@@ -57,35 +65,57 @@ public class PsychologicalPortrait extends AppCompatActivity {
             editTextForPortrait = (EditText) findViewById(R.id.editTextForPortrait);
             myClipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
 
+
             Contact selectedContact = ContactRepository.getSelectedContact();
             TextView textViewSelectedContactPortrait = (TextView) findViewById(R.id.textViewSelectedContactPortrait);
             textViewSelectedContactPortrait.setText(selectedContact.Name);
 
-            //if we have more 1000 words
-            if(selectedContact.NumberWords >= ContactRepository.MAX_PERCENTAGE){
-                relativeLayoutGetPortrait.setVisibility(View.VISIBLE);
-                linerLayoutTextForPortrait.setVisibility(View.GONE);
-                return;
-            }
+            textViewNumberWords = (TextView) findViewById(R.id.textViewNumberWords);
+            textViewNumberWords.setText(getTextNumberWords(selectedContact.NumberWords));
 
             fileResult = new File(FileSystemParameters.getPathFileResultForSelectedContact());
             //if we not have words for selected contact
             if(!fileResult.exists()){
+                notHaveWords();
                 return;
             }
 
             String textForPortrait = FileSystem.ReadFile(FileSystemParameters.getPathFileResultForSelectedContact());
-            editTextForPortrait.setText(textForPortrait);
+            if(!textForPortrait.equals("")){
+                editTextForPortrait.setText(textForPortrait);
+            }
+            else{
+                //if we not have words for selected contact
+                notHaveWords();
+            }
+
         }
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "PsychologicalPortrait/onCreate");
         }
 
     }
+    private boolean isHaveWordsForContact(){
+        String text = editTextForPortrait.getText().toString();
+        return !text.equals("Получите текст для данного контакта");
+    }
+
+    private void notHaveWords(){
+        editTextForPortrait.setText("Получите текст для данного контакта");
+    }
+
+    private String getTextNumberWords(int count){
+        return  "слов: " + String.valueOf(count) + "/1000";
+    }
 
     //region UI Actions
     public void onClickButtonEditForPortrait(View view){
         try{
+            if(!isHaveWordsForContact()){
+                Toast.makeText(getApplicationContext(),"Получите текст для данного контакта",Toast.LENGTH_LONG).show();
+                return;
+            }
+
             if(editTextForPortrait.isEnabled()){
                 String textForPortrait = editTextForPortrait.getText().toString();
                 FileSystem.WriteFile(fileResult.getAbsolutePath(), textForPortrait, false);
@@ -102,19 +132,62 @@ public class PsychologicalPortrait extends AppCompatActivity {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "PsychologicalPortrait/ButtonEditForPortrait");
         }
     }
-
     public void onClickButtonCopyForPortrait(View view){
-        ClipData myClip;
-        String text = editTextForPortrait.getText().toString();
-        myClip = ClipData.newPlainText("text", text);
-        myClipboard.setPrimaryClip(myClip);
-        Toast.makeText(this, "Текст скопирован", Toast.LENGTH_LONG).show();
+        try {
+            ClipData myClip;
+            String text = editTextForPortrait.getText().toString();
+            myClip = ClipData.newPlainText("text", text);
+            myClipboard.setPrimaryClip(myClip);
+            Toast.makeText(this, "Текст скопирован", Toast.LENGTH_LONG).show();
+        } catch (Exception ex) {
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonCopyForPortrait");
+        }
     }
 
-    public void onClickButtonGetPortrait(View view){
-        relativeLayoutGetPortrait.setVisibility(View.GONE);
+    //Send message with text to Telegram
+    public void onClickSendTelegram(View view) {
+        try {
+            if(isHaveWordsForContact()){
+                sendMessageTelegram(ContactRepository.getSelectedContact().Name, editTextForPortrait.getText().toString());
+            }
+            else{
+                Toast.makeText(getApplicationContext(),"Получите текст для данного контакта",Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception ex) {
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonCopyForPortrait");
+        }
     }
+    private void sendMessageTelegram(String contactName, String message){
+        try{
+            if(isTelegramInstalled()){
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
 
+                String text = BOARD + "\n" + contactName + "\n" + BOARD + "\n" + message;
+                sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+
+                sendIntent.setType("text/plain");
+                sendIntent.setPackage(TELEGRAMPACKAGE);
+                startActivity(Intent.createChooser(sendIntent,"Поделиться"));
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Установите приложение Telegram на телефон", Toast.LENGTH_LONG).show();
+            }
+        }
+        catch (Exception exception){
+            Toast.makeText(getApplicationContext(), "sendMessageTelegramException", Toast.LENGTH_LONG).show();
+        }
+    }
+    private boolean isTelegramInstalled(){
+        PackageManager pm = getPackageManager();
+        try {
+            pm.getPackageInfo(TELEGRAMPACKAGE, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            dialogMain.showErrorDialogAndTheOutputLogs(e, "isTelegramInstalled");
+        }
+        return false;
+    }
 
     //endregion
 }

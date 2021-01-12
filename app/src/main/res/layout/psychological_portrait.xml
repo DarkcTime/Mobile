@@ -26,19 +26,61 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="50"
-            android:background="@drawable/agent"
+            android:background="@drawable/profile"
             android:id="@+id/imageViewPortrait"/>
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="50">
-            <TextView
-                style="@style/TextViewStyle.Big"
-                android:id="@+id/textViewHeaderPortrait"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textAlignment="center"
-                android:text="Не определено"
-                android:gravity="center_horizontal" />
+                android:orientation="vertical">
+                <TextView
+                    style="@style/TextViewStyle.Big"
+                    android:id="@+id/textViewNumberWords"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    >
+
+                </TextView>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:text="@string/telegram_help"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="vertical">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <Button
+                                style="@style/StyleButtonIconBig"
+                                android:onClick="onClickSendTelegram"
+                                android:layout_centerHorizontal="true"
+                                android:background="@drawable/telegram"
+                                android:layout_centerInParent="true"/>
+                        </RelativeLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/send_rus"/>
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
         </RelativeLayout>
     </LinearLayout>
 
@@ -69,6 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="20">
+
                 <Button
                     style="@style/ButtonStyle.SmallBlue"
                     android:layout_margin="20dp"

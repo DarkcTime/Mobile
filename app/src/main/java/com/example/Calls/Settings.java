@@ -40,23 +40,9 @@ public class Settings extends AppCompatActivity {
 
         editTextPath = (EditText) findViewById(R.id.editTextPath);
 
-        buttonChangeRole = (Button) findViewById(R.id.buttonChangeRole);
-
         mSettings = getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE);
 
         editTextPath.setText(mSettings.getString("path", RecordsService.currentPathForRecordsXiomi));
-
-        /*
-        typeUser = SavedSettings.isExpert();
-
-        if(SavedSettings.isExpert()){
-            buttonChangeRole.setBackgroundResource(R.drawable.expert);
-        }
-        else{
-            buttonChangeRole.setBackgroundResource(R.drawable.begin);
-        }
-
-         */
 
     }
 
@@ -110,6 +96,8 @@ public class Settings extends AppCompatActivity {
 
     public void onClickButtonChangeRoleSetting(View view){
         /*
+
+
         if(SavedSettings.isExpert()){
             typeUser = false;
             buttonChangeRole.setBackgroundResource(R.drawable.begin);

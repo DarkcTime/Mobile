@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
     <TextView
@@ -8,13 +8,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="30dp"
-        android:text="@string/help"
+        android:text="@string/about_us_rus"
         android:gravity="center_horizontal"
         />
     <TextView
         style="@style/TextViewStyle.Big"
         android:layout_margin="@dimen/more_margin"
-        android:text="@string/help_user"/>
+        android:text="@string/about_us"/>
+
+
 
 
 </LinearLayout>

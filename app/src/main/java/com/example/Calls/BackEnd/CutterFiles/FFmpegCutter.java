@@ -32,6 +32,8 @@ public class FFmpegCutter {
     //object activity
     private Context context;
 
+    public static boolean isStop;
+
     //load FFMpeg library
     public FFmpegCutter(Context _context) {
         try {
@@ -81,11 +83,11 @@ public class FFmpegCutter {
     public void executeCommandForCutFileAfterPlay(List<FileForCutter> filesForCutter) {
 
         try{
-
             RecordProcessing.setMaxDurationProcessing(filesForCutter.size());
-
             for (FileForCutter file : filesForCutter) {
                 try {
+                    if(isStop)
+                        return;
                     File sourceFile = new File(file.getDestination().getAbsolutePath());
                     File copyFile = new File(getTargetFileForCopy(FileSystemParameters.getPathForSelectedRecordApi(),
                             file.getDestination().getName()).getAbsolutePath());

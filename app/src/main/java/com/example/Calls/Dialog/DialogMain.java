@@ -93,13 +93,33 @@ public class DialogMain extends AppCompatDialogFragment {
         }
     }
 
-    public void showQuestionDialog(){
+    public void showQuestionDialogEditText(){
         try{
             QuestionDialog questionDialog = new QuestionDialog(editTextRecord);
             questionDialog.show(manager, "showQuestionDialog");
         }
         catch (Exception ex){
             showErrorDialogAndTheOutputLogs(ex, "showQuestionDialog");
+        }
+    }
+
+    public void showQuestionDialogWaitEndPlay(){
+        try{
+            QuestionDialog questionDialog = new QuestionDialog(waitInEndPlay);
+            questionDialog.show(manager, "showQuestionDialogWaitEndPlay");
+        }
+        catch (Exception ex){
+            showErrorDialogAndTheOutputLogs(ex, "showQuestionDialogWaitEndPlay");
+        }
+    }
+
+    public void showQuestionDialogPlay(){
+        try{
+            QuestionDialog questionDialog = new QuestionDialog(play);
+            questionDialog.show(manager, "showQuestionDialogPlay");
+        }
+        catch (Exception ex){
+            showErrorDialogAndTheOutputLogs(ex, "showQuestionDialogPlay");
         }
     }
 

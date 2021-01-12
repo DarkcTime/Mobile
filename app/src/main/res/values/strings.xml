@@ -20,8 +20,33 @@
     <string name="help_for_edit_text_2_rus">
         знаки препинания, переносы строк и заглавные буквы значения не имеют.
     </string>
-    
-    <!-- Buttons --> 
+
+    <!-- Helps -->
+    <string name="help_user">
+        1) Выберите контакт характер которого вы хотите узнать
+        \n2) Выберите запись разговора
+        \n3) Выделите слова собеседника
+        \n4) Нажмите на кнопку завершить и ждите окончания процесса перевода
+        \n5) Отредактируйте речь собеседника
+        \n6) Когда будет набрана 1 тыс слов, появиться возможность узнать характер
+    </string>
+    <string name="telegram_help">
+        Вы можете отправить полученный текст в Telegram боту - PersonGuideRU.
+    </string>
+
+
+    <!-- About us -->
+    <string name="about_us">
+        Приложение было разработано как дополнение к Telegram боту.
+        \nPersonGuideRU - определение психологического потрета человека по его словам.
+        \nПолная справка по использованию бота и приложения, есть на сайте:
+        \nhttp://personguide.mozello.ru/
+    </string>
+    <string name="about_us_rus">
+        О приложении
+    </string>
+
+    <!-- Buttons -->
     <string name="complete_rus">Завершить</string>
     <string name="remove_rus">Удалить</string>
     <string name="get_portrait_button_rus">Получить портрет</string>
@@ -32,13 +57,14 @@
     <string name="start_eng">start</string>
     <string name="end_eng">end</string>
     <string name="back_rus">Назад</string>
+    <string name="send_rus">Отправить</string>
+
     <string name="ifHaveNotRecords_rus">
         Для данной Персоны у вас больше нет записей.
         Чтобы продолжить получение текста, сделайте больше звонков Персоне.
     </string>
     <string name="title_activity_about_selected_contact">About_selected_contact</string>
     <string name="help">Справка пользователя</string>
-    <string name="about_us">About us</string>
     <string name="settings">Настройки</string>
     <string name="russia">Русский</string>
     <string name="english">English</string>
@@ -149,9 +175,7 @@
                                     "Приложение использует защищенный протокол обработки данных. Также все записи и результаты переводов храняться на вашем телефоне без использования сторонних серверов"</string>
 
 
-    <!--
- Main / media select activity
- -->
+    <!-- Main / media select activity -->
 
     <string name="main_activity_label">Ringdroid</string>
 
@@ -254,8 +278,7 @@
     <string name="delete_audio">Delete Audio</string>
 
     <string name="confirm_delete_ringdroid">Are you sure?</string>
-    <string name="confirm_delete_non_ringdroid"
-        >Are you sure?  This file was not created using Ringdroid!</string>
+    <string name="confirm_delete_non_ringdroid">Are you sure?  This file was not created using Ringdroid!</string>
 
     <string name="delete_ok_button">Delete</string>
     <string name="delete_cancel_button">Cancel</string>

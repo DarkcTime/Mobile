@@ -14,6 +14,7 @@ import android.system.Os;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,6 +36,7 @@ import com.example.Calls.Model.Repositories.ContactRepository;
 import com.example.Calls.Model.Repositories.RecordRepository;
 import com.example.Calls.Views.ContactAdapter;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
             RecordsService.setPathForFindRecords(savedSettings.getmSettings()
                     .getString("path", RecordsService.currentPathForRecordsXiomi));
 
-
             boolean isVisited = savedSettings.getmSettings().getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false);
+
             if (!isVisited) {
                 savedSettings.setVisited(savedSettings.getmSettings());
                 dialogMain.showHelpDialogFirstLaunch();
@@ -80,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
                 askPermission();
             }
 
+            if(!RecordsService.checkPath(RecordsService.getPathForFindRecords()))
+                noExistingPath();
 
             editTextSearch.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -127,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
             });
 
 
-
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreateMainActivity");
         }
@@ -135,10 +138,8 @@ public class MainActivity extends AppCompatActivity {
     //region permissions
     public void askPermission() {
         try {
-            Log.d("per", "no");
             if (permissions.isEnablePermissions()){
                 loadListRecords();
-                Log.d("per", "true");
             }
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "askPermission");
@@ -149,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (grantResults.length > 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 loadListRecords();
-
             } else {
                 // permission denied
                 dialogMain.showPermissionDialog();
@@ -164,13 +164,15 @@ public class MainActivity extends AppCompatActivity {
 
     //region loadPage
 
-    private void noExistingPathForRecords(){
+    private void noExistingPath(){
         loadNoRecordsPage();
-        Toast.makeText(this, "Данная директория не найдена", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Директория не найдена на устройстве", Toast.LENGTH_LONG).show();
     }
+
     private void loadNoRecordsPage(){
         linerLayoutNoRecords.setVisibility(View.VISIBLE);
     }
+
     private void loadListRecords() {
         try {
             //fill records to RecordRepository
@@ -179,11 +181,16 @@ public class MainActivity extends AppCompatActivity {
             recordService.generateListRecords();
 
             linerLayoutListRecords.setVisibility(View.VISIBLE);
-
             ContactsService.generateFilteredListContacts(this);
 
-            contactAdapter = new ContactAdapter(this, R.layout.list_contacts, ContactRepository.getListContacts());
+            ArrayList<Contact> contacts = ContactRepository.getListContacts();
+            //if count records empty, return
+            if(contacts.isEmpty()){
+                loadNoRecordsPage();
+                return;
+            }
 
+            contactAdapter = new ContactAdapter(this, R.layout.list_contacts, ContactRepository.getListContacts());
             listViewContactsMA.setAdapter(contactAdapter);
 
         } catch (Exception ex) {
@@ -195,23 +202,61 @@ public class MainActivity extends AppCompatActivity {
 
     //region UIActions
 
+    //open page for settings
     public void onClickSelectPath(View view){
         try{
-            SelectFileDialog selectFileDialog = new SelectFileDialog(this);
-            selectFileDialog.show();
-        }
-        catch (Exception ex){
+            Intent settings = new Intent(MainActivity.this, Settings.class);
+            startActivity(settings);
+        } catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickSelectPath");
         }
     }
 
-    //открывает окно настроек
+    //open page for help
+    public void onClickHelpIfNotRecords(View view){
+        try{
+            Intent help = new Intent(MainActivity.this, Help.class);
+            startActivity(help);
+        }catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickHelpIfNotRecords");
+        }
+    }
+
+    //show popup menu
     public void onClickButtonMainWindowMenu(View view) {
         try {
-            PopupMenu.showPopupMenu(this, view, R.menu.popupmenu_mainwindow);
+            showPopupMenu(this, view, R.menu.popupmenu_mainwindow);
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonSettings");
         }
+    }
+
+    public void showPopupMenu(Context context, View view, int resource){
+        android.widget.PopupMenu popup = new android.widget.PopupMenu(context, view);
+        //popup.setOnMenuItemClickListener((android.widget.PopupMenu.OnMenuItemClickListener) context);
+        popup.inflate(resource);
+
+        popup.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.settings_main_menu:
+                        Intent settings = new Intent(MainActivity.this, Settings.class);
+                        startActivity(settings);
+                        return true;
+                    case R.id.help_main_menu:
+                        Intent help = new Intent(MainActivity.this, Help.class);
+                        startActivity(help);
+                        return true;
+                    case R.id.about_us_main_menu:
+                        Intent about_us = new Intent(MainActivity.this, AboutUs.class);
+                        startActivity(about_us);
+                        return true;
+                }
+                return false;
+            }
+        });
+        popup.show();
     }
 
     //endregion

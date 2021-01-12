@@ -115,35 +115,7 @@ public class FileSystem {
         return fileList;
     }
 
-    /**
-     * Генерирует список файлов для резчика,
-     * параметры файлов устанавливаются на основе листа с интервалами
-     * @param intervalList
-     * @return
-     */
-    public static List<FileForCutter> getFilesForCutter(List<CutterInterval> intervalList){
-        int i = 0;
-        List<FileForCutter> fileForCutterList = new ArrayList<FileForCutter>();
 
-        for (CutterInterval interval : intervalList) {
-            // генерация параметров
-            int duration = interval.getEnd() - interval.getStart();
-            File targetFile = new File(FileSystemParameters.getPathForSelectedRecordsForCutter().concat(String.valueOf(i)).concat(".mp3"));
-            File sourceFile = new File(RecordRepository.getSelectedRecord().Path);
-
-            //генерация объекта
-            FileForCutter fileForCutter = new FileForCutter(interval.getStart(),
-                    duration,
-                    sourceFile,
-                    targetFile);
-
-            //заполнение листа
-            fileForCutterList.add(fileForCutter);
-            i++;
-        }
-
-        return fileForCutterList;
-    }
 
 
     /**

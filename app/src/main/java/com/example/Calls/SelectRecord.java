@@ -44,7 +44,7 @@ public class SelectRecord extends AppCompatActivity {
             RecordRepository recordRepository = new RecordRepository();
             ArrayList<Record> listRecords = recordRepository.getDisplayList();
 
-            if(listRecords.size() != 0){
+            if (listRecords.size() != 0) {
                 linerLayoutSelectRecord.setVisibility(View.VISIBLE);
 
                 RecordAdapter recordAdapter = new RecordAdapter(this, R.layout.list_records, listRecords);
@@ -62,23 +62,19 @@ public class SelectRecord extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-            }
-            else{
+            } else {
                 linerLayoutIfHaveNotRecords.setVisibility(View.VISIBLE);
-
             }
 
-        }
-        catch (NullPointerException nullPointerException){
+        } catch (NullPointerException nullPointerException) {
             dialogMain.showErrorDialogAndTheOutputLogs(nullPointerException, "SelectRec - NullPointEx");
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "SelectRecordOnCreate");
         }
     }
 
 
-    public void onClickButtonBackSelectedPlay(View view){
+    public void onClickButtonBackSelectedPlay(View view) {
         openMainActivity();
     }
 
