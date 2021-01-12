@@ -5,6 +5,14 @@
     android:orientation="vertical">
     <TextView
         style="@style/TextViewStyle.Big"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:text="@string/about_us_rus"
+        android:gravity="center_horizontal"
+        />
+    <TextView
+        style="@style/TextViewStyle.Big"
         android:layout_margin="@dimen/more_margin"
         android:text="@string/about_us"/>
 
