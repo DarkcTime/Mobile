@@ -55,20 +55,8 @@ public class RecordsService {
 
     private ArrayList<File> listFiles = new ArrayList<File>();
     public void create() throws Exception{
-
         Log.d("pathFindRec", getPathForFindRecords());
         listFiles.addAll(FileSystem.getFilesWithSelectedExtWithFilter(getPathForFindRecords(), ".mp3"));
-        /*
-        if(!isExistingPathRecord()){
-            //TODO if not exist
-            return;
-        }
-        if(!isHavingRecords()){
-                //TODO if not records
-        }
-
-         */
-
     }
     private boolean isExistingPathRecord() throws Exception{
         return new File(getPathForFindRecords()).exists();

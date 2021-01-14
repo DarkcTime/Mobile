@@ -59,6 +59,10 @@
     <string name="back_rus">Назад</string>
     <string name="send_rus">Отправить</string>
 
+    <string name="contacts_rus">Контакты</string>
+    <string name="allrecords_rus">Все записи</string>
+
+
     <string name="ifHaveNotRecords_rus">
         Для данной Персоны у вас больше нет записей.
         Чтобы продолжить получение текста, сделайте больше звонков Персоне.

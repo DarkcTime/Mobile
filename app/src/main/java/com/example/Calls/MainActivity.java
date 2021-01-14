@@ -18,12 +18,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.Calls.BackEnd.Files.FileSystem;
 import com.example.Calls.BackEnd.Services.ContactsService;
 import com.example.Calls.BackEnd.Permissions.Permissions;
 import com.example.Calls.BackEnd.Services.RecordsService;
@@ -34,12 +36,14 @@ import com.example.Calls.Dialog.SelectFileDialog;
 import com.example.Calls.Model.Contact;
 import com.example.Calls.Model.Repositories.ContactRepository;
 import com.example.Calls.Model.Repositories.RecordRepository;
+import com.example.Calls.Views.AllRecordsAdapter;
 import com.example.Calls.Views.ContactAdapter;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 //endregion
 
 //логика для главного окна в приложении
@@ -53,9 +57,18 @@ public class MainActivity extends AppCompatActivity {
 
     private LinearLayout linerLayoutNoRecords;
     private LinearLayout linerLayoutListRecords;
-    private EditText editTextSearch;
+
+    private EditText editTextSearchContacts;
     private ListView listViewContactsMA;
     private ArrayAdapter<Contact> contactAdapter;
+    private EditText editTextSearchRecords;
+    private ListView listViewRecordsMA;
+    private ArrayAdapter<File> recordsAdapter;
+
+    private Button buttonListContacts;
+    private LinearLayout linearLayoutContacts;
+    private Button buttonListRecords;
+    private LinearLayout linearLayoutRecords;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +78,17 @@ public class MainActivity extends AppCompatActivity {
 
             linerLayoutNoRecords = (LinearLayout) (findViewById(R.id.linerLayoutNoRecords));
             linerLayoutListRecords = (LinearLayout) (findViewById(R.id.linerLayoutListRecords));
-            editTextSearch = (EditText) findViewById(R.id.editTextSearch);
+
+            editTextSearchContacts = (EditText) findViewById(R.id.editTextSearchContacts);
             listViewContactsMA = (ListView) (findViewById(R.id.listViewContactsMA));
+
+            editTextSearchRecords = (EditText) findViewById(R.id.editTextSearchRecords);
+            listViewRecordsMA = (ListView) (findViewById(R.id.listViewRecordsMA));
+
+            buttonListContacts = (Button) (findViewById(R.id.buttonListContacts));
+            linearLayoutContacts = (LinearLayout)(findViewById(R.id.linearLayoutContacts));
+            buttonListRecords = (Button) (findViewById(R.id.buttonListRecords));
+            linearLayoutRecords = (LinearLayout) (findViewById(R.id.linearLayoutRecords));
 
             savedSettings.setmSettings(getSharedPreferences(SavedSettings.APP_PREFERENCES, Context.MODE_PRIVATE));
             RecordsService.setPathForFindRecords(savedSettings.getmSettings()
@@ -85,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             if(!RecordsService.checkPath(RecordsService.getPathForFindRecords()))
                 noExistingPath();
 
-            editTextSearch.addTextChangedListener(new TextWatcher() {
+            editTextSearchRecords.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -198,9 +220,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void loadListAllRecords(){
+        try{
+            List<File> recordsBuffer = FileSystem.getFilesWithSelectedExtWithFilter(RecordsService.getPathForFindRecords(), ".mp3");
+            ArrayList<File> records = new ArrayList<>(recordsBuffer);
+
+
+            recordsAdapter = new AllRecordsAdapter(this, R.layout.list_all_records, records);
+            listViewRecordsMA.setAdapter(recordsAdapter);
+        }
+        catch (Exception ex){
+            dialogMain.showErrorDialogAndTheOutputLogs(ex, "loadListAllRecords");
+        }
+    }
+
     //endregion
 
-    //region UIActions
+
+
+    //region ifNotHaveRecords
 
     //open page for settings
     public void onClickSelectPath(View view){
@@ -221,8 +259,22 @@ public class MainActivity extends AppCompatActivity {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickHelpIfNotRecords");
         }
     }
+    //endregion
 
-    //show popup menu
+    //region header menu
+    public void onClickListContacts(View view){
+        linearLayoutContacts.setVisibility(View.VISIBLE);
+        linearLayoutRecords.setVisibility(View.GONE);
+    }
+
+    public void onClickListRecords(View view){
+        if(recordsAdapter == null)
+            loadListAllRecords();
+        linearLayoutRecords.setVisibility(View.VISIBLE);
+        linearLayoutContacts.setVisibility(View.GONE);
+
+    }
+
     public void onClickButtonMainWindowMenu(View view) {
         try {
             showPopupMenu(this, view, R.menu.popupmenu_mainwindow);
@@ -262,4 +314,5 @@ public class MainActivity extends AppCompatActivity {
     //endregion
 
     //endregion
+
 }
