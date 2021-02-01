@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginHorizontal="@dimen/mini"
-    android:layout_marginTop="@dimen/standard"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/style_dark_background"
     android:orientation="vertical">
 
     <!-- If not have records-->
@@ -13,41 +10,52 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.30">
-
+            android:layout_weight="8">
             <TextView
                 style="@style/TextViewStyle"
                 android:text="@string/help_if_have_not_records_rus" />
+
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/double_standard">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-            <Button
-                style="@style/ButtonStyle.LongBlue"
-                android:layout_centerInParent="true"
-                android:onClick="onClickSelectPath"
-                android:text="@string/I_know_where_records_rus" />
-        </RelativeLayout>
+                <Button
+                    style="@style/style_dark_button_large"
+                    android:layout_centerInParent="true"
+                    android:onClick="onClickSelectPath"
+                    android:text="@string/I_know_where_records_rus" />
+            </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-            <Button
-                style="@style/ButtonStyle.LongBlue"
-                android:layout_centerInParent="true"
-                android:onClick="onClickHelpIfNotRecords"
-                android:text="@string/I_have_not_records_rus" />
-        </RelativeLayout>
+                <Button
+                    style="@style/ButtonStyle.LongBlue"
+                    android:layout_centerInParent="true"
+                    android:onClick="onClickHelpIfNotRecords"
+                    android:text="@string/I_have_not_records_rus" />
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <!-- main frame -->
@@ -56,7 +64,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone"
+        >
 
         <!-- header menu -->
         <RelativeLayout

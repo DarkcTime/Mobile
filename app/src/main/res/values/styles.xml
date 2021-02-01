@@ -137,5 +137,31 @@
         <item name="android:background">@color/colorPrimaryDark</item>
     </style>
 
+    #common style
+    <style name="standard_style">
+        <item name="android:fontFamily">Roboto</item>
+    </style>
+
+    <style name="style_button" parent="standard_style">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    #style dark design
+    <style name="style_dark_background">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/dark_blue</item>
+    </style>
+
+    <style name="style_dark_button_large">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/routed_button</item>
+        <item name="android:color">@color/white</item>
+        <item name="android:bottomLeftRadius">40dp</item>
+        <item name="android:bottomRightRadius">40dp</item>
+    </style>
+
+
 
 </resources>

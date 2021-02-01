@@ -3,7 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="white">#FFFFFF</color>
+
     <color name="black">#000000</color>
     <color name="blue">#573dff</color>
 
@@ -13,6 +13,12 @@
     <color name="red">#FF0000</color>
     <color name="grey">#E0E0E0</color>
     <color name="light_green">#7fff00</color>
+
+    #dark design
+    <color name="dark_blue">#1D3947</color>
+    <color name="light_blue">#396FBA</color>
+    <color name="orange">#BE9B1D</color>
+    <color name="white">#FFFFFF</color>
 
     #paint game
     <color name="waveform_selected">#33b5e5</color>

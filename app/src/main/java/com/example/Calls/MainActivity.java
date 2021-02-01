@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             listViewRecordsMA = (ListView) (findViewById(R.id.listViewRecordsMA));
 
             buttonListContacts = (Button) (findViewById(R.id.buttonListContacts));
-            linearLayoutContacts = (LinearLayout)(findViewById(R.id.linearLayoutContacts));
+            linearLayoutContacts = (LinearLayout) (findViewById(R.id.linearLayoutContacts));
             buttonListRecords = (Button) (findViewById(R.id.buttonListRecords));
             linearLayoutRecords = (LinearLayout) (findViewById(R.id.linearLayoutRecords));
 
@@ -99,12 +99,11 @@ public class MainActivity extends AppCompatActivity {
             if (!isVisited) {
                 savedSettings.setVisited(savedSettings.getmSettings());
                 dialogMain.showHelpDialogFirstLaunch();
-            }
-            else{
+            } else {
                 askPermission();
             }
 
-            if(!RecordsService.checkPath(RecordsService.getPathForFindRecords()))
+            if (!RecordsService.checkPath(RecordsService.getPathForFindRecords()))
                 noExistingPath();
 
             editTextSearchRecords.addTextChangedListener(new TextWatcher() {
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                    if(count != 0)
+                    if (count != 0)
                         contactAdapter.getFilter().filter(s.toString());
                     else
                         contactAdapter.getFilter().filter("");
@@ -132,21 +131,19 @@ public class MainActivity extends AppCompatActivity {
             listViewContactsMA.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    try{
+                    try {
                         Contact selectedContact = (Contact) parent.getItemAtPosition(position);
                         ContactRepository.setSelectedContact(selectedContact);
 
-                        if(contactRepository.getProgressAsPercentage(ContactRepository.getSelectedContact())
-                                >= ContactRepository.MAX_PERCENTAGE){
+                        if (contactRepository.getProgressAsPercentage(ContactRepository.getSelectedContact())
+                                >= ContactRepository.MAX_PERCENTAGE) {
                             Intent psychologicalPortrait = new Intent(MainActivity.this, PsychologicalPortrait.class);
                             startActivity(psychologicalPortrait);
-                        }
-                        else{
+                        } else {
                             Intent selectRecord = new Intent(MainActivity.this, SelectRecord.class);
                             startActivity(selectRecord);
                         }
-                    }
-                    catch (Exception ex){
+                    } catch (Exception ex) {
                         dialogMain.showErrorDialogAndTheOutputLogs(ex, "listViewContactsMA");
                     }
                 }
@@ -157,16 +154,18 @@ public class MainActivity extends AppCompatActivity {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onCreateMainActivity");
         }
     }
+
     //region permissions
     public void askPermission() {
         try {
-            if (permissions.isEnablePermissions()){
+            if (permissions.isEnablePermissions()) {
                 loadListRecords();
             }
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "askPermission");
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         try {
@@ -186,12 +185,12 @@ public class MainActivity extends AppCompatActivity {
 
     //region loadPage
 
-    private void noExistingPath(){
+    private void noExistingPath() {
         loadNoRecordsPage();
         Toast.makeText(this, "Директория не найдена на устройстве", Toast.LENGTH_LONG).show();
     }
 
-    private void loadNoRecordsPage(){
+    private void loadNoRecordsPage() {
         linerLayoutNoRecords.setVisibility(View.VISIBLE);
     }
 
@@ -207,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
 
             ArrayList<Contact> contacts = ContactRepository.getListContacts();
             //if count records empty, return
-            if(contacts.isEmpty()){
+            if (contacts.isEmpty()) {
                 loadNoRecordsPage();
                 return;
             }
@@ -220,16 +219,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadListAllRecords(){
-        try{
+    private void loadListAllRecords() {
+        try {
             List<File> recordsBuffer = FileSystem.getFilesWithSelectedExtWithFilter(RecordsService.getPathForFindRecords(), ".mp3");
             ArrayList<File> records = new ArrayList<>(recordsBuffer);
 
 
             recordsAdapter = new AllRecordsAdapter(this, R.layout.list_all_records, records);
             listViewRecordsMA.setAdapter(recordsAdapter);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "loadListAllRecords");
         }
     }
@@ -237,38 +235,37 @@ public class MainActivity extends AppCompatActivity {
     //endregion
 
 
-
     //region ifNotHaveRecords
 
     //open page for settings
-    public void onClickSelectPath(View view){
-        try{
+    public void onClickSelectPath(View view) {
+        try {
             Intent settings = new Intent(MainActivity.this, Settings.class);
             startActivity(settings);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickSelectPath");
         }
     }
 
     //open page for help
-    public void onClickHelpIfNotRecords(View view){
-        try{
+    public void onClickHelpIfNotRecords(View view) {
+        try {
             Intent help = new Intent(MainActivity.this, Help.class);
             startActivity(help);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickHelpIfNotRecords");
         }
     }
     //endregion
 
     //region header menu
-    public void onClickListContacts(View view){
+    public void onClickListContacts(View view) {
         linearLayoutContacts.setVisibility(View.VISIBLE);
         linearLayoutRecords.setVisibility(View.GONE);
     }
 
-    public void onClickListRecords(View view){
-        if(recordsAdapter == null)
+    public void onClickListRecords(View view) {
+        if (recordsAdapter == null)
             loadListAllRecords();
         linearLayoutRecords.setVisibility(View.VISIBLE);
         linearLayoutContacts.setVisibility(View.GONE);
@@ -283,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void showPopupMenu(Context context, View view, int resource){
+    public void showPopupMenu(Context context, View view, int resource) {
         android.widget.PopupMenu popup = new android.widget.PopupMenu(context, view);
         //popup.setOnMenuItemClickListener((android.widget.PopupMenu.OnMenuItemClickListener) context);
         popup.inflate(resource);
@@ -291,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
         popup.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.settings_main_menu:
                         Intent settings = new Intent(MainActivity.this, Settings.class);
                         startActivity(settings);
