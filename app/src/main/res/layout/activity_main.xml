@@ -4,23 +4,43 @@
     style="@style/style_dark_background"
     android:orientation="vertical">
 
-    <!-- If not have records-->
+    <!-- about application -->
     <LinearLayout
-        android:id="@+id/linerLayoutNoRecords"
+        android:id="@+id/linerLayoutAboutApplication"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <TextView
+                style="@style/style_textview_white_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/about_us_rus"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="8">
-            <TextView
-                style="@style/TextViewStyle"
-                android:text="@string/help_if_have_not_records_rus" />
-
+            android:layout_weight="7"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="@dimen/more_margin">
+                <TextView
+                    style="@style/style_textview_white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textStyle="bold"
+                    android:text="@string/about_application_text_rus"/>
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,31 +48,89 @@
             android:layout_weight="2"
             android:orientation="vertical"
             android:layout_marginBottom="@dimen/double_standard">
-            <RelativeLayout
+
+            <Space
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="1"/>
 
-                <Button
-                    style="@style/style_dark_button_large"
-                    android:layout_centerInParent="true"
-                    android:onClick="onClickSelectPath"
-                    android:text="@string/I_know_where_records_rus" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <Button
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                style="@style/style_dark_button_large"
+                android:layout_marginHorizontal="@dimen/more_margin"
+                android:layout_marginVertical="@dimen/mini"
+                android:onClick="onClickButtonContinue"
+                android:text="@string/continue_rus"
+                android:textStyle="bold"/>
 
-                <Button
-                    style="@style/ButtonStyle.LongBlue"
-                    android:layout_centerInParent="true"
-                    android:onClick="onClickHelpIfNotRecords"
-                    android:text="@string/I_have_not_records_rus" />
-            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- if not have records -->
+    <LinearLayout
+        android:id="@+id/linerLayoutNoRecords"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <TextView
+                style="@style/style_textview_white_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/title_have_not_records_rus"
+                android:textStyle="bold"/>
+        </RelativeLayout>
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="@dimen/double_standard">
+            <TextView
+                style="@style/style_textview_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@string/help_have_not_records_rus"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/double_standard">
+
+            <Button
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                style="@style/style_dark_button_large"
+                android:layout_marginHorizontal="@dimen/more_margin"
+                android:layout_marginVertical="@dimen/mini"
+                android:onClick="onClickSelectPath"
+                android:text="@string/I_know_where_records_rus"
+                android:textStyle="bold"/>
+
+            <Button
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                style="@style/style_dark_button_large"
+                android:layout_marginHorizontal="@dimen/more_margin"
+                android:layout_marginVertical="@dimen/mini"
+                android:onClick="onClickHelpIfNotRecords"
+                android:text="@string/I_have_not_records_rus"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
@@ -64,7 +142,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:visibility="visible"
+        android:layout_margin="@dimen/standard"
         >
 
         <!-- header menu -->

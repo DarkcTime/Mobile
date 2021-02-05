@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     final RecordRepository recordRepository = new RecordRepository();
     final ContactRepository contactRepository = new ContactRepository();
 
+    private LinearLayout linerLayoutAboutApplication;
     private LinearLayout linerLayoutNoRecords;
     private LinearLayout linerLayoutListRecords;
 
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
+            linerLayoutAboutApplication = (LinearLayout) (findViewById(R.id.linerLayoutAboutApplication));
             linerLayoutNoRecords = (LinearLayout) (findViewById(R.id.linerLayoutNoRecords));
             linerLayoutListRecords = (LinearLayout) (findViewById(R.id.linerLayoutListRecords));
 
@@ -97,8 +99,7 @@ public class MainActivity extends AppCompatActivity {
             boolean isVisited = savedSettings.getmSettings().getBoolean(SavedSettings.APP_PREFERENCES_HASVISITED, false);
 
             if (!isVisited) {
-                savedSettings.setVisited(savedSettings.getmSettings());
-                dialogMain.showHelpDialogFirstLaunch();
+                showLinearLayoutAboutApplication();
             } else {
                 askPermission();
             }
@@ -234,6 +235,22 @@ public class MainActivity extends AppCompatActivity {
 
     //endregion
 
+
+    //region AboutApplication
+
+
+    private void showLinearLayoutAboutApplication(){
+        linerLayoutAboutApplication.setVisibility(View.VISIBLE);
+    }
+
+    //open functional application
+    public void onClickButtonContinue(View view){
+        savedSettings.setVisited(savedSettings.getmSettings());
+        linerLayoutAboutApplication.setVisibility(View.GONE);
+        askPermission();
+    }
+
+    //endregion
 
     //region ifNotHaveRecords
 

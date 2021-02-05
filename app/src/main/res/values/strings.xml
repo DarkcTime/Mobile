@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Психологический портрет</string>
-    <string name="I_know_where_records_rus">Я знаю где находятся записи</string>
-    <string name="I_have_not_records_rus">У меня нет записей</string>
     <string name="select_record_rus">Выберите запись разговора...</string>
     <string name="help_play_rus">
         Выделите речь собеседника.
@@ -13,6 +11,9 @@
         не были найдены на вашем устройстве.
         \nУкажите путь вручную - Я знаю где находятся записи
         \nИли ознакомьтесь с инструкцией для получения первой записи
+    </string>
+    <string name="ifHaveNotRecords_rus">
+
     </string>
     <string name="help_for_edit_text_rus">
         Отредактируйте слова собеседника.
@@ -36,6 +37,9 @@
 
 
     <!-- About us -->
+    <string name="title_app">
+        PersonGuide
+    </string>
     <string name="about_us">
         Приложение было разработано как дополнение к Telegram боту.
         \nPersonGuideRU - определение психологического потрета человека по его словам.
@@ -44,6 +48,13 @@
     </string>
     <string name="about_us_rus">
         О приложении
+    </string>
+    <string name="about_application_text_rus">
+        Здравствуй пользователь.
+        \nДанное приложение было создано для выделения речи собеседника и перевода ее в текст.
+        \n\n\nПолучив текст собеседника, вам стоит отправить его слова в Telegram бота - Person Guide.
+        \n\n\nТакже в справке вы можете ознакомиться с иными способами получения текста для определения Психологического портрета.
+        \nВозможно получение и отправка текста о собеседнике из нескольких каналов.
     </string>
 
     <!-- Buttons -->
@@ -58,15 +69,28 @@
     <string name="end_eng">end</string>
     <string name="back_rus">Назад</string>
     <string name="send_rus">Отправить</string>
+    <string name="continue_rus">Продолжить</string>
 
     <string name="contacts_rus">Контакты</string>
     <string name="allrecords_rus">Все записи</string>
 
-
-    <string name="ifHaveNotRecords_rus">
-        Для данной Персоны у вас больше нет записей.
-        Чтобы продолжить получение текста, сделайте больше звонков Персоне.
+    <!-- ifNotHaveRecords -->
+    <string name="title_have_not_records_rus">
+        Записи разговоров
     </string>
+    <string name="help_have_not_records_rus">
+        Ой, записи разговоров не были обнаружены по текущему пути
+        \n\nЕсли вы знаете путь к расположению ваших записей разговоров, то выберите его нажав на кнопку
+        \n“Я знаю где записи”
+        \n\nЕсли вы не понимаете какие нужны записи и как их можно записать, нажмите на кнопку
+        \n“Как получить записи?”
+    </string>
+    <string name="I_know_where_records_rus">Я знаю где находятся записи</string>
+    <string name="I_have_not_records_rus">Как получить записи?</string>
+
+
+
+
     <string name="title_activity_about_selected_contact">About_selected_contact</string>
     <string name="help">Справка пользователя</string>
     <string name="settings">Настройки</string>
@@ -171,7 +195,6 @@
                                     </string>
     <string name="error_rus">Ошибка</string>
     <string name="translated_text_res">Текст полученный из данного разговора</string>
-    <string name="continue_rus">Продолжить</string>
     <string name="return_selected_record_rus">Вернуться к выбору записи</string>
     <string name="selected_cutter_rus">Запись выделена</string>
     <string name="give_permission_rus">Дать приложению разрешения</string>
