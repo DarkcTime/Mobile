@@ -17,7 +17,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/help_for_edit_text_rus"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:gravity="center_horizontal" />
     </RelativeLayout>
 
     <LinearLayout
@@ -32,8 +34,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:textStyle="bold"
-            android:text="@string/help_for_edit_text_2_rus"/>
-
+            android:text="@string/help_for_edit_text_2_rus" />
         <EditText
             android:id="@+id/editTextTranslatedResult"
             android:background="@drawable/dart_edittext"
@@ -46,13 +47,18 @@
             android:layout_marginBottom="@dimen/standard"
             android:textColor="@color/white"
             />
-        <Button
-            android:text="@string/save_rus"
-            style="@style/style_dark_button_large"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:onClick="onClickButtonSaveEdit"/>
+            android:paddingVertical="@dimen/mini">
+            <Button
+                android:text="@string/save_rus"
+                style="@style/style_dark_button_large"
+                android:layout_width="match_parent"
+                android:onClick="onClickButtonSaveEdit"/>
+        </LinearLayout>
+
 
     </LinearLayout>
 

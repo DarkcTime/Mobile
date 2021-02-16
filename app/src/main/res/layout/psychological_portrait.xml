@@ -4,15 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:tools="http://schemas.android.com/tools">
-    <!-- Name selected contact -->
-    <TextView
-        style="@style/TextViewStyle.Big"
-        android:id="@+id/textViewSelectedContactPortrait"
-        android:gravity="center_horizontal"
-        android:layout_marginVertical="@dimen/standard"
-        >
-    </TextView>
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/dark_blue">
 
     <!-- psychological portrait -->
     <LinearLayout
@@ -21,37 +14,54 @@
         android:layout_weight="30"
         android:orientation="horizontal"
         android:layout_margin="@dimen/standard">
-        <ImageView
-            android:layout_margin="@dimen/standard"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
             android:layout_weight="50"
-            android:background="@drawable/profile"
-            android:id="@+id/imageViewPortrait"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_baseline_person_24"
+                android:id="@+id/imageViewPortrait"/>
+        </LinearLayout>
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="50">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:orientation="vertical">
-                <TextView
-                    style="@style/TextViewStyle.Big"
-                    android:id="@+id/textViewNumberWords"
-                    android:textAlignment="center"
-                    android:gravity="center_horizontal"
-                    >
 
-                </TextView>
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:textAlignment="center"
-                    android:gravity="center_horizontal"
-                    android:text="@string/telegram_help"
-                    />
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="7"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/textViewSelectedContactPortrait"
+                        style="@style/style_textview_white_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/textViewSelectedContactNumber"
+                        style="@style/style_textview_white_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -71,6 +81,8 @@
                                 android:layout_centerInParent="true"/>
                         </RelativeLayout>
                         <TextView
+                            style="@style/style_textview_white"
+                            android:textSize="12dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/send_rus"/>
@@ -89,42 +101,104 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="70"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginHorizontal="@dimen/standard">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:id="@+id/linerLayoutTextForPortrait">
-            <EditText
-                android:id="@+id/editTextForPortrait"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="80"
-                android:layout_marginHorizontal="@dimen/more_margin"
-                android:background="@drawable/border_line"
-                android:inputType="textMultiLine"
-                android:gravity="top|left"
-                tools:ignore="RtlHardcoded"
-                android:enabled="false"
-                />
-            <RelativeLayout
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/standard">
+                <EditText
+                    android:id="@+id/editTextForPortrait"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:inputType="textMultiLine"
+                    android:gravity="top|left"
+                    tools:ignore="RtlHardcoded"
+                    android:enabled="false"
+                    android:background="@drawable/dart_edittext"
+                    />
+                <TextView
+                    style="@style/style_textview_white"
+                    android:id="@+id/textViewNumberWords"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    />
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="20">
+                android:layout_weight="20"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <Button
+                                android:id="@+id/buttonEditTextForPortrait"
+                                style="@style/StyleButtonIconBig"
+                                android:onClick="onClickButtonEditForPortrait"
+                                android:layout_centerHorizontal="true"
+                                android:background="@drawable/edit"
+                                android:layout_centerInParent="true"/>
+                        </RelativeLayout>
+                        <TextView
+                            style="@style/style_textview_white"
+                            android:textSize="12dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/edit_rus"/>
+                    </LinearLayout>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <Button
+                                style="@style/StyleButtonIconBig"
+                                android:onClick="onClickButtonCopyForPortrait"
+                                android:layout_centerHorizontal="true"
+                                android:background="@drawable/copy"
+                                android:layout_centerInParent="true"/>
+                        </RelativeLayout>
+                        <TextView
+                            style="@style/style_textview_white"
+                            android:textSize="12dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/copy_rus"/>
+                    </LinearLayout>
+                </RelativeLayout>
 
-                <Button
-                    style="@style/ButtonStyle.SmallBlue"
-                    android:layout_margin="20dp"
-                    android:text="@string/edit_rus"
-                    android:id="@+id/buttonEditTextForPortrait"
-                    android:onClick="onClickButtonEditForPortrait"/>
-                <Button
-                    style="@style/ButtonStyle.SmallBlue"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="20dp"
-                    android:text="@string/copy_rus"
-                    android:onClick="onClickButtonCopyForPortrait"/>
-            </RelativeLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <RelativeLayout

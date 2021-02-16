@@ -49,7 +49,8 @@ public class PsychologicalPortrait extends AppCompatActivity {
     private Button buttonEditTextForPortrait;
     private EditText editTextForPortrait;
     private LinearLayout linerLayoutTextForPortrait;
-    private TextView textViewNumberWords;
+    private TextView textViewNumberWords, textViewSelectedContactPortrait, textViewSelectedContactNumber;
+
 
     ClipboardManager myClipboard;
     File fileResult;
@@ -67,8 +68,10 @@ public class PsychologicalPortrait extends AppCompatActivity {
 
 
             Contact selectedContact = ContactRepository.getSelectedContact();
-            TextView textViewSelectedContactPortrait = (TextView) findViewById(R.id.textViewSelectedContactPortrait);
+            textViewSelectedContactPortrait = (TextView) findViewById(R.id.textViewSelectedContactPortrait);
             textViewSelectedContactPortrait.setText(selectedContact.Name);
+            textViewSelectedContactNumber = (TextView) findViewById(R.id.textViewSelectedContactNumber);
+            textViewSelectedContactNumber.setText(selectedContact.NumberPhone);
 
             textViewNumberWords = (TextView) findViewById(R.id.textViewNumberWords);
             textViewNumberWords.setText(getTextNumberWords(selectedContact.NumberWords));
@@ -105,7 +108,7 @@ public class PsychologicalPortrait extends AppCompatActivity {
     }
 
     private String getTextNumberWords(int count){
-        return  "слов: " + String.valueOf(count) + "/1000";
+        return  "Набрано слов: " + String.valueOf(count) + "/1000";
     }
 
     //region UI Actions

@@ -20,7 +20,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/title_get_speech"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:gravity="center_horizontal" />
         </RelativeLayout>
 
         <ProgressBar
