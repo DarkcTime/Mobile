@@ -11,7 +11,7 @@
 
     </string>
     <string name="help_for_edit_text_rus">
-        Отредактируйте слова собеседника.
+        Речь собеседника
     </string>
     <string name="help_for_edit_text_2_rus">
         знаки препинания, переносы строк и заглавные буквы значения не имеют.
@@ -79,7 +79,20 @@
     <string name="contacts_rus">Контакты</string>
     <string name="allrecords_rus">Все записи</string>
     <string name="start_over_rus">Начать заново</string>
+    <string name="speech_of_companion_rus">
+        Речь
+        \nсобеседника
+    </string>
+    <string name="rest_of_companion_rus">
+        Остальная
+        \nречь
+    </string>
+    <string name="forward_rus"> +1 сек.</string>
+    <string name="back_rew_rus"> -1 сек.</string>
 
+    <!-- Play -->
+    <string name="title_get_speech">Прогресс получения текста</string>
+    
     <!-- ifNotHaveRecords -->
     <string name="title_have_not_records_rus">
         Записи разговоров

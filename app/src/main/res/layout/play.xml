@@ -110,240 +110,25 @@
 
     </LinearLayout>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone"
-        >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="50"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="50"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="50">
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginHorizontal="@dimen/standard">
-                        <TextView
-                            style="@style/TextViewStyle.Big"
-                            android:layout_centerInParent="true"
-                            android:text="@string/help_play_rus"/>
-                    </RelativeLayout>
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="50"
-                >
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_centerInParent="true">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Был найдет файл с разметкой"
-                        android:textColor="@color/red">
-
-                    </TextView>
-                    <Button
-                        style="@style/ButtonStyle.LongBlue"
-                        android:layout_marginVertical="@dimen/standard"
-                        android:text="Продолжить"
-                        android:onClick="onClickButtonContinue"/>
-
-                    <Button
-                        style="@style/ButtonStyle.LongBlue"
-                        android:text="Начать заново"
-                        android:background="@color/red"
-                        android:onClick="onClickButtonAgain"/>
-                </LinearLayout>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="50"
-                >
-                <Button
-                    style="@style/ButtonStyle.LongBlue"
-                    android:layout_centerInParent="true"
-                    android:text="@string/begin_rus"
-                    android:onClick="onClickStartPlay"/>
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/playLinerLayout"
-            android:visibility="gone">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-
-            <Button
-                style="@style/StyleButtonIconBig"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/ser"
-                android:onClick="onClickButtonSettingsPlay" />
-
-            <Button
-                android:id="@+id/buttonExit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="48dp"
-                android:background="@color/red"
-                android:onClick="onClickButtonStopGame"
-                android:text="@string/stopGame" />
-
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textViewSelectedRecPlay"
-                style="@style/StyleTextViewMiddle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-
-                <TextView
-                    android:id="@+id/textViewStartPositionPlay"
-                    style="@style/StyleTextViewMiddle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="0dp" />
-
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-
-                    <SeekBar
-                        android:id="@+id/seekBarPositionPlay"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:clickable="false"
-                        android:progressBackgroundTint="@color/blue"
-                        android:progressBackgroundTintMode="multiply"
-                        android:progressTint="@color/green"></SeekBar>
-                </RelativeLayout>
-
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/buttonFordRewind"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/blue"
-                android:onClick="onClickButtonForwardSecond"
-                android:textSize="45dp"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/buttonMyPlay"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/I"
-                android:textSize="45dp" />
-
-            <Button
-                android:id="@+id/buttonCompanion"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/companion"
-                android:textSize="25dp" />
-        </LinearLayout>
-
-
-        <Button
-            android:id="@+id/buttonStartPlay"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@color/green"
-            android:text="Начать"
-            android:textSize="45dp"></Button>
-
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
     <!-- Game -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:id="@+id/linerLayoutPaintGame"
-        android:visibility="visible"
+        android:visibility="gone"
         >
         <!--End game-->
         <LinearLayout
+            android:id="@+id/linerLayoutButtonComplete"
             android:layout_width="match_parent"
             android:layout_height="0px"
             android:layout_weight="5"
-            android:id="@+id/linerLayoutButtonComplete"
+            android:layout_marginVertical="@dimen/mini"
             >
             <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/style_dark_button_large"
+                android:layout_marginHorizontal="@dimen/double_standard"
                 android:text="@string/complete_rus"
                 android:onClick="onClickEndGame"/>
         </LinearLayout>
@@ -428,40 +213,51 @@
                     android:onClick="onClickButtonRemove"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/linearLayoutPlayRewards"
                 android:layout_width="match_parent"
                 android:layout_height="0px"
-                android:layout_weight="20">
+                android:layout_weight="20"
+                android:layout_marginBottom="@dimen/mini">
                 <Button
+                    style="@style/style_dark_button_large"
                     android:layout_width="0px"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:text="back"
+                    android:text="@string/back_rew_rus"
                     android:enabled="false"
                     android:id="@+id/buttonRawBackPlay"/>
                 <Button
+                    style="@style/style_dark_button_large"
                     android:layout_width="0px"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:text="forward"
                     android:enabled="false"
+                    android:text="@string/forward_rus"
                     android:id="@+id/buttonRawForwardPlay"/>
             </LinearLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0px"
                 android:layout_weight="80">
                 <Button
+                    style="@style/style_dark_button_large"
                     android:layout_width="0px"
                     android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:text="Не Я"
-                    android:id="@+id/buttonNoPerson"/>
+                    android:layout_weight="40"
+                    android:text="@string/rest_of_companion_rus"
+                    android:id="@+id/buttonRestOfSpeech"
+                    android:textStyle="bold"/>
                 <Button
+                    style="@style/style_orange_button_large"
+                    android:layout_margin="@dimen/mini"
                     android:layout_width="0px"
                     android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:text="Я"
-                    android:id="@+id/buttonPerson"/>
+                    android:layout_weight="60"
+                    android:text="@string/speech_of_companion_rus"
+                    android:id="@+id/buttonCompanion"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
         </LinearLayout>

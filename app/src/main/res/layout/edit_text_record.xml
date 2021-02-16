@@ -4,60 +4,56 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_margin="@dimen/more_margin">
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_margin="@dimen/more_margin"
-        >
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="6">
-            <TextView
-                style="@style/TextViewStyle.Big"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="@string/help_for_edit_text_rus"
-                />
-            <TextView
-                style="@style/TextViewStyle"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="@string/help_for_edit_text_2_rus"/>
-        </LinearLayout>
+    android:background="@color/dark_blue"
+    >
 
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6">
+        android:layout_weight="10">
+        <TextView
+            style="@style/style_textview_white_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/help_for_edit_text_rus"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="95"
+        android:layout_margin="@dimen/standard"
+        android:orientation="vertical">
+        <TextView
+            style="@style/style_textview_white"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="@string/help_for_edit_text_2_rus"/>
+
         <EditText
             android:id="@+id/editTextTranslatedResult"
+            android:background="@drawable/dart_edittext"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="6"
-            android:layout_marginHorizontal="@dimen/more_margin"
-            android:background="@drawable/border_line"
             android:inputType="textMultiLine"
             android:gravity="top|left"
             tools:ignore="RtlHardcoded"
+            android:layout_marginBottom="@dimen/standard"
+            android:textColor="@color/white"
             />
         <Button
             android:text="@string/save_rus"
-            android:layout_margin="20dp"
+            style="@style/style_dark_button_large"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:onClick="onClickButtonSaveEdit"/>
+
     </LinearLayout>
-
-
 
 </LinearLayout>

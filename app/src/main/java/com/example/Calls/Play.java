@@ -100,13 +100,12 @@ public class Play extends AppCompatActivity
     public Directories directories = new Directories(RecordRepository.getSelectedRecord());
 
     //layouts
-    private LinearLayout startLayoutPage;
-    private LinearLayout linerLayoutPaintGame;
-    private LinearLayout linerLayoutButtonComplete,linerLayoutRemoveInterval;
+    private LinearLayout startLayoutPage,linerLayoutPaintGame, linearLayoutPlayRewards, linerLayoutButtonComplete;
+    private LinearLayout linerLayoutRemoveInterval;
 
     private SamplePlayer mPlayer;
     private MediaPlayer mediaPlayer;
-    private Button buttonNoPerson, buttonPerson;
+    private Button buttonCompanion, buttonRestOfSpeech;
     private Button buttonRawBackPlay, buttonRawForwardPlay;
 
     //region Paint For Cutter varibles
@@ -188,6 +187,9 @@ public class Play extends AppCompatActivity
             linerLayoutPaintGame = (LinearLayout) (findViewById(R.id.linerLayoutPaintGame));
             linerLayoutButtonComplete = (LinearLayout) (findViewById(R.id.linerLayoutButtonComplete));
             linerLayoutRemoveInterval = (LinearLayout) (findViewById(R.id.linerLayoutRemoveInterval));
+            linearLayoutPlayRewards = (LinearLayout) (findViewById(R.id.linearLayoutPlayRewards));
+            linerLayoutButtonComplete = (LinearLayout) (findViewById(R.id.linerLayoutButtonComplete));
+
 
             //generate objects
             //set file name
@@ -243,8 +245,8 @@ public class Play extends AppCompatActivity
                 }
             });
             //button No I
-            buttonNoPerson = (Button) (findViewById(R.id.buttonNoPerson));
-            buttonNoPerson.setOnTouchListener(new View.OnTouchListener() {
+            buttonCompanion = (Button) (findViewById(R.id.buttonCompanion));
+            buttonCompanion.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(isDown(event)){
@@ -265,8 +267,8 @@ public class Play extends AppCompatActivity
                 }
             });
             //button I
-            buttonPerson = (Button) (findViewById(R.id.buttonPerson));
-            buttonPerson.setOnTouchListener(new View.OnTouchListener() {
+            buttonRestOfSpeech = (Button) (findViewById(R.id.buttonRestOfSpeech));
+            buttonRestOfSpeech.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(isDown(event)){
