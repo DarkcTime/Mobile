@@ -169,6 +169,13 @@
         <item name="android:background">@drawable/routed_button</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="style_orange_button_large">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/routed_button_orange</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
     #text
     <style name="style_textview_white">
         <item name="android:textColor">@color/white</item>

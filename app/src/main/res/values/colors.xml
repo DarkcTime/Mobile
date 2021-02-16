@@ -19,6 +19,7 @@
     <color name="light_blue">#396FBA</color>
     <color name="orange">#BE9B1D</color>
     <color name="white">#FFFFFF</color>
+    <color name="grey_main">#C4C4C4</color>
 
     #paint game
     <color name="waveform_selected">#33b5e5</color>

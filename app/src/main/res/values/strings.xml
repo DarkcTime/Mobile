@@ -1,11 +1,6 @@
 <resources>
     <string name="app_name">Психологический портрет</string>
     <string name="select_record_rus">Выберите запись разговора...</string>
-    <string name="help_play_rus">
-        Выделите речь собеседника.
-        Если прекратить выделение Персоны, ставиться пауза.
-        Для ускорения разметки можно использовать перемотку.
-    </string>
     <string name="help_if_have_not_records_rus">
         Записи переговоров с Персонами
         не были найдены на вашем устройстве.
@@ -30,6 +25,17 @@
         \n4) Нажмите на кнопку завершить и ждите окончания процесса перевода
         \n5) Отредактируйте речь собеседника
         \n6) Когда будет набрана 1 тыс слов, появиться возможность узнать характер
+    </string>
+    <string name="title_help_play_rus">
+        Выделение речи
+    </string>
+    <string name="help_play_rus">
+        Выделите речь собеседника.
+        \nКогда говорит собеседник удерживайте его кнопку.
+        \nДля ускорения обработки вы можете воспользоваться перемоткой.
+    </string>
+    <string name="find_file_with_intervals_rus">
+        Был найден файл с разметкой
     </string>
     <string name="telegram_help">
         Вы можете отправить полученный текст в Telegram боту - PersonGuideRU.
@@ -70,9 +76,9 @@
     <string name="back_rus">Назад</string>
     <string name="send_rus">Отправить</string>
     <string name="continue_rus">Продолжить</string>
-
     <string name="contacts_rus">Контакты</string>
     <string name="allrecords_rus">Все записи</string>
+    <string name="start_over_rus">Начать заново</string>
 
     <!-- ifNotHaveRecords -->
     <string name="title_have_not_records_rus">

@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             editTextSearchContacts = (EditText) findViewById(R.id.editTextSearchContacts);
             listViewContactsMA = (ListView) (findViewById(R.id.listViewContactsMA));
 
+            editTextSearchContacts = (EditText) findViewById(R.id.editTextSearchContacts);
             editTextSearchRecords = (EditText) findViewById(R.id.editTextSearchRecords);
             listViewRecordsMA = (ListView) (findViewById(R.id.listViewRecordsMA));
 
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             if (!RecordsService.checkPath(RecordsService.getPathForFindRecords()))
                 noExistingPath();
 
-            editTextSearchRecords.addTextChangedListener(new TextWatcher() {
+            editTextSearchContacts.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 

@@ -8,11 +8,15 @@
             android:textSize="20sp"
             android:paddingVertical="@dimen/standard"
             android:paddingHorizontal="@dimen/standard"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             />
         <TextView
             android:id="@+id/textViewDuration"
             style="@style/TextViewStyle"
             android:textSize="14sp"
-            android:paddingHorizontal="@dimen/standard"/>
+            android:paddingHorizontal="@dimen/standard"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
 
 </LinearLayout>

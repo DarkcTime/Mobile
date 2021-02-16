@@ -147,44 +147,50 @@
         >
 
         <!-- header menu -->
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/standard">
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/standard">
-                <Button
-                    android:id="@+id/buttonListContacts"
-                    android:onClick="onClickListContacts"
-                    android:layout_height="30dp"
-                    android:layout_width="100dp"
-                    android:text="@string/contacts_rus"
-                    android:layout_marginRight="40dp"
-                    android:background="@color/blue"
-                    android:textColor="@color/white"
-                    />
-                <Button
-                    android:id="@+id/buttonListRecords"
-                    android:onClick="onClickListRecords"
-                    android:layout_height="30dp"
-                    android:layout_width="150dp"
-                    android:text="@string/allrecords_rus"
-                    android:background="@color/blue"
-                    android:textColor="@color/white"
-                    />
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                    <Button
+                        android:id="@+id/buttonListContacts"
+                        android:onClick="onClickListContacts"
+                        android:layout_marginHorizontal="@dimen/standard"
+                        style="@style/style_dark_button_large"
+                        android:text="@string/contacts_rus"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                    <Button
+                        android:id="@+id/buttonListRecords"
+                        android:onClick="onClickListRecords"
+                        android:layout_marginHorizontal="@dimen/standard"
+                        style="@style/style_dark_button_large"
+                        android:text="@string/allrecords_rus"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+
             </LinearLayout>
             <Button
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/ic_more_vert_black_24dp"
-                android:onClick="onClickButtonMainWindowMenu"/>
-
-        </RelativeLayout>
+                android:background="@drawable/ic_baseline_more_vert_32"
+                android:onClick="onClickButtonMainWindowMenu" />
+        </LinearLayout>
 
         <!-- contacts -->
         <LinearLayout
@@ -198,7 +204,8 @@
                 android:layout_height="35dp"
                 style="@style/EditTextStyle.Search"
                 android:background="@drawable/routed_edittext"
-                android:drawableLeft="@drawable/ic_search_black_32dp" />
+                android:drawableLeft="@drawable/ic_baseline_search_24"
+                android:layout_marginBottom="@dimen/standard"/>
             <ListView
                 android:id="@+id/listViewContactsMA"
                 android:layout_width="match_parent"

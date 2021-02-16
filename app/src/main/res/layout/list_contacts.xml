@@ -15,8 +15,11 @@
             android:layout_width="0dp"
             android:layout_weight="90"
             android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:paddingVertical="@dimen/standard"
             android:paddingHorizontal="@dimen/standard"
+            android:maxLength="30"
             />
 
         <com.github.lzyzsd.circleprogress.CircleProgress

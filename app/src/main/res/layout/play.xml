@@ -2,21 +2,126 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/dark_blue"
+    >
 
     <!-- Start Game -->
+    <LinearLayout
+        android:id="@+id/startLayoutPage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+        <!-- Title -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <TextView
+                style="@style/style_textview_white_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/title_help_play_rus"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+        <!-- Text -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="@dimen/more_margin">
+            <TextView
+                style="@style/style_textview_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textStyle="bold"
+                android:text="@string/help_play_rus"/>
+        </LinearLayout>
+        <!-- Button Start -->
+        <LinearLayout
+            android:id="@+id/linerLayoutStartPlay"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/double_standard"
+            android:visibility="visible">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                style="@style/style_dark_button_large"
+                android:layout_marginHorizontal="@dimen/more_margin"
+                android:layout_marginVertical="@dimen/mini"
+                android:onClick="onClickStartPlay"
+                android:text="@string/begin_rus"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+        <!-- Buttons If have intervals -->
+        <LinearLayout
+            android:id="@+id/linerLayoutHaveIntervals"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/double_standard"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/style_textview_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/find_file_with_intervals_rus"
+                android:textStyle="bold"
+                android:gravity="center_horizontal" />
+
+            <Button
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                style="@style/style_orange_button_large"
+                android:layout_marginHorizontal="@dimen/more_margin"
+                android:layout_marginVertical="@dimen/mini"
+                android:onClick="onClickButtonContinue"
+                android:text="@string/continue_rus"
+                android:textStyle="bold"/>
+
+            <Button
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                style="@style/style_dark_button_large"
+                android:layout_marginHorizontal="@dimen/more_margin"
+                android:layout_marginVertical="@dimen/mini"
+                android:onClick="onClickButtonAgain"
+                android:text="@string/start_over_rus"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible"
-        android:id="@+id/startLayoutPage">
+        android:visibility="gone"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -47,7 +152,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="50"
-                android:id="@+id/relativeLayoutHaveIntervals">
+                >
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,7 +183,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="50"
-                android:id="@+id/relativeLayoutStartPlay">
+                >
                 <Button
                     style="@style/ButtonStyle.LongBlue"
                     android:layout_centerInParent="true"

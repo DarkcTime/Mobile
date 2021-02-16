@@ -200,13 +200,12 @@ public class Play extends AppCompatActivity
             editTextEnd = (EditText) findViewById(R.id.editTextEnd);
             //region buttons
 
+            //if have file with intervals
             if(cutter.IsHaveInterval()){
-                RelativeLayout relativeLayoutStartPlay = findViewById(R.id.relativeLayoutStartPlay);
-                relativeLayoutStartPlay.setVisibility(View.GONE);
-            }
-            else{
-                RelativeLayout relativeLayoutHaveIntervals = findViewById(R.id.relativeLayoutHaveIntervals);
-                relativeLayoutHaveIntervals.setVisibility(View.GONE);
+                LinearLayout linearLayoutStartPlay = findViewById(R.id.linerLayoutStartPlay);
+                LinearLayout linearLayoutHaveIntervals = findViewById(R.id.linerLayoutHaveIntervals);
+                linearLayoutStartPlay.setVisibility(View.GONE);
+                linearLayoutHaveIntervals.setVisibility(View.VISIBLE);
             }
 
             //button raw <<
