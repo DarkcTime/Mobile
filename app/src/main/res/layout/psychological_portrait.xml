@@ -7,11 +7,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/dark_blue">
 
+    <!-- header -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10">
+        <TextView
+            style="@style/style_textview_white_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/title_profile_user"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
     <!-- psychological portrait -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="30"
+        android:layout_weight="25"
         android:orientation="horizontal"
         android:layout_margin="@dimen/standard">
         <LinearLayout
@@ -46,13 +60,13 @@
                     android:orientation="vertical">
                     <TextView
                         android:id="@+id/textViewSelectedContactPortrait"
-                        style="@style/style_textview_white_header"
+                        style="@style/style_textview_white"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"/>
                     <TextView
                         android:id="@+id/textViewSelectedContactNumber"
-                        style="@style/style_textview_white_header"
+                        style="@style/style_textview_white"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"/>
@@ -89,6 +103,10 @@
                     </LinearLayout>
 
                 </RelativeLayout>
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"/>
 
             </LinearLayout>
 
@@ -111,7 +129,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="80"
+                android:layout_weight="85"
                 android:orientation="vertical"
                 android:layout_marginBottom="@dimen/standard">
                 <EditText
@@ -124,6 +142,9 @@
                     tools:ignore="RtlHardcoded"
                     android:enabled="false"
                     android:background="@drawable/dart_edittext"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
                     />
                 <TextView
                     style="@style/style_textview_white"

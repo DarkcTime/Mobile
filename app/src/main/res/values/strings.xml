@@ -41,6 +41,8 @@
         Вы можете отправить полученный текст в Telegram боту - PersonGuideRU.
     </string>
 
+    <!-- Profile user -->
+    <string name="title_profile_user">Данные о собеседнике</string>
 
     <!-- About us -->
     <string name="title_app">

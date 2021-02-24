@@ -44,8 +44,11 @@
             android:inputType="textMultiLine"
             android:gravity="top|left"
             tools:ignore="RtlHardcoded"
+            android:padding="@dimen/mini"
             android:layout_marginBottom="@dimen/standard"
             android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
             />
         <LinearLayout
             android:layout_width="match_parent"

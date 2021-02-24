@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextSearchContacts;
     private ListView listViewContactsMA;
     private ArrayAdapter<Contact> contactAdapter;
+    private ArrayAdapter<File> allRecordsAdapter;
     private EditText editTextSearchRecords;
     private ListView listViewRecordsMA;
     private ArrayAdapter<File> recordsAdapter;
@@ -129,6 +130,31 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
+
+            //TODO исправить баг с поиском записей
+            /*
+            editTextSearchRecords.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (count != 0)
+                        allRecordsAdapter.getFilter().filter(s.toString());
+                    else
+                        allRecordsAdapter.getFilter().filter("");
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
+
+             */
 
             listViewContactsMA.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -225,7 +251,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             List<File> recordsBuffer = FileSystem.getFilesWithSelectedExtWithFilter(RecordsService.getPathForFindRecords(), ".mp3");
             ArrayList<File> records = new ArrayList<>(recordsBuffer);
-
 
             recordsAdapter = new AllRecordsAdapter(this, R.layout.list_all_records, records);
             listViewRecordsMA.setAdapter(recordsAdapter);

@@ -5,6 +5,7 @@
     <TextView
         android:id="@+id/textViewName"
         style="@style/TextViewStyle"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:paddingVertical="@dimen/standard"
         android:paddingHorizontal="@dimen/standard"

@@ -205,7 +205,10 @@
                 style="@style/EditTextStyle.Search"
                 android:background="@drawable/routed_edittext"
                 android:drawableLeft="@drawable/ic_baseline_search_24"
-                android:layout_marginBottom="@dimen/standard"/>
+                android:layout_marginBottom="@dimen/standard"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
             <ListView
                 android:id="@+id/listViewContactsMA"
                 android:layout_width="match_parent"
@@ -221,12 +224,16 @@
             android:orientation="vertical"
             android:visibility="gone">
             <EditText
-                    android:id="@+id/editTextSearchRecords"
+                android:id="@+id/editTextSearchRecords"
+                android:background="@drawable/routed_edittext"
+                android:drawableLeft="@drawable/ic_baseline_search_24"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 style="@style/EditTextStyle.Search"
-                android:background="@drawable/routed_edittext"
-                android:drawableLeft="@drawable/ic_search_black_32dp" />
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
             <ListView
                 android:id="@+id/listViewRecordsMA"
                 android:layout_width="match_parent"

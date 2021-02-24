@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/C:/Software/Android/icons/material/materialicons/more_vert/baseline_more_vert_24.xml" />
+                                      <entry key="url" value="file:/C:/Software/Android/icons/material/materialicons/person/baseline_person_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -34,7 +34,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_baseline_more_vert_32" />
+                            <entry key="outputName" value="ic_baseline_person_24" />
                             <entry key="sourceFile" value="C:\Users\vlad_" />
                           </map>
                         </option>
