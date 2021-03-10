@@ -69,6 +69,7 @@
                             android:layout_width="110dp"
                             android:layout_height="100dp"
                             android:background="@drawable/auto_phone"
+                            android:onClick="onClickButtonAuto"
                             />
                         <TextView
                             android:textSize="15sp"
@@ -94,6 +95,7 @@
                             android:layout_width="110dp"
                             android:layout_height="100dp"
                             android:background="@drawable/symlink_directory_100px"
+                            android:onClick="onClickButtonHand"
                             />
                         <TextView
                             android:textSize="15sp"
@@ -127,7 +129,7 @@
             style="@style/style_dark_button_large"
             android:layout_marginHorizontal="@dimen/more_margin"
             android:layout_marginVertical="@dimen/mini"
-            android:onClick="onClickButtonContinue"
+            android:onClick="onClickCancelSaveSettings"
             android:text="@string/cancel_rus"
             android:textStyle="bold"/>
 
@@ -137,7 +139,7 @@
             style="@style/style_dark_button_large"
             android:layout_marginHorizontal="@dimen/more_margin"
             android:layout_marginVertical="@dimen/mini"
-            android:onClick="onClickButtonContinue"
+            android:onClick="onClickButtonSaveSettings"
             android:text="@string/save_rus"
             android:textStyle="bold"/>
 

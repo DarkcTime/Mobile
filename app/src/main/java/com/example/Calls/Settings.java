@@ -54,6 +54,7 @@ public class Settings extends AppCompatActivity {
             editor.putString(SavedSettings.APP_PREFERENCES_PATH , editTextPath.getText().toString());
             editor.apply();
             //SavedSettings.setTypeUser(typeUser);
+            Toast.makeText(this, "Настройки успешно сохранены" , Toast.LENGTH_SHORT).show();
             Intent main = new Intent(Settings.this, MainActivity.class);
             startActivity(main);
         }
@@ -92,22 +93,6 @@ public class Settings extends AppCompatActivity {
         catch (Exception ex){
             Log.d("Exception,opFiDi", ex.getMessage());
         }
-    }
-
-    public void onClickButtonChangeRoleSetting(View view){
-        /*
-
-
-        if(SavedSettings.isExpert()){
-            typeUser = false;
-            buttonChangeRole.setBackgroundResource(R.drawable.begin);
-        }
-        else{
-            typeUser = true;
-            buttonChangeRole.setBackgroundResource(R.drawable.expert);
-        }
-
-         */
     }
 
     public void setTextPath(String path){
