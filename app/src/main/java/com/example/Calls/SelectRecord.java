@@ -74,6 +74,12 @@ public class SelectRecord extends AppCompatActivity {
     }
 
 
+    //Open profile with text for contact
+    public void onClickOpenProfile(View view){
+        Intent profile = new Intent(SelectRecord.this, PsychologicalPortrait.class);
+        startActivity(profile);
+    }
+
     public void onClickButtonBackSelectedPlay(View view) {
         openMainActivity();
     }

@@ -1,116 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/dark_blue">
+
+    <!-- title -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="290dp"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <TextView
+            style="@style/style_textview_white_header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:text="@string/settings"
+            android:textStyle="bold"/>
+    </RelativeLayout>
 
-            android:layout_marginTop="100dp">
+    <!-- Settings -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="@dimen/more_margin">
+
+        <!-- Path for search records -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <TextView
-                    style="@style/StyleTextViewMiddle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/path_for_records"
-                    android:layout_marginBottom="15dp"/>
+                style="@style/style_textview_white"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/path_for_records"
+                android:layout_marginBottom="15dp"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextPath"
+                android:textColor="@color/white"
                 android:layout_marginBottom="@dimen/size_help">
-
             </EditText>
 
+            <!-- buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <LinearLayout
+
+                <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerInParent="true">
                         <Button
-                            style="@style/StyleButtonIconBig2"
-                            android:background="@drawable/auto"
-                            android:layout_centerHorizontal="true"
-                            android:onClick="onClickButtonAuto"/>
-
-                    </RelativeLayout>
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                            android:layout_width="110dp"
+                            android:layout_height="100dp"
+                            android:background="@drawable/auto_phone"
+                            />
                         <TextView
-                            style="@style/StyleTextViewSmall"
-                            android:text="@string/findAuto"
-                            android:layout_centerHorizontal="true">
-                        </TextView>
+                            android:textSize="15sp"
+                            android:layout_gravity="center"
+                            style="@style/style_textview_white"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/auto_rus"/>
+                    </LinearLayout>
 
-                    </RelativeLayout>
+                </RelativeLayout>
 
-                </LinearLayout>
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerInParent="true">
                         <Button
-                            style="@style/StyleButtonIconBig2"
-                            android:background="@drawable/hand"
-                            android:layout_centerHorizontal="true"
-                            android:onClick="onClickButtonHand"/>
-
-                    </RelativeLayout>
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                            android:layout_width="110dp"
+                            android:layout_height="100dp"
+                            android:background="@drawable/symlink_directory_100px"
+                            />
                         <TextView
-                            style="@style/StyleTextViewSmall"
-                            android:text="@string/selectHand"
-                            android:layout_centerHorizontal="true">
-                        </TextView>
+                            android:textSize="15sp"
+                            android:layout_gravity="center"
+                            android:textAlignment="center"
+                            style="@style/style_textview_white"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/select_rus"/>
+                    </LinearLayout>
 
-                    </RelativeLayout>
-                </LinearLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <Button
-                    style="@style/ButtonStyle.LongBlue"
-                    android:text="@string/save_rus"
-                    android:layout_margin="@dimen/standard"
-                    android:layout_centerInParent="true"
-                    android:onClick="onClickButtonSaveSettings"/>
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <Button
-                    style="@style/ButtonStyle.LongBlue"
-                    android:text="@string/cancel_rus"
-                    android:layout_margin="@dimen/standard"
-                    android:onClick="onClickCancelSaveSettings"
-                    android:layout_centerInParent="true"/>
-            </RelativeLayout>
+    </LinearLayout>
 
-        </LinearLayout>
+    </LinearLayout>
 
-    </RelativeLayout>
+    <!-- Button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/double_standard">
 
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            style="@style/style_dark_button_large"
+            android:layout_marginHorizontal="@dimen/more_margin"
+            android:layout_marginVertical="@dimen/mini"
+            android:onClick="onClickButtonContinue"
+            android:text="@string/cancel_rus"
+            android:textStyle="bold"/>
+
+        <Button
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            style="@style/style_dark_button_large"
+            android:layout_marginHorizontal="@dimen/more_margin"
+            android:layout_marginVertical="@dimen/mini"
+            android:onClick="onClickButtonContinue"
+            android:text="@string/save_rus"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+</LinearLayout>

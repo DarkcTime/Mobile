@@ -6,14 +6,47 @@
     android:orientation="vertical"
     android:background="@color/dark_blue">
 
-    <TextView
-        android:id="@+id/textViewSelectedContact"
-        style="@style/style_textview_white_header"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="textStart"
-        android:textStyle="bold"
-        android:gravity="start" />
+        android:layout_marginHorizontal="@dimen/standard"
+        android:layout_marginTop="@dimen/standard">
+        <TextView
+            android:id="@+id/textViewSelectedContact"
+            style="@style/style_textview_white_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            android:textStyle="bold"
+            android:gravity="start" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    style="@style/StyleButtonIconBig"
+                    android:onClick="onClickOpenProfile"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/profile_fill"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+            <TextView
+                style="@style/style_textview_white"
+                android:textSize="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/give_user_rus"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
     <!-- if I have not record -->
     <LinearLayout
         android:layout_width="match_parent"

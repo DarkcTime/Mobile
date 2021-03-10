@@ -55,15 +55,6 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
                 (com.github.lzyzsd.circleprogress.CircleProgress) view.findViewById(R.id.circleProgress);
         final Contact contact = filteredData.get(position);
 
-        progressBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ContactRepository.setSelectedContact(contact);
-                Intent intent = new Intent(mainActivity, PsychologicalPortrait.class);
-                mainActivity.startActivity(intent);
-            }
-        });
-
         int progress = contactRepository.getProgressAsPercentage(contact);
 
         if(progress >= MAX_PROGRESS){

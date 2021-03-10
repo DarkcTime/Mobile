@@ -43,6 +43,9 @@
 
     <!-- Profile user -->
     <string name="title_profile_user">Данные о собеседнике</string>
+    <string name="give_user_rus">Профиль</string>
+
+
 
     <!-- About us -->
     <string name="title_app">
@@ -91,6 +94,9 @@
     </string>
     <string name="forward_rus"> +1 сек.</string>
     <string name="back_rew_rus"> -1 сек.</string>
+    <string name="auto_rus">Автоматически</string>
+    <string name="select_rus">Выбрать путь</string>
+
 
     <!-- Play -->
     <string name="title_get_speech">Прогресс получения текста</string>
