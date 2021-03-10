@@ -11,15 +11,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -106,7 +109,7 @@ public class Play extends AppCompatActivity
     private SamplePlayer mPlayer;
     private MediaPlayer mediaPlayer;
     private Button buttonCompanion, buttonRestOfSpeech;
-    private Button buttonRawBackPlay, buttonRawForwardPlay;
+    private Button buttonFunctionPlay, buttonEndGame, buttonRawBackPlay, buttonRawForwardPlay;
 
     //region Paint For Cutter varibles
     private long mLoadingLastUpdateTime;
@@ -170,6 +173,9 @@ public class Play extends AppCompatActivity
 
     private boolean isButtonNoPerson = false;
 
+    private boolean isActiveFunctions = false;
+    private boolean isStartGame = false;
+
     //endregion
 
     //endregion
@@ -189,7 +195,8 @@ public class Play extends AppCompatActivity
             linerLayoutRemoveInterval = (LinearLayout) (findViewById(R.id.linerLayoutRemoveInterval));
             linearLayoutPlayRewards = (LinearLayout) (findViewById(R.id.linearLayoutPlayRewards));
             linerLayoutButtonComplete = (LinearLayout) (findViewById(R.id.linerLayoutButtonComplete));
-
+            buttonEndGame = (Button) (findViewById(R.id.buttonEndGame));
+            buttonFunctionPlay = (Button) (findViewById(R.id.buttonFunctionPlay));
 
             //generate objects
             //set file name
@@ -244,29 +251,30 @@ public class Play extends AppCompatActivity
                     return  false;
                 }
             });
-            //button No I
+            //button Rest companion
             buttonCompanion = (Button) (findViewById(R.id.buttonCompanion));
             buttonCompanion.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if(isDown(event)){
                         if(cutter.isNullIntervalList()){
+                            //?
                             buttonRawForwardPlay.setEnabled(true);
                             buttonRawBackPlay.setEnabled(true);
                         }
                         addInterval();
                         isButtonNoPerson = true;
-                        stopModeWait();
+                        startPlaying();
                     }
 
                     if(isUp(event)){
                         endInterval();
-                        startModeWait();
+                        stopPlaying();
                     }
                     return false;
                 }
             });
-            //button I
+            //button Other speech
             buttonRestOfSpeech = (Button) (findViewById(R.id.buttonRestOfSpeech));
             buttonRestOfSpeech.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -277,10 +285,10 @@ public class Play extends AppCompatActivity
                             buttonRawBackPlay.setEnabled(true);
                         }
                         isButtonNoPerson = false;
-                        stopModeWait();
+                        startPlaying();
                     }
                     if(isUp(event)){
-                        startModeWait();
+                        stopPlaying();
                     }
                     return false;
                 }
@@ -295,6 +303,7 @@ public class Play extends AppCompatActivity
     //region buttons start and end
     public void onClickStartPlay(View view){
         try{
+            isStartGame = true;
             setPlayUI();
         }
         catch (Exception ex){
@@ -302,6 +311,26 @@ public class Play extends AppCompatActivity
         }
 
     }
+
+    //hidden functions buttons
+    public void onClickButtonFunctionPlay(View view){
+        hiddenButtons(isActiveFunctions);
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.function_work);
+        if(isActiveFunctions)
+            drawable = ContextCompat.getDrawable(this, R.drawable.function);
+        buttonFunctionPlay.setBackground(drawable);
+        isActiveFunctions = !isActiveFunctions;
+    }
+    private void hiddenButtons(boolean isHidden){
+        int visibilityMode = View.VISIBLE;
+        if(isHidden)
+            visibilityMode = View.GONE;
+
+        buttonRawForwardPlay.setVisibility(visibilityMode);
+        buttonRawBackPlay.setVisibility(visibilityMode);
+        buttonEndGame.setVisibility(visibilityMode);
+    }
+
     //start load and view play
     private void setPlayUI(){
         try{
@@ -390,6 +419,8 @@ public class Play extends AppCompatActivity
             }
 
             updateDisplay();
+
+            hiddenButtons(true);
         }
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "loadGuiPlay");
@@ -652,10 +683,13 @@ public class Play extends AppCompatActivity
         cutter.StopInterval(sec);
     }
 
-    private void startModeWait(){
+
+    private void stopPlaying(){
+        //visible added buttons
         mPlayer.pause();
     }
-    private void stopModeWait(){
+    //startPlaying
+    private void startPlaying(){
         if(mPlayer.getCurrentPosition() != 0){
             mPlayer.start();
         }
@@ -987,7 +1021,8 @@ public class Play extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        dialogMain.showQuestionDialogPlay();
+        if(isStartGame)
+            dialogMain.showQuestionDialogPlay();
     }
 
     //endregion

@@ -116,21 +116,42 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:id="@+id/linerLayoutPaintGame"
-        android:visibility="gone"
+        android:visibility="visible"
         >
         <!--End game-->
         <LinearLayout
             android:id="@+id/linerLayoutButtonComplete"
             android:layout_width="match_parent"
             android:layout_height="0px"
-            android:layout_weight="5"
+            android:layout_weight="6"
             android:layout_marginVertical="@dimen/mini"
+            android:orientation="horizontal"
             >
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"/>
             <Button
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:id="@+id/buttonEndGame"
                 style="@style/style_dark_button_large"
-                android:layout_marginHorizontal="@dimen/double_standard"
                 android:text="@string/complete_rus"
                 android:onClick="onClickEndGame"/>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent">
+                <Button
+                    android:id="@+id/buttonFunctionPlay"
+                    android:onClick="onClickButtonFunctionPlay"
+                    style="@style/StyleButtonIconBig"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/function"/>
+            </RelativeLayout>
+
+
         </LinearLayout>
         <!-- Paint Game -->
         <RelativeLayout

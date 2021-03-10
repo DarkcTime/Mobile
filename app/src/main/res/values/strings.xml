@@ -7,9 +7,7 @@
         \nУкажите путь вручную - Я знаю где находятся записи
         \nИли ознакомьтесь с инструкцией для получения первой записи
     </string>
-    <string name="ifHaveNotRecords_rus">
 
-    </string>
     <string name="help_for_edit_text_rus">
         Речь собеседника
     </string>
@@ -18,6 +16,12 @@
     </string>
 
     <!-- Helps -->
+    <string name="ifHaveNotRecords_rus">
+        Все записи собеседника были переведены, вы можете увидеть результат в профиле.
+    </string>
+    <string name="back_to_list_contacts">
+        К списку контактов
+    </string>
     <string name="help_user">
         1) Выберите контакт характер которого вы хотите узнать
         \n2) Выберите запись разговора
