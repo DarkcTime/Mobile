@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools" package="com.example.Calls">
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+
+
+    <application
+            android:allowBackup="true"
+            android:icon="@drawable/icon_app"
+            android:label="@string/title_app"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning"
+            android:usesCleartextTraffic="true"
+            android:networkSecurityConfig="@xml/network_security_config"
+            >
+
+        <activity android:name="com.example.Calls.MainActivity" android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".SettingsForPlay" android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity android:name=".Settings" android:label="@string/settings" android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
+        <activity android:name=".SelectRecord" android:label="@string/settings" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".EditTextRecord" android:label="@string/settings" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".PsychologicalPortrait" android:label="@string/settings" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Play" android:label="@string/settings" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".WaitInEndPlay" android:label="@string/select_contact" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Help" android:label="@string/help" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".AboutUs" android:label="О нас" android:theme="@style/AppTheme.NoActionBar"/>
+
+
+    </application>
+
+</manifest>

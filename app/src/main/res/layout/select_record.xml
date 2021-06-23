@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/dark_blue">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/standard"
+        android:layout_marginTop="@dimen/standard">
+        <TextView
+            android:id="@+id/textViewSelectedContact"
+            style="@style/style_textview_white_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            android:textStyle="bold"
+            android:gravity="start" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    style="@style/StyleButtonIconBig"
+                    android:onClick="onClickOpenProfile"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/profile_fill"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+            <TextView
+                style="@style/style_textview_white"
+                android:textSize="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/give_user_rus"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <!-- if I have not record -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linerLayoutIfHaveNotRecords"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            style="@style/style_textview_white"
+            android:textStyle="bold"
+            android:layout_margin="@dimen/standard"
+            android:text="@string/ifHaveNotRecords_rus"
+            />
+
+        <Button
+            android:layout_height="0dp"
+            android:layout_weight="1.3"
+            style="@style/style_dark_button_large"
+            android:layout_marginHorizontal="@dimen/more_margin"
+            android:layout_marginVertical="@dimen/mini"
+            android:onClick="onClickButtonBackSelectedPlay"
+            android:text="@string/back_to_list_contacts"
+            android:textStyle="bold"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"/>
+
+    </LinearLayout>
+
+    <!-- select record-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/standard"
+        android:visibility="visible"
+        android:id="@+id/linerLayoutSelectRecord">
+        <TextView
+            style="@style/style_textview_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/select_record_rus"
+            android:layout_marginBottom="@dimen/standard"/>
+
+        <ListView
+            android:id="@+id/listViewRecords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

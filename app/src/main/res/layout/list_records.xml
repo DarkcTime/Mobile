@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/textViewDateTime"
+            style="@style/TextViewStyle"
+            android:textSize="20sp"
+            android:paddingVertical="@dimen/standard"
+            android:paddingHorizontal="@dimen/standard"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:id="@+id/textViewDuration"
+            style="@style/TextViewStyle"
+            android:textSize="14sp"
+            android:paddingHorizontal="@dimen/standard"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
+
+</LinearLayout>

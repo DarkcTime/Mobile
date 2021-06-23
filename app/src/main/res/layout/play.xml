@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/dark_blue"
+    >
+
+    <!-- Start Game -->
+    <LinearLayout
+        android:id="@+id/startLayoutPage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+        <!-- Title -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <TextView
+                style="@style/style_textview_white_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/title_help_play_rus"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+        <!-- Text -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="@dimen/more_margin">
+            <TextView
+                style="@style/style_textview_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textStyle="bold"
+                android:text="@string/help_play_rus"/>
+        </LinearLayout>
+        <!-- Button Start -->
+        <LinearLayout
+            android:id="@+id/linerLayoutStartPlay"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/double_standard"
+            android:visibility="visible">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                style="@style/style_dark_button_large"
+                android:layout_marginHorizontal="@dimen/more_margin"
+                android:layout_marginVertical="@dimen/mini"
+                android:onClick="onClickStartPlay"
+                android:text="@string/begin_rus"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+        <!-- Buttons If have intervals -->
+        <LinearLayout
+            android:id="@+id/linerLayoutHaveIntervals"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/double_standard"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/style_textview_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/find_file_with_intervals_rus"
+                android:textStyle="bold"
+                android:gravity="center_horizontal" />
+
+            <Button
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                style="@style/style_orange_button_large"
+                android:layout_marginHorizontal="@dimen/more_margin"
+                android:layout_marginVertical="@dimen/mini"
+                android:onClick="onClickButtonContinue"
+                android:text="@string/continue_rus"
+                android:textStyle="bold"/>
+
+            <Button
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                style="@style/style_dark_button_large"
+                android:layout_marginHorizontal="@dimen/more_margin"
+                android:layout_marginVertical="@dimen/mini"
+                android:onClick="onClickButtonAgain"
+                android:text="@string/start_over_rus"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Game -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/linerLayoutPaintGame"
+        android:visibility="visible"
+        >
+        <!--End game-->
+        <LinearLayout
+            android:id="@+id/linerLayoutButtonComplete"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="6"
+            android:layout_marginVertical="@dimen/mini"
+            android:orientation="horizontal"
+            >
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:id="@+id/buttonEndGame"
+                style="@style/style_dark_button_large"
+                android:text="@string/complete_rus"
+                android:onClick="onClickEndGame"/>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent">
+                <Button
+                    android:id="@+id/buttonFunctionPlay"
+                    android:onClick="onClickButtonFunctionPlay"
+                    style="@style/StyleButtonIconBig"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/function"/>
+            </RelativeLayout>
+
+
+        </LinearLayout>
+        <!-- Paint Game -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="60"
+            >
+
+            <com.example.Calls.PaintGame.WaveformView
+                android:id="@+id/waveform"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+
+            <com.example.Calls.PaintGame.MarkerView
+                android:id="@+id/startmarker"
+                android:nextFocusDown="@+id/endmarker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/marker_left"
+                android:visibility="gone"
+                />
+
+            <com.example.Calls.PaintGame.MarkerView
+                android:id="@+id/endmarker"
+                android:nextFocusUp="@+id/startmarker"
+                android:nextFocusDown="@+id/info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/marker_right"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
+
+        <!--Buttons Game -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="35"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="20"
+                android:orientation="horizontal"
+                android:layout_margin="5dp"
+                android:visibility="gone"
+                android:id="@+id/linerLayoutRemoveInterval">
+                <TextView
+                    style="@style/TextViewStyle"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="30"
+                    android:text="@string/start_eng"
+                    android:gravity="center_horizontal" />
+                <EditText
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="30"
+                    android:inputType="time"
+                    android:id="@+id/editTextStart"
+                    android:enabled="false"/>
+                <TextView
+                    style="@style/TextViewStyle"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="30"
+                    android:text="@string/end_eng"
+                    android:gravity="center_horizontal"/>
+                <EditText
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="30"
+                    android:id="@+id/editTextEnd"
+                    android:enabled="false"/>
+                <Button
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="60"
+                    android:text="@string/remove_rus"
+                    android:onClick="onClickButtonRemove"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearLayoutPlayRewards"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="20"
+                android:layout_marginBottom="@dimen/mini">
+                <Button
+                    style="@style/style_dark_button_large"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50"
+                    android:text="@string/back_rew_rus"
+                    android:enabled="false"
+                    android:id="@+id/buttonRawBackPlay"/>
+                <Button
+                    style="@style/style_dark_button_large"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50"
+                    android:enabled="false"
+                    android:text="@string/forward_rus"
+                    android:id="@+id/buttonRawForwardPlay"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="80">
+                <Button
+                    style="@style/style_dark_button_large"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="40"
+                    android:text="@string/rest_of_companion_rus"
+                    android:id="@+id/buttonRestOfSpeech"
+                    android:textStyle="bold"/>
+                <Button
+                    style="@style/style_orange_button_large"
+                    android:layout_margin="@dimen/mini"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="60"
+                    android:text="@string/speech_of_companion_rus"
+                    android:id="@+id/buttonCompanion"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

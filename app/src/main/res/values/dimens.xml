@@ -1,0 +1,17 @@
+<resources>
+    <dimen name="standard">15dp</dimen>
+    <dimen name="double_standard">30dp</dimen>
+    <dimen name="large_standard">60dp</dimen>
+
+
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="sizeIconSmall">24dp</dimen>
+    <dimen name="sizeIconBit">36dp</dimen>
+
+    <dimen name="mini">5dp</dimen>
+    <dimen name="size_help">25dp</dimen>
+    <dimen name="more_margin">20dp</dimen>
+
+
+
+</resources>

@@ -1,0 +1,385 @@
+<resources>
+    <string name="app_name">Психологический портрет</string>
+    <string name="select_record_rus">Выберите запись разговора...</string>
+    <string name="help_if_have_not_records_rus">
+        Записи переговоров с Персонами
+        не были найдены на вашем устройстве.
+        \nУкажите путь вручную - Я знаю где находятся записи
+        \nИли ознакомьтесь с инструкцией для получения первой записи
+    </string>
+
+    <string name="help_for_edit_text_rus">
+        Речь собеседника
+    </string>
+    <string name="help_for_edit_text_2_rus">
+        знаки препинания, переносы строк и заглавные буквы значения не имеют.
+    </string>
+
+    <!-- Helps -->
+    <string name="ifHaveNotRecords_rus">
+        Все записи собеседника были переведены, вы можете увидеть результат в профиле.
+    </string>
+    <string name="back_to_list_contacts">
+        К списку контактов
+    </string>
+    <string name="title_algoritm_user">
+        Алгоритм действий пользователя
+    </string>
+    <string name="help_user">
+        1) Выберите собеседника характер которого вы хотите определить;
+        \n2) Выберите запись разговора;
+        \n3) Выделите слова собеседника;
+        \n4) Нажмите на кнопку завершить и ждите окончания процесса перевода;
+        \n5) Отредактируйте речь собеседника;
+        \n6) Когда будет набрана 1 тыс слов, появиться возможность узнать характер.
+    </string>
+    <string name="title_help_play_rus">
+        Выделение речи
+    </string>
+    <string name="help_play_rus">
+        Выделите речь собеседника.
+        \nКогда говорит собеседник удерживайте его кнопку.
+        \nДля ускорения обработки вы можете воспользоваться перемоткой.
+    </string>
+    <string name="find_file_with_intervals_rus">
+        Был найден файл с разметкой
+    </string>
+    <string name="telegram_help">
+        Вы можете отправить полученный текст в Telegram боту - PersonGuideRU.
+    </string>
+
+    <!-- Profile user -->
+    <string name="title_profile_user">Данные о собеседнике</string>
+    <string name="give_user_rus">Профиль</string>
+
+    <!-- About us -->
+    <string name="title_app">
+        PersonGuide
+    </string>
+    <string name="about_us">
+        \nПриложение было разработано как дополнение к Telegram боту "PersonGuide".
+        \nPersonGuideRU - определение психологического потрета человека по его словам.
+        \nПолная справка по использованию бота и приложения, есть на сайте:
+        \nhttp://personguide.mozello.ru/
+    </string>
+    <string name="about_us_rus">
+        О приложении
+    </string>
+    <string name="about_application_text_rus">
+        \nПриложение предназначено для перевода записи речи собеседника в текстовый формат.
+        \n\n\nПолучив текст собеседника, у вас есть возможность определения психологического потрета с помощью Telegram бота "Person Guide".
+        \n\n\nВ справке вы можете ознакомиться с иными способами получения текста для определения Психологического портрета.
+        \nВозможно получение и отправка речи собеседника из нескольких каналов.
+    </string>
+
+    <!-- Buttons -->
+    <string name="complete_rus">Завершить</string>
+    <string name="remove_rus">Удалить</string>
+    <string name="get_portrait_button_rus">Получить портрет</string>
+    <string name="save_rus">Сохранить</string>
+    <string name="copy_rus">Копировать</string>
+    <string name="edit_rus">Редактировать</string>
+    <string name="begin_rus">Начать</string>
+    <string name="start_eng">start</string>
+    <string name="end_eng">end</string>
+    <string name="back_rus">Назад</string>
+    <string name="send_rus">Отправить</string>
+    <string name="continue_rus">Продолжить</string>
+    <string name="contacts_rus">Контакты</string>
+    <string name="allrecords_rus">Все записи</string>
+    <string name="start_over_rus">Начать заново</string>
+    <string name="speech_of_companion_rus">
+        Речь
+        \nсобеседника
+    </string>
+    <string name="rest_of_companion_rus">
+        Остальная
+        \nречь
+    </string>
+    <string name="forward_rus"> +1 сек.</string>
+    <string name="back_rew_rus"> -1 сек.</string>
+    <string name="auto_rus">Автоматически</string>
+    <string name="select_rus">Выбрать путь</string>
+
+
+    <!-- Play -->
+    <string name="title_get_speech">Прогресс получения текста</string>
+    
+    <!-- ifNotHaveRecords -->
+    <string name="title_have_not_records_rus">
+        Записи разговоров
+    </string>
+    <string name="help_have_not_records_rus">
+        Ой, записи разговоров не были обнаружены по текущему пути
+        \n\nЕсли вы знаете путь к расположению ваших записей разговоров, то выберите его нажав на кнопку
+        \n“Я знаю где записи”
+        \n\nЕсли вы не понимаете какие нужны записи и как их можно записать, нажмите на кнопку
+        \n“Как получить записи?”
+    </string>
+    <string name="I_know_where_records_rus">Я знаю где находятся записи</string>
+    <string name="I_have_not_records_rus">Как получить записи?</string>
+
+
+
+
+    <string name="title_activity_about_selected_contact">About_selected_contact</string>
+    <string name="help">Справка пользователя</string>
+    <string name="settings">Настройки</string>
+    <string name="russia">Русский</string>
+    <string name="english">English</string>
+    <string name="xiaomi">Xiaomi</string>
+    <string name="samsung">Samsung</string>
+    <string name="zte">ZTE</string>
+    <string name="selectLanguage">Выберите язык интерфейса устройства </string>
+    <string name="selectMark">Выберите марку устройства </string>
+    <string name="aboutApp">О приложении:</string>
+    <string name="aboutApplication">Целью данного приложения является выборка и перевод в текстовый формат слов собеседника из записи звонка.
+                                    Набрав 1000 слов вы можете скопировать текст и загрузить его в бота: [ссылка на бота]
+                                    Бот определит психологический портрет собеседника</string>
+    <string name="selectTypeView">Тип отображения записей выбранного контакта</string>
+    <string name="noTranslaterRecords">Не переведенные записи</string>
+    <string name="translaterRecords">Переведенные записи</string>
+    <string name="allRecords">Все записи</string>
+    <string name="searchContact">Поиск контактов</string>
+    <string name="pathWithRecords">Путь по которому располагаются записи звоноков(можете изменить самостоятельно)</string>
+    <string name="addHelp">Для получения справки о кнопке: зажмите выбранную кнопку в течении 1-2 секунд</string>
+    <string name="saveSettings">Сохранить выбранные настройки</string>
+    <string name="closeSettings">Закрывает окно настроек без сохранения</string>
+    <string name="helpLanguage">Является важным параметром при фильтрации записей для пользователя</string>
+    <string name="helpMark">Данный параметр позволяет выбрать расложение записей звонков на устройсте</string>
+    <string name="helpCall">Совершает звонок по выбранному номеру</string>
+    <string name="helpEditAll">Редактирование файла контакта</string>
+    <string name="helpRecords">Открывает список записей звонков</string>
+    <string name="helpEditRec">Если запись выбранна, открывает страницу для перевода в текст</string>
+    <string name="helpCancelRecord">Отмена выбранной записи звонка</string>
+    <string name="helpTranslated">Преобразует выбранную запись в текст</string>
+    <string name="helpSaveEditRec">Сохраняет текст в общий файл пользователя</string>
+    <string name="helpCopy">Копирует текст в буфер обмена</string>
+    <string name="helpCloseEditRec">Вернуться на окно выбора записей</string>
+    <string name="helpSaveEditAll">Сохраняет изменения</string>
+    <string name="helpCloseEditAll">Вернуться на окно выбранного контакта</string>
+    <string name="scenarioUsage">Сценарий использования приложения:</string>
+    <string name="recordCalls">Приложение не включает в себя функционал для записи звонков.\nЗапись звонков осуществляется встроенными средствами устройства  или сторонним приложением с PlayMarket
+
+                                </string>
+    <string name="linkXiaomi">Включить авто-записи для выбранных контактов на xiaomi:\nhttps://mi-box.ru/zapis-telefonnyh-razgovorov-na-xiaomi.html</string>
+    <string name="scenarioUsageText">1) Вы производите звонки с записями разговоров (автозапись или приложение как правило записывает все входящие и исходящие, или разговоры с выбранными контактами)\n2) Далее вы заходите в приложение и выбираете контакт/n3) На странице контакта при нажатии 3 кнопки (иконка загрузки, также все кнопки имеют справку если их зажать на 1-2 секунды). Открывается окно с записями разговоров для данного контака, которые располагаются по пути, который можно выбрать во 2 пункте, на странице настроек)\n4) При выборе записи выводиться полный путь к нему, также его можно прослушать в media playre ниже\n5) При нажатии кнопки принять открывается окно работы с выбранной записью разговора\n6) При нажатии кнопки "A" выполняется перевод записи в текстовый формат(переводятся только слова собеседника)\n7) Спустя время текст из записи разговора пояляется в текстовом поле, в котором вы можете его отредактировать\n8) После того как вы отредактировали запись вы должны нажать на кнопку (с дискетой) сохранить\n9) Выводиться уведомление что данные успешно сохранены\n10) Далее текст вы можете просмотреть в общем файле пользователя</string>
+    <string name="wait">Ожидайте</string>
+    <string name="about_application">
+        Приложение предназначено для\n
+        получения материала из\n
+        записей телефонных разговоров,\n
+        чтобы определить псих. портрет\n
+        через Телеграм бот PersonguideRU
+    </string>
+    <string name="how_use">Как использовать </string>
+    <string name="start">Начать использование</string>
+    <string name="help_russia">Помощь</string>
+    <string name="help_nofind_records">
+        Записи звонков не были найдены:\nсделайте больше записей или поменяйте путь для поиска в настройках.
+    </string>
+    <string name="select_contact">Выбор контакта</string>
+    <string name="path_for_records">Путь для поиска записей: </string>
+    <string name="save_settings">Сохранить настройки</string>
+    <string name="standart_path">Стандартный путь</string>
+    <string name="cancel_rus">Отмена</string>
+    <string name="add_rus">Добавить</string>
+    <string name="psyhoPass">Определить психологический портрет</string>
+    <string name="helpWithLevelUser">
+        Здравствуйте!\n
+        Выберите свой уровень пользования \n
+        данным приложением.\n
+        От выбора будет зависеть количество\n
+        всплывающих подсказок.\n
+        Позднее уровень можно будет поменять\n
+        в окне "Настройки"
+    </string>
+    <string name="beginLevel">Начинающий\nпользователь</string>
+    <string name="expertLevel">Опытный\nпользователь</string>
+    <string name="findAuto">Определить\nавтоматически</string>
+    <string name="selectHand">Выбрать\nвручную</string>
+    <string name="changeLevelUser">Поменять уровень\nпользователя</string>
+    <string name="I">Я</string>
+    <string name="companion">Собеседник</string>
+    <string name="rewindTime">Время перемотки записи:</string>
+    <string name="pauseTime">Время включения паузы\nпосле отпускания:</string>
+    <string name="stopGame">Завершить</string>
+    <string name="ready">Готово</string>
+    <string name="launch">Запуск...</string>
+    <string name="help_rus">Справка</string>
+    <string name="understand_rus">Понял</string>
+    <string name="firstHelp_message_rus">
+                                    1) Выберите контакт характер которого вы хотите узнать
+                                    2) Откройте список записанных разговоров\n
+                                    3) Выберите одну из записей\n
+                                    4) Выделите слова собеседника для определения портрета\n
+                                    6) Нажмите на кнопку завершить и ждите окончание процесса получения текста\n
+                                    7) Когда будет набрана 1 тыс слов, появиться возможность узнать характер\n
+                                    Данная справка актуальна для устройств марки - Xiaomi !!!
+    </string>
+    <string name="helpPlay_message_rus">
+                                    Окно для выделения речи собеседника.
+                                    Алгоритм использования:\n
+                                    1) Нажать кнопку - начать
+                                    2) Выделять свой голос и голос собеседника\n
+                                    3) После разметки всей записи, нажать кнопку завершить\n
+                                    </string>
+    <string name="error_rus">Ошибка</string>
+    <string name="translated_text_res">Текст полученный из данного разговора</string>
+    <string name="return_selected_record_rus">Вернуться к выбору записи</string>
+    <string name="selected_cutter_rus">Запись выделена</string>
+    <string name="give_permission_rus">Дать приложению разрешения</string>
+    <string name="give_permission_mes_rus">Если вы не дадите разрешения, то прижение не сможет использовать задуманный функционал( \n" +
+                                    "Приложение использует защищенный протокол обработки данных. Также все записи и результаты переводов храняться на вашем телефоне без использования сторонних серверов"</string>
+
+
+    <!-- Main / media select activity -->
+    <string name="main_activity_label">Ringdroid</string>
+    <string name="search_edit_box">Search</string>
+
+    <string name="button_start_record_activity">Record New</string>
+
+    <string name="sdcard_readonly">Sorry, the SD Card is mounted as read-only and Ringdroid requires it to be writable.</string>
+    <string name="no_sdcard">Sorry, Ringdroid can\'t run unless you have an SD Card inserted.</string>
+    <string name="sdcard_shared">Sorry, Ringdroid can\'t run while your handset is mounted as a USB device.</string>
+
+    <string name="button_options">Options</string>
+
+    <!--
+     Edit activity
+     -->
+
+    <!-- Labels next to the start and end time edit boxes -->
+    <string name="start_label">Start:</string>
+    <string name="end_label">End:</string>
+
+    <string name="edit_intent">Edit</string>
+
+    <string name="time_seconds">seconds</string>
+
+    <!-- After you save a notification or ringtone and have more options
+         for what to do with them -->
+    <string name="what_to_do_with_ringtone">Saved!  Make this your default ringtone or assign it to a contact?</string>
+    <string name="set_default_notification">Saved!  Make this your default notification?</string>
+
+    <string name="make_default_ringtone_button">Make Default</string>
+    <string name="choose_contact_ringtone_button">Assign to Contact</string>
+    <string name="do_nothing_with_ringtone_button">Close</string>
+
+    <!-- Progress dialog text for loading, recording, or saving... -->
+    <string name="progress_dialog_loading">Loading…</string>
+    <string name="progress_dialog_recording">Recording…</string>
+    <string name="progress_dialog_saving">Saving…</string>
+    <string name="progress_dialog_cancel">Cancel</string>
+    <string name="progress_dialog_stop">Stop</string>
+
+    <!-- Image button descriptions for accessibility -->
+
+    <string name="start_marker">Start marker</string>
+    <string name="end_marker">End marker</string>
+    <string name="rewind">Rewind</string>
+    <string name="play">Play</string>
+    <string name="stop">Stop</string>
+    <string name="ffwd">Fast forward</string>
+    <string name="zoom_in">Zoom In</string>
+    <string name="zoom_out">Zoom Out</string>
+    <string name="save_button">Save</string>
+
+    <!--
+     Menu items
+     -->
+
+    <string name="menu_save">Save</string>
+    <string name="menu_reset">Reset</string>
+    <string name="menu_about">About</string>
+    <string name="menu_show_all_audio">Show All Audio</string>
+
+    <!--
+     Context menu items
+     -->
+
+    <string name="context_menu_edit">Edit</string>
+    <string name="context_menu_delete">Delete</string>
+    <string name="context_menu_default_ringtone">Set as Default Ringtone</string>
+    <string name="context_menu_contact">Assign to Contact</string>
+    <string name="context_menu_default_notification">Set as Default Notification</string>
+
+    <!--
+     File Save dialog
+     -->
+
+    <string name="file_save_title">Save As:</string>
+    <string name="file_save_button_save">Save</string>
+    <string name="file_save_button_cancel">Cancel</string>
+
+    <string name="ringtone_type_label">Type:</string>
+
+    <string name="type_music">Music</string>
+    <string name="type_alarm">Alarm</string>
+    <string name="type_notification">Notification</string>
+    <string name="type_ringtone">Ringtone</string>
+
+    <string name="ringtone_name_label">Name:</string>
+
+    <string name="artist_name">Ringdroid</string>
+
+    <!--
+     Delete confirmation dialog
+     -->
+
+    <string name="delete_ringtone">Delete Ringtone</string>
+    <string name="delete_alarm">Delete Alarm</string>
+    <string name="delete_notification">Delete Notification</string>
+    <string name="delete_music">Delete Music</string>
+    <string name="delete_audio">Delete Audio</string>
+
+    <string name="confirm_delete_ringdroid">Are you sure?</string>
+    <string name="confirm_delete_non_ringdroid">Are you sure?  This file was not created using Ringdroid!</string>
+
+    <string name="delete_ok_button">Delete</string>
+    <string name="delete_cancel_button">Cancel</string>
+
+    <string name="delete_failed">Unable to delete file</string>
+
+    <!--
+     Success and error messages
+     -->
+
+    <string name="alert_title_success">Success</string>
+    <string name="alert_title_failure">Error</string>
+    <string name="alert_ok_button">OK</string>
+    <string name="alert_yes_button">Yes, please!</string>
+    <string name="alert_no_button">No, thanks.</string>
+
+    <string name="save_success_message">Saved!</string>
+    <string name="default_ringtone_success_message">Changed default ringtone</string>
+    <string name="default_notification_success_message">Changed default notification sound</string>
+    <string name="play_error">Unable to play this media file</string>
+    <string name="no_unique_filename">Unable to find unique filename</string>
+    <string name="record_error">Error recording audio</string>
+    <string name="too_small_error">Can\'t save a file that small, try making it longer.</string>
+    <string name="write_error">Error writing file</string>
+    <string name="read_error">Error reading file</string>
+
+    <string name="no_space_error">Your SD card is full, there is not enough space to save this file.</string>
+
+    <string name="bad_extension_error">Sorry, Ringdroid is not yet able to edit files of type</string>
+    <string name="no_extension_error">Sorry, Ringdroid can\'t edit a file if it doesn\'t have an extension like .mp3 or .wav</string>
+
+    <!--
+     Choose Contact Activity
+     -->
+
+    <string name="choose_contact_title">Assign ringtone to which contact?</string>
+    <string name="success_contact_ringtone">Successfully assigned ringtone to:</string>
+
+
+    <!--
+     About
+     -->
+
+    <string name="about_title">About Ringdroid</string>
+    <string name="about_text"><![CDATA[Use Ringdroid to edit MP3, OGG, WAV, AAC, and AMR audio files and create ringtones, alarms, and notifications from them.\n\nTip: copy audio files to your SD card using a USB cable.\n\nTip: tap anywhere on the waveform to start playing at that position.\n\nTip: while playing, tap the word Start or End to quickly set the start and end markers to the current playback time.\n\nVersion %s\n\nDeveloper: Dominic Mazzoni, Nicolas Faralli\nGraphics: Joseph Wain\nSupport and evangelizing: Eugene Koh\nEnhancements: Dan Klufas\n\nRingdroid is free software, distributed under the Apache 2.0 license.  Source code is on github.com/google/ringdroid\n]]></string>
+
+</resources>
+

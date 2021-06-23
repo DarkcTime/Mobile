@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/dark_blue"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10">
+        <TextView
+            style="@style/style_textview_white_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/help_for_edit_text_rus"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:gravity="center_horizontal" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="95"
+        android:layout_margin="@dimen/standard"
+        android:orientation="vertical">
+        <TextView
+            style="@style/style_textview_white"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="@string/help_for_edit_text_2_rus" />
+        <EditText
+            android:id="@+id/editTextTranslatedResult"
+            android:background="@drawable/dart_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:inputType="textMultiLine"
+            android:gravity="top|left"
+            tools:ignore="RtlHardcoded"
+            android:padding="@dimen/mini"
+            android:layout_marginBottom="@dimen/standard"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingVertical="@dimen/mini">
+            <Button
+                android:text="@string/save_rus"
+                style="@style/style_dark_button_large"
+                android:layout_width="match_parent"
+                android:onClick="onClickButtonSaveEdit"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
