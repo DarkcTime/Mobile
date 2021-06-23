@@ -292,8 +292,9 @@ public class MainActivity extends AppCompatActivity {
     //open page for help
     public void onClickHelpIfNotRecords(View view) {
         try {
-            Intent help = new Intent(MainActivity.this, Help.class);
-            startActivity(help);
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(Resources.UrlHelp));
+            startActivity(browserIntent);
         } catch (Exception ex) {
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickHelpIfNotRecords");
         }
@@ -336,7 +337,6 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(settings);
                         return true;
                     case R.id.help_main_menu:
-                        //TODO открытие по ссылкам в браузере
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW,
                                 Uri.parse(Resources.UrlHelp));
                         startActivity(browserIntent);
