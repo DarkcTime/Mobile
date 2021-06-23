@@ -338,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.help_main_menu:
                         //TODO открытие по ссылкам в браузере
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("http://www.google.com"));
+                                Uri.parse(Resources.UrlHelp));
                         startActivity(browserIntent);
                         return true;
                     case R.id.about_us_main_menu:

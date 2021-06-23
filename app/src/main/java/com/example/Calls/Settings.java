@@ -72,7 +72,7 @@ public class Settings extends AppCompatActivity {
         //Xiaomi
         File xiaomi = new File(RecordsService.currentPathForRecordsXiomi);
         if(xiaomi.exists()){
-            Toast.makeText(this, "Марка вашего устройства - Xiaomi", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Путь автоматически подставлен", Toast.LENGTH_SHORT).show();
             return RecordsService.currentPathForRecordsXiomi;
         }
         return "";

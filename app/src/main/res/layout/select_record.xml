@@ -72,11 +72,8 @@
             android:layout_marginVertical="@dimen/mini"
             android:onClick="onClickButtonBackSelectedPlay"
             android:text="@string/back_to_list_contacts"
-            android:textStyle="bold"/>
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10"/>
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/mini"/>
         <Button
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -86,7 +83,10 @@
             android:onClick="onClickButtonHelpForGetRecords"
             android:text="@string/title_help_for_get_contacts"
             android:textStyle="bold"/>
-
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"/>
     </LinearLayout>
 
     <!-- select record-->
