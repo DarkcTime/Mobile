@@ -5,6 +5,7 @@ package com.example.Calls;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -245,7 +246,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadListAllRecords() {
         try {
-            List<File> recordsBuffer = FileSystem.getFilesWithSelectedExtWithFilter(RecordsService.getPathForFindRecords(), ".mp3");
+
+            List<File> recordsBuffer = FileSystem.
+                    getFilesWithSelectedExtWithFilter(RecordsService.getPathForFindRecords(), ".mp3");
             ArrayList<File> records = new ArrayList<>(recordsBuffer);
 
             recordsAdapter = new AllRecordsAdapter(this, R.layout.list_all_records, records);
@@ -333,8 +336,10 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(settings);
                         return true;
                     case R.id.help_main_menu:
-                        Intent help = new Intent(MainActivity.this, Help.class);
-                        startActivity(help);
+                        //TODO открытие по ссылкам в браузере
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("http://www.google.com"));
+                        startActivity(browserIntent);
                         return true;
                     case R.id.about_us_main_menu:
                         Intent about_us = new Intent(MainActivity.this, AboutUs.class);

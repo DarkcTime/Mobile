@@ -208,6 +208,7 @@
     <string name="launch">Запуск...</string>
     <string name="help_rus">Справка</string>
     <string name="understand_rus">Понял</string>
+    <string name="title_help_for_get_contacts">Как получить записи?</string>
     <string name="firstHelp_message_rus">
                                     1) Выберите контакт характер которого вы хотите узнать
                                     2) Откройте список записанных разговоров\n

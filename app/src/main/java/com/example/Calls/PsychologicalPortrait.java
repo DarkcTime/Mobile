@@ -47,6 +47,7 @@ public class PsychologicalPortrait extends AppCompatActivity {
     final DialogMain dialogMain = new DialogMain(this, DialogMain.Activities.MainActivity);
 
     private Button buttonEditTextForPortrait;
+    private TextView textViewEditSave;
     private EditText editTextForPortrait;
     private LinearLayout linerLayoutTextForPortrait;
     private TextView textViewNumberWords, textViewSelectedContactPortrait, textViewSelectedContactNumber;
@@ -54,6 +55,8 @@ public class PsychologicalPortrait extends AppCompatActivity {
 
     ClipboardManager myClipboard;
     File fileResult;
+
+    //Протестировать кнопку которую я поменял
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class PsychologicalPortrait extends AppCompatActivity {
 
             relativeLayoutGetPortrait = (RelativeLayout) findViewById(R.id.relativeLayoutGetPortrait);
             buttonEditTextForPortrait = (Button) findViewById(R.id.buttonEditTextForPortrait);
+            textViewEditSave = (TextView) findViewById(R.id.textViewEditSave);
             editTextForPortrait = (EditText) findViewById(R.id.editTextForPortrait);
             myClipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
 
@@ -123,27 +127,16 @@ public class PsychologicalPortrait extends AppCompatActivity {
                 String textForPortrait = editTextForPortrait.getText().toString();
                 FileSystem.WriteFile(fileResult.getAbsolutePath(), textForPortrait, false);
                 Toast.makeText(this, "Данные успешно сохранены", Toast.LENGTH_LONG).show();
-                buttonEditTextForPortrait.setText("Редактировать");
+                textViewEditSave.setText("Редактировать");
                 editTextForPortrait.setEnabled(false);
             }
             else{
-                buttonEditTextForPortrait.setText("Сохранить");
+                textViewEditSave.setText("Сохранить");
                 editTextForPortrait.setEnabled(true);
             }
         }
         catch (Exception ex){
             dialogMain.showErrorDialogAndTheOutputLogs(ex, "PsychologicalPortrait/ButtonEditForPortrait");
-        }
-    }
-    public void onClickButtonCopyForPortrait(View view){
-        try {
-            ClipData myClip;
-            String text = editTextForPortrait.getText().toString();
-            myClip = ClipData.newPlainText("text", text);
-            myClipboard.setPrimaryClip(myClip);
-            Toast.makeText(this, "Текст скопирован", Toast.LENGTH_LONG).show();
-        } catch (Exception ex) {
-            dialogMain.showErrorDialogAndTheOutputLogs(ex, "onClickButtonCopyForPortrait");
         }
     }
 

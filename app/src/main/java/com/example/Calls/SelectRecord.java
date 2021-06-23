@@ -1,6 +1,7 @@
 package com.example.Calls;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -79,6 +80,15 @@ public class SelectRecord extends AppCompatActivity {
         Intent profile = new Intent(SelectRecord.this, PsychologicalPortrait.class);
         startActivity(profile);
     }
+
+    //Button help
+    public void onClickButtonHelpForGetRecords(View view){
+        //TODO открытие справки
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://www.google.com"));
+        startActivity(browserIntent);
+    }
+
 
     public void onClickButtonBackSelectedPlay(View view) {
         openMainActivity();

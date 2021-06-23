@@ -76,33 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"/>
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:orientation="vertical">
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                            <Button
-                                style="@style/StyleButtonIconBig"
-                                android:onClick="onClickSendTelegram"
-                                android:layout_centerHorizontal="true"
-                                android:background="@drawable/telegram"
-                                android:layout_centerInParent="true"/>
-                        </RelativeLayout>
-                        <TextView
-                            style="@style/style_textview_white"
-                            android:textSize="12dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/send_rus"/>
-                    </LinearLayout>
 
-                </RelativeLayout>
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -145,6 +119,7 @@
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
+                    android:padding="5dp"
                     />
                 <TextView
                     style="@style/style_textview_white"
@@ -184,6 +159,7 @@
                         <TextView
                             style="@style/style_textview_white"
                             android:textSize="12dp"
+                            android:id="@+id/textViewEditSave"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/edit_rus"/>
@@ -196,16 +172,17 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:orientation="vertical">
+                        android:layout_centerHorizontal="true"
+                        android:orientation="vertical"
+                        android:layout_centerInParent="true">
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
                             <Button
                                 style="@style/StyleButtonIconBig"
-                                android:onClick="onClickButtonCopyForPortrait"
+                                android:onClick="onClickSendTelegram"
                                 android:layout_centerHorizontal="true"
-                                android:background="@drawable/copy"
+                                android:background="@drawable/telegram"
                                 android:layout_centerInParent="true"/>
                         </RelativeLayout>
                         <TextView
@@ -213,10 +190,10 @@
                             android:textSize="12dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/copy_rus"/>
+                            android:text="@string/send_rus"/>
                     </LinearLayout>
-                </RelativeLayout>
 
+                </RelativeLayout>
 
             </LinearLayout>
 
