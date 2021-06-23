@@ -63,12 +63,6 @@ public class Settings extends AppCompatActivity {
         }
     }
 
-    //don't save settings
-    public void onClickCancelSaveSettings(View view){
-        Intent main = new Intent( Settings.this, MainActivity.class);
-        startActivity(main);
-    }
-
     //автоматическая генерация пути по марке телефона
     public void onClickButtonAuto(View view){
         setTextPath(AutoGeneratePathForRecords());
