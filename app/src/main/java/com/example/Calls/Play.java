@@ -176,6 +176,7 @@ public class Play extends AppCompatActivity
     private boolean isActiveFunctions = false;
     private boolean isStartGame = false;
 
+
     //endregion
 
     //endregion
@@ -1023,6 +1024,8 @@ public class Play extends AppCompatActivity
     public void onBackPressed() {
         if(isStartGame)
             dialogMain.showQuestionDialogPlay();
+        else
+            this.finish();
     }
 
     //endregion
